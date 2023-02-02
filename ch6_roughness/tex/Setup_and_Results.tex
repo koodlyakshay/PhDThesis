@@ -1,0 +1,122 @@
+\section{Roughness on turbine blade sections}\label{sec:du97}
+% \textcolor{red}{Combined effect of roughness and vortex generators?}\\
+A typical wind turbine airfoil, DU-97-300, is chosen to test the effect of roughness and verify if VGs can alleviate the anticipated drop in performance. This choice is motivated by the availability of experimental data for clean and VG cases. The geometry of the VG is chosen from the AVATAR experimental database (figure \ref{fig:geo_vg_mesh})\cite{Schepers_2018,baldacchino2018experimental}. The simulations are carried out at $Re=2.0\times10^6$ for both clean and VG cases. Both for clean and VG cases a 3D mesh is generated where the airfoil is extruded in span direction and a body-fitted mesh is generated around the VG geometry. A symmetry boundary condition is used on the spanwise extrusion boundaries.
+% However, no experimental data exists for rough conditions. 
+%{\color{blue}Different roughness heights in different regimes are chosen. - \textit{Or we only choose one based on some literature say the worst case scenario}}.
+
+The following cases are considered:
+\begin{enumerate}
+    \item Airfoil with no roughness or VGs under fully turbulent conditions (denoted as 'clean'),
+    %\item airfoil with no roughness or VGs under natural transition(denoted as 'tr clean'),
+    \item Airfoil with VG under fully turbulent conditions ('VG'),
+    \item Airfoil with roughness ('rough') and
+    % \item airfoil with VG under natural transition ('VGclean') and 
+    \item Airfoil with VG and roughness ('VGrough').
+\end{enumerate} 
+
+For the clean airfoil, a grid refinement study is carried out at $AoA=2.5^{\circ}$, which corresponds to the design angle of attack of this airfoil section on the AVATAR reference turbine blade under normal operating conditions (incoming wind speed of $10m/s$). The coarsest grid has 128 points (lvl1), the reference grid (lvl2) has 300 points and the finest grid (lvl3) has 512 points on the airfoil and 4 points in the span direction. Figure \ref{fig:geo_vg_mesh} shows the vortex generator on the airfoil section and details of the geometry. For the airfoil with VG (zero thickness), 1000 points are used on the airfoil and 15 points in the span direction (a maximum aspect ratio of $3$ and an average of $1.15$ is maintained on the airfoil surface) and no refinement study is made. The VG geometry is also shown in figure \ref{fig:geo_vg_mesh}. The corresponding dimensions are $h=5mm$, $D=35mm$, $d=17.5mm$ and $\beta = 15^{\circ}$. The chord length of the airfoil is $0.65m$ and the VG is placed at $20\%$ chord on the upper surface of the airfoil\cite{baldacchino2018experimental}. Since a symmetry boundary condition is used on the extrusion boundaries, the geometry represents a row of counter-rotating VGs as shown in the right figure \ref{fig:geo_vg_mesh}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/du300_trq_vg.PNG}
+    \includegraphics[width=0.45\textwidth]{images/vg_geo_top_view.png} 
+    \vspace*{-0.2cm}
+    \caption{VG on the airfoil surface (left) and VG geometry details \cite{baldacchino2018experimental}(right)}
+   \label{fig:geo_vg_mesh}
+\end{figure}
+
+Figure \ref{fig:gridrefcfcp} shows the pressure coefficient and skin friction coefficient along the airfoil obtained from the three grids. The results from reference grid and fine grid are mostly identical and thus the reference grid will be used for further computations. The resulting lift and drag coefficients are listed in table \ref{tab:gridref2}. Only fully turbulent cases are considered for comparison here because the roughness model does not predict the early onset of transition.
+\begin{table}[h!]
+\centering
+\begin{tabular}{ |c|c|c|c| } 
+\hline
+Name & $N$ & $C_l$ & $C_d$  \\
+ \hline
+ lvl1 & $128$ & $0.5308$ & $0.0180$ \\ 
+ lvl2 & $300$ & $0.5011$ & $0.0161$ \\ 
+ lvl3 & $512$ & $0.5077$ & $0.0160$ \\ 
+ \hline
+\end{tabular}
+\caption{Lift and Drag coefficients with different grid resolutions for the DU-97-W300 airfoil.}
+\label{tab:gridref2}
+\end{table}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/cp_grid_ref2.eps}
+    \includegraphics[width=0.45\textwidth]{images/cf_grid_ref2.eps} 
+    \vspace*{-0.5cm}
+    \caption{Comparison of the pressure coefficient (left) and the skin friction coefficient (right) at an $AoA = 2.5^{\circ}$, $Re=2.0\times10^6$ for different grid resolutions.}
+   \label{fig:gridrefcfcp}
+\end{figure}
+
+\subsection{Clean polars}\label{ssec:clean}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/cleancl.eps}
+    \includegraphics[width=0.45\textwidth]{images/cleancd.eps} 
+    \vspace*{-0.5cm}
+    \caption{Lift (left) and drag (right) polars for the fully turbulent(clean) case at $Re=2.0\times10^6$.}
+   \label{fig:cleanpolar}
+\end{figure}
+Figure \ref{fig:cleanpolar} shows the lift and drag polars from SU2 and the experimental data from Baldaccino\cite{baldacchino2018experimental}. Additionally, the lift data from other CFD methods obtained from Avatar report\cite{Schepers_2018} is also given. The maximum lift angle and the maximum $C_l$ is over estimated by CFD compared to experiments. However, the results from SU2 are in close agreement to those reported by Ellipsys in AVATAR\cite{Avatarwebsite} (task 3.2). Similar behavior is observed for $C_d$ as well. The SA model predicts the separation to occur later than the experiments which results in poor performance at higher angles of attack and over prediction of maximum lift. While the use of psuedo time stepping scheme helps overcome some of the convergence issues that a purely steady-state solver would face at higher angles of attack, accuracy of the results remains poor.
+
+\subsection{VG polars}\label{ssec:vg}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/clvg.eps}
+    \includegraphics[width=0.45\textwidth]{images/cdvg.eps} 
+    \vspace*{-0.5cm}
+    \caption{Lift (left) and drag (right) polars for the fully turbulent case at $Re=2.0\times10^6$ with VG (VG).}
+   \label{fig:vgpolar}
+\end{figure}
+Figure \ref{fig:vgpolar} shows the comparison of lift and drag polars from SU2 with experimental data\cite{baldacchino2018experimental} at $Re = 2\times10^6$ under fully turbulent conditions. Good agreement between the numerical and experimental data is observed at lower angles of attack. SU2 underpredicts the value of the maximum $C_l$ but the stall angle is over predicted. In section \ref{ssec:clean}, the stall angle predicted by SU2 is around $12^{\circ}$ which is higher than the experimentally obtained value. From figure \ref{fig:vgpolar} we observe that the addition of the VG has delayed the stall until an $AoA=18^{\circ}$ as expected. A very close match is observed at lower angles but deviations increase at higher angles of attack. Looking at the drag polar on right the SA model once again predicts separation to occur later than the experiments. However, the maximum lift and the stall angle prediction is much better with VGs than compared to the fully turbulent clean case.
+% The numerical results from the clean case is also shown for reference.
+
+\subsection{Roughness effects}
+Determination of the appropriate value of roughness height, $k$ is difficult due to lack of experimental data for the airfoil under consideration in rough conditions. Additionally, since no transition model is used in this study, the roughness height used must ideally trigger a very early onset of transition to ensure the flow remains turbulent over the airfoil. Several studies on isolated 3-D roughness elements have reported a critical $Re_{k,crit} > 600$\cite{ref:langel2014}  based on the roughness height, $k$, which induce larger instabilities in the flow that trigger transition at the location of roughness or even upstream. The study on critical values for distributed roughness is an ongoing research problem\cite{ref:langel2014}. In this paper, we use a value of the roughness height to ensure that $Re_k=800$. Once the roughness height, $k$, is defined, an equivalent sand grain roughness height, $k_s$, must be estimated. Langel et al.\cite{ref:langel2015} assume $k_s/k = 1$ for densely packed roughness distribution and a lower value of $k_s/k \approx 0.47$ for lower density ($15\%$ distribution density). Aupoix et al.\cite{SAroughorig} use correlations from Dirling\cite{dirling1973method} to estimate $k_s/k$. Following the Dirling's correlation and assuming the distributed roughness to be closely spaced we find $k_s/k \approx 0.539$ which is used to specify the input for turbulence model considered in this study. Based on these estimates, $k_s/c = 400.0\times10^{-6}$ is used. In order to mimic leading edge erosion, the airfoil surface from the leading edge to $x/c=0.13$ on the pressure side and from leading edge to $x/c=0.02$ on the suction side is assumed to be rough.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/cl_clean_vg_rough_exp.eps}
+    \includegraphics[width=0.45\textwidth]{images/cd_clean_vg_rough_exp.eps} 
+    \vspace*{-0.5cm}
+    \caption{Lift (left) and drag (right) polars for the fully turbulent case at $Re=2.0\times10^6$ under different conditions ('clean' -black, 'VG' - blue, 'rough' - red, 'VGrough' - green).}
+   \label{fig:vgroughpolar}
+\end{figure}
+
+The addition of roughness causes a reduction in the lift and increase in drag compared to the clean case (the black and red curves in figure \ref{fig:vgroughpolar}). Based on the computed wall shear stress values the resulting $k_s^+\approx 240$ corresponds to the fully rough regime. Despite a fairly moderate choice of roughness height (keeping transition in mind), the flow is already in the fully rough regime. Additionally, the airfoil appears to stall slightly earlier due to presence of roughness. Adding a VG on the rough airfoil appears to counteract some of the negative effect of roughness by increasing the lift, however the drag increases further. The VG does delay the stall and the airfoil now stalls at approximately $15^{\circ}$ even with leading edge roughness. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/cp_aoa12_all.eps}
+    \includegraphics[width=0.45\textwidth]{images/cp_aoa15_all.eps} 
+    \vspace*{-0.5cm}
+    \caption{Pressure coefficient ($C_p$) distribution under different cases at $AoA = 12^{\circ}$ (left) and $AoA = 15^{\circ}$ (right).}
+   \label{fig:cpallaoa}
+\end{figure}
+
+A clearer picture emerges when we investigate the pressure coefficient in different cases (figure \ref{fig:cpallaoa}). At an $AoA=12^{\circ}$, the fully turbulent (clean) flow is separated close to the trailing edge around $x/c=0.9$. This angle of attack also corresponds to the maximum $C_l$. Under rough conditions, the flow separates much earlier however, the VG helps the flow to remain attached throughout. The difference is clearer when examining the $C_p$ for $AoA=15^{\circ}$ in figure \ref{fig:cpallaoa}. Under both 'clean' and 'rough' conditions, the airfoil is under stall. Flow remains attached longer with the VG as expected under both clean and rough conditions. 
+\subsection{Aerodynamic efficiency}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/aeroperf.eps}
+    \includegraphics[width=0.45\textwidth]{images/aeroperf2.eps} 
+    \vspace*{-0.5cm}
+    \caption{Aerodynamic efficiency.}
+   \label{fig:aeroeff}
+\end{figure}
+Figure \ref{fig:aeroeff} shows the aerodynamic efficiencies under different conditions. On the left, the comparison between numerical SU2 results and experiments are shown. There is an under prediction of efficiency at lower angles of attack due to over prediction of drag. As also seen in the lift polar results, there is an over prediction in maximum efficiency and the angle where it occurs. However, in the VG case, there is a consistent under prediction in efficiency due to over prediction of drag coefficients. Comparing the clean and VG cases, the efficiency at lower angles is lower with VG due to additional drag but at higher angles of attack (beyond stall), the efficiency with VGs remains high as expected. On the right, the comparison of efficiencies with roughness is shown. Due to roughness, a reduction in efficiency is observed both with and without VGs as expected. The maximum efficiency is also reduced in both cases. At higher angles of attack, the VG increases the efficiency even under rough conditions.
+\subsection{Power analysis}
+A preliminary analysis of the effect of roughness on the AVATAR wind turbine blade\cite{Avatarwebsite} at an incoming wind velocity of $10 m/s$ is performed using Blade Element Momentum theory with the Blade Optimization Tool (BOT) developed in-house. With the 'rough' case, a drop of $2.5\%$ is observed compared to the 'clean' section. The addition of VG however did not appreciably change the power output when compared to a rough surface. This is likely because the operating angle of attack for this airfoil is in the linear region where the VG does not have a beneficial effect on aerodynamic performance. We should note that, the CFD analysis are performed for the Re number of $2.0 \times 10^6$ where we could clearly see the effects of VGs on the rough surface but, the power analysis (BOT) are performed for the operating conditions of AVATAR blade where the Re number is around $10.0 \times 10^6$. The polar data for BOT is synthesized from the provided CFD data.
+% \textcolor{red}{Do you mean rough+VG is the same with rough only?}. This is likely because the most beneficial effects of the VG was at higher angles of attack and the increase in drag at lower angles.
+% The power analysis results - Clean 8296, rough - 8077, VG - 8051 VG rough - 8043 - Not very conclusive and looks weird. Perhaps the interpolations are not working properly. We only provided data at Re=2e6 but the operating conditions are close to 10e6, maybe not a good idea to add this subsection?
+% =============================================
+
+\section{Conclusions}
+In this paper, different roughness models for the SA and SST turbulence models are tested for flat plates. The effect of leading edge erosion is then investigated on the DU97-W-300 airfoil section using the roughness models. It is clear that surface degradation leads to reduction in aerodynamic performance as the flow tends to separate earlier which can even lead to premature stall. A reduction of $\approx 2.5\%$ in power production is observed under rough conditions compared to clean conditions. Addition of the vortex generator appears to counter act the negative effects of roughness and is most effective at higher angles of attack. However, due to the presence of the vortex generator drag increases further under rough conditions. The addition of the VG did not appreciably change the power produced by the rotor compared to a rough surface where the polar data that are used for the power analysis are synthesized.
+
+
+% \textcolor{red}{Do you mean rough+VG is the same with rough only?}
+
+% The roughness model presented here is available in the open source CFD suite SU2.
+
+% =============================================

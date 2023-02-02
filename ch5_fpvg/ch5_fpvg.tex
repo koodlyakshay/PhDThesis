@@ -1,0 +1,1064 @@
+\chapter[Wind energy applications: Vortex Generators]{Wind energy applications: Effect of Vortex Generators on a turbulent boundary layer}
+\label{chapter_5}
+%% The following annotation is customary for chapter which have already been
+%% published as a paper.
+\blfootnote{This chapter is based on Ravishankara et al.~\cite{vgpaper}. Other contributing authors were H{\"u}seyin {\"O}zdemir and Andrea Franco.}
+%% It is only necessary to list the authors if multiple people contributed
+%% significantly to the chapter.
+\begin{abstract}
+In this chapter the effect of a vortex generator (VG) on the turbulent boundary layer is studied. $3D$ CFD simulations of the flow past a VG on a flat plate are carried out and the resulting boundary layer is compared to the standard turbulent boundary layer. As a first step towards modeling the effect of VGs in integral boundary layer (IBL) theory based methods, a $2D$ CFD simulation is carried out separately where the VG is represented by a solid wall of zero thickness normal to the flat plate. This simulation is used to understand the limitations that arise out of modeling VGs in a $2D$ boundary layer which would be the case when using IBL methods. Additionally, IBL methods require closure relations in order to find a solution to the boundary layer. Different closure relations are used for laminar and turbulent boundary layer because of the difference in the nature of the two boundary layers. The introduction of a VG will further modify the nature of the boundary layer and thus a different parametrization is required. The mixing layer will be used as a first step towards forming such a parameterization.
+\end{abstract}
+\section{Introduction}
+
+%As the threat of global warming becomes imminent, there is an urgent need for sustainable sources of energy like wind power to meet larger power demands. While larger turbines are being designed to meet the new demands, there is a considerable effort to improve the efficiency of (existing) wind turbines as well.  
+Vortex generators (VGs) are commonly used to improve the performance of wind turbine blades.
+%Many innovative concepts have been used and the use of flow enhancement devices or blade add-ons are becoming more common. An example of such a device is the vortex generator (VG). 
+The concept of a vortex generator is quite old and there has been a considerable amount of research into analyzing the effects of vortex generators~\cite{lin2002review, Schubauer1960}. Vortex generators energize the boundary layer and allow for the boundary layer to remain attached for longer~\cite{Cutler1993, Cutler1993a} and have been successfully used to increase lift produced by airfoil sections and delay stall~\cite{WindtunnelDTUold}. Prior research on modeling VGs in CFD methods can be found in eg. references~\cite{Florentie2017} and~\cite{Fernandez2012}. Typically, VGs are modeled by performing a Computational Fluid Dynamics(CFD) analysis of wind turbine blade sections either using a body fitted mesh or by the BAY model~\cite{bender1999vortex} or its variations.~\cite{jbaymodel} Alternatively, other approaches using vortex strengths are also available~\cite{comparisondtu}. 
+
+However, the above mentioned modeling methods all require expensive CFD simulations. Performing such $3D$ CFD simulations during the design phase of wind turbines is prohibitively expensive and a simpler solution can be advantageous. 
+%Current wind turbine design tools are based on Blade Element Momentum (BEM) theory~\cite{burton2011wind} and other local blade aerodynamic methods based on
+For high Reynolds number flows, like the flow past wind turbine rotors, the effect of viscosity is confined to a small region around the body known as the boundary layer and the flow is largely inviscid further away from the body. The Navier-Stokes equations can thus be simplified for the two regions with matching solutions at the interface, allowing for faster computational times. The flow away from the body can be described by the inviscid Euler equations and can be approximated by faster methods like a panel method. The boundary layer equations in the vicinity of the body can be derived from the Navier-Stokes equations in the limit of large Reynolds numbers. The boundary layer equations can then be further simplified by integrating along the wall normal direction to obtain the integral boundary layer equations. 
+Fast solution methods based on the solution of integral boundary layer equations together with the inviscid potential equations coupled with an appropriate viscous-inviscid interaction scheme~\cite{drela1989xfoil, RFOIL1, ozdemir2017unsteady} (also called interacting boundary layer method) are routinely used to optimize shape of airfoils. 
+Incorporating the effects of blade add-ons like VGs into such tools will allow for better and more efficient designs at a fraction of the cost compared to full three-dimensional CFD methods.
+
+The main difficulty of this task is that while the vortices induced by the VGs are three dimensional in nature, the integral boundary layer methods are typically used to model two dimensional boundary layers. In this study, the nature of the turbulent boundary layer behind VGs are examined and the requirements for an approximate model that can capture the effects of VGs on a two-dimensional integral boundary layer method are identified.% To this end, the mixing induced by the vortices will be modeled by a mixing layer that interacts with the boundary layer.  %In this study we present a new model for VGs based on the derivation of the two dimensional boundary layer equations including an integration also accounting for the presence of the vortex generator. 
+
+In the section \ref{sec:blsep} the boundary layer separation is examined for laminar and turbulent flows. 
+Section~\ref{sec:cfdres} presents the results from the $3D$ CFD simulations of the flow past a VG on a flat plate. The similarities and differences of representing the VG in $2D$ will also be examined.
+In section \ref{sec:mixingres}, a mixing layer parametrization is used to explore the qualitative behavior of the $3D$ and $2D$ turbulent boundary layers. 
+Section~\ref{sec:iblvgeqns} will briefly describe the integral boundary layer methods and the methods used to derive the requisite closure relations for laminar and turbulent flows. Further the differences in the boundary layer due to the VG will be highlighted.
+
+
+\section{The boundary layer}\label{sec:blsep}
+
+To understand how the VG can affect the boundary layer, a brief overview of the behavior of laminar and turbulent boundary layers is presented. Finally, the effect of the VG on a turbulent boundary layer is examined qualitatively.
+
+\subsection{Laminar boundary layer}\label{ssec:lambl}
+The boundary layer plays a crucial role in determining the flow behavior at high Reynolds number. Due to the no-slip condition at the wall, the incoming flow slows down and the velocities are zero at the wall and gradually away from the wall increases until it matches the edge velocity, $u_e$, at the edge of the boundary layer (approximately the free-stream velocity). The distance from the wall to the edge of the boundary layer is  known as the boundary layer thickness, $\delta$. Based on the boundary layer theory, and assuming the flow to be mostly aligned with the $x$ direction, the boundary layer equations for steady two dimensional flows can be derived starting from the non-dimensional Navier-Stokes equations (equations~\ref{eq:contindx} and \ref{eq:momindx} in chapter 2) and are given by
+\begin{equation}
+\frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} = 0,
+\label{eq:cont1}
+\end{equation}
+\begin{equation}
+\frac{\partial u^2}{\partial x} + \frac{\partial uv}{\partial y} = -\frac{1}{\rho}\frac{\partial p}{\partial x} + \nu\frac{\partial^2 u}{\partial y^2}, 
+\label{eq:mom1}
+\end{equation}
+\begin{equation}
+\frac{\partial p}{\partial y} = 0.
+\label{eq:momy}
+\end{equation}
+
+The equation~\ref{eq:cont1} is the continuity equation which remains unchanged under the assumption of large $Re$ numbers ($Re >> 1$). The momentum equation in the direction normal to the wall ($y$) is reduced to the condition that the normal pressure gradient is zero across the boundary layer (equation~\ref{eq:momy}). Thus the pressure in the boundary layer is imposed on it by the flow outside the boundary layer. And this flow outside the boundary layer is governed by the inviscid Euler equation as viscous effects are negligible in this region. Applying the momentum equation, equation~\ref{eq:mom1}, at the edge of the boundary layer, where $v=0$, an equation for for pressure gradient in terms of edge velocity can be found as
+\begin{equation}
+\frac{1}{\rho}\frac{\partial p}{\partial x} = -\frac{\partial u_e^2}{\partial x}.
+\label{eq:ueprel}
+\end{equation}
+This relation is essentially the Bernoulli equation for inviscid flow along a streamline which is expected to be valid at the edge of the boundary layer where the flow becomes inviscid and viscous stresses are negligible. 
+
+Depending on the external pressure gradient, the slow moving boundary layer can either remain attached or separate from the wall. 
+%If the flow starts to separate, the velocity development along the flow direction would decrease until a flow reversal occurs. In other words, $\frac{\partial u}{\partial x}$ will start decreasing until it reaches zero and then will change sign. 
+Boundary layers are prone to separation under adverse pressure gradients (figure~\ref{fig:blsep}). Consider a simplified analysis and neglect the normal ($y$) component of velocity, $v$, for the momentum equation~\ref{eq:mom1} (this assumption is not far from reality in most boundary layer flows)
+\begin{equation}
+u\frac{\partial u}{\partial x} = -\frac{\partial p}{\partial x} + \nu\frac{\partial^2 u}{\partial y^2}.
+\label{eq:uprel}
+\end{equation}
+In an adverse pressure gradient, where the pressure $p$ is increasing, the pressure gradient, $\frac{\partial P}{\partial x}$ is positive and only the shear stress contribution is preventing the flow from separating. Very near to the wall, the shear stress is essentially the wall stress, $\tau_w$ and the flow will separate once the wall stress contribution is not enough to overcome the adverse gradient. In the absence of a pressure gradient (like flat plates), $\frac{\partial p}{\partial x} = 0$, separation occurs if the wall stress becomes zero ($\tau_w = 0$) or an inflection point appears in the boundary layer profile.
+\begin{figure}[h]
+\centering
+ \includegraphics[width=0.4\textwidth]{figures_vg/bl_sep}
+ \caption{A schematic visualization of the boundary layer separation.}
+ \label{fig:blsep}
+\end{figure}
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------
+%----------------------------------------------------------------
+\subsection{Turbulent boundary layer}\label{ssec:turbbl}
+
+Adding turbulence to flow has a significant effect on the boundary layers. Due to increased energy transfer within the flow, there is now a significant amount of energy even in the boundary layer. However, due to the no-slip condition the velocity at the wall must still go to zero which leads to an even larger gradient very near the wall. Using the Reynolds averaging procedure (see section~\ref{ssec:rans}), the turbulent Reynolds stresses are represented in terms of the eddy viscosity, $\nu_t$, and the mean flow gradients (or strain rate) and the equation~\ref{eq:uprel} becomes
+\begin{equation}
+u\frac{\partial u}{\partial x} = -\frac{1}{\rho}\frac{\partial p}{\partial x} + (\nu + \nu_t)\frac{\partial^2 u}{\partial y^2}.
+\label{eq:uprelt}
+\end{equation}
+
+Since the eddy viscosity is positive and the wall shear stress is larger, it is easy to see that the turbulent flow separates later than laminar flow and can overcome larger adverse pressure gradients. 
+%This is a very simplified analysis of turbulent boundary layers and to better understand the turbulent boundary layer, a deeper insight is necessary.
+% The additional turbulent diffusion leads to a more uniform velocity profile than a laminar flow and thus the mean flow gradients are confined to a very small region near the wall.
+
+%The main characteristic of turbulent flows is the appearance of vortices and the energy cascade from the largest length scales to the smallest. As we approach closer to the wall, the larger scales dissipate away and only smaller scales remain. Very near to the wall, only the smallest scales remain and the viscous stresses become significant again. Hence, there are different regions within the turbulent boundary layer depending on the relative magnitudes of the Reynolds stresses and the viscous stresses.
+%Broadly, the turbulent boundary layer can be divided into two layers, namely the inner and outer layers (figure~\ref{fig:walllayers}). The inner layer is the one closest to the wall and viscosity is relatively large in this region. Very near to the wall, the viscous stresses dominate and the Reynolds stresses tend to zero. As we move away from the wall the Reynolds stresses start increasing and the viscous and Reynolds stresses reach to an equilibrium. At the edge of the inner layer, the Reynolds stress are large enough to completely dominate the viscous stresses. In the outer layer of the boundary, the viscous stresses disappear and only the Reynolds stress exists. The exact demarcation between the inner and outer layer is not sharp and depends on local flow conditions and Reynolds number. In general, the outer layer spans from about $y/\delta \approx 0.1$ to the edge of the boundary layer. Within the inner layer, it is more convenient to use a different length scale instead of $\delta$ and thus viscous units are used. A velocity scale, \emph{friction velocity}~\cite{pope_2000}, is defined based on the wall stress as 
+%
+%\begin{equation*}
+%u_{\ast} = \sqrt[]{\frac{\tau_w}{\rho}},
+%\end{equation*}
+%where, $\tau_{w}$ is the wall shear stress and $\rho$ is the density.
+%\nomenclature[A]{$u_{\ast}$}{Friction velocity}%
+%\nomenclature[S]{$\tau_w$}{Wall shear stress}%
+%Based on the friction velocity, a non-dimensional length scale, $y^+$ can be defined as
+%\begin{equation*}
+%y^+ = \frac{y u_{\ast}}{\nu}.
+%\end{equation*}
+%\nomenclature[A]{$y^+$}{Non-dimensional length scale}%
+%The inner layer is further subdivided into different regions based on $y^+$. The different regions within a turbulent boundary layer is shown in Figure. \ref{fig:walllayers}~\cite{pope_2000}.
+
+%\begin{figure}[h]
+%\centering
+% \includegraphics[width=0.5\textwidth]{figures_vg/Wall_layers}
+%\caption{An overview of wall regions defined in terms of $y^+$ and $y/\delta$ at $Re = 10^6$\cite{pope_2000}.}
+% \label{fig:walllayers}
+%\end{figure}
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------
+%----------------------------------------------------------------
+\subsection{Vortex generator in the boundary layer}\label{ssec:mixingtheory}
+
+Adding a vortex generator (VG) has an analogous effect on turbulent boundary layers as the introduction of turbulence had on laminar boundary layers~\cite{Schubauer1960}. As the name suggests, a vortex generator generates vortices that entrain high energy fluid from outside of the boundary layer and mix it with the boundary layer flow. The additional momentum and energy introduced to the boundary layer help to overcome more severe adverse pressure gradients and the boundary layer can remain attached for longer~\cite{Schubauer1960}.
+
+The vortex generator is assumed to be submerged in the boundary layer (low-profile VG~\cite{lin2002review} or sub boundary layer VG~\cite{Baldacchino_VG}), but to extend well into the outer layer of the boundary layer. For instance, the height of the vortex generators used in experiments typically range from $5mm$~\cite{WindtunnelDTUold} to about $10mm$~\cite{Flatplateexp2004}. From the operational Reynolds numbers in the experiments, one can compute the height of the vortex generators to be approximately between $y^+ = 1000$ and $y^+ = 2050$ which is far away from the inner boundary layer where viscous stresses from the wall are dominant. However, the additional shear layer introduced due to mixing will now create a new region within the boundary layer where viscous stresses become significant again away from the wall. Unlike a fully turbulent boundary layer where the outer layer is completely dominated by Reynolds stresses, the VG will introduce additional mean flow gradients and viscous stresses in the outer layer as well which will also lead to an increase in the production of turbulent kinetic energy within the boundary layer. 
+
+Thus the presence of mixing induced by VGs will increase viscous dissipation due to the additional mean flow gradients. The new eddy viscosity, $\nu_t^\prime$ (which is different than $\nu_t$), will also increase due to additional production of turbulent kinetic energy. Thus the extra viscous and eddy dissipation will lead to a more controlled rate of growth of the boundary layer and delay separation. This can also be verified by looking at the simplified relations in equations~\ref{eq:uprel} and \ref{eq:uprelt}. If the VG were to introduce an additional term to counter the pressure gradient,
+\begin{equation}
+u\frac{\partial u}{\partial x} = -\frac{1}{\rho}\frac{\partial p}{\partial x} + (\nu+\nu_t^\prime)\frac{\partial^2 u}{\partial y^2} + \text{viscous dissipation due to VG}.
+\label{eq:uprelvg}
+\end{equation}
+The additional viscous dissipation and a larger $\nu_t^\prime$ can help the boundary layer to overcome an even larger adverse pressure gradient and remain attached for longer than the turbulent boundary layer (equation~\ref{eq:uprelt}). 
+%In the following sections, it will be shown that indeed an extra dissipation term arises due to the VG and its exact form will be derived. To derive the model it is assumed that the effect of the VG is confined mostly to the outer layer (referred to as the \emph{mixing region} and denoted by $m$) and has very little effect on the flow very near to the wall (referred to as the \emph{wall region} and denoted by $w$), see figure~\ref{fig:mixschem}.
+%\begin{figure}[h!]
+%\centering
+%\includegraphics[width=0.5\textwidth]{figures_vg/mixing_schem.png}
+%\caption{Schematic of the effect of VGs on the boundary layer velocity profile.}
+%\label{fig:mixschem}
+%\end{figure}
+%\nomenclature[A]{$VG$}{Vortex generator}%
+%\nomenclature[B]{$VG$}{Value at the location of the vortex generator}%
+%\nomenclature[A]{$X_{VG}$}{$x-$ coordinate of the VG}
+%\nomenclature[A]{$x/h$}{$\frac{X-X_{VG}}{h}$, Non dimensional location based on distance from the VG and height of VG}%
+%\nomenclature[A]{$h$}{height of the VG}
+%\nomenclature[A]{$C_p$}{Pressure coefficient}
+%\nomenclature[A]{$C_l$}{Lift coefficient}
+%\nomenclature[A]{$C_d$}{Drag coefficient}
+%\nomenclature[A]{c}{Chord length}
+%\nomenclature[A]{$u_e$}{Edge velocity}
+%\nomenclature[A]{$P$}{Pressure}
+%\nomenclature[S]{$\delta$}{Boundary layer thickness}
+%\nomenclature[S]{$\delta^\ast$}{$\int_0^{\delta} \Big(1 - \frac{u}{u_e} \Big) dy$, Displacement thickness}
+%\nomenclature[S]{$\delta^k$}{$\int_0^\delta\frac{u}{u_e}\Big(1 - \frac{u^2}{u_e^2} \Big)dy$, Energy thickness}
+%\nomenclature[S]{$\theta$}{$\int_0^{\delta} \frac{u}{u_e}\Big(1- \frac{u}{u_e}\Big) dy$,  Momentum thickness}
+%\nomenclature[A]{$C_f$}{Skin friction coefficient}
+%\nomenclature[A]{$C_D$}{Dissipation coefficient}
+%\nomenclature[A]{$C_{\tau}$}{Shear stress coefficient}
+\noindent
+In order to analyze the effect of VGs more quantitatively, numerical simulations are performed and are described in the following section.
+
+\section{Numerical simulation}\label{sec:cfdres}
+\subsection{Three dimensional simulation}
+The pressure based solver is used to simulate the the flow over a flat plate with vortex generator. The geometry of the vortex generator geometry is based on the experimental study of Baldacchino et al~\cite{Baldacchino_VG}. The height of the vortex generators is $h=5mm$. An array of $15$ pairs of vortex generators were used in the experiments.
+Figure~\ref{fig:fpvgschem} shows the schematic of the rectangular vortex generators used in this study. The distance between the trailing edges of the pair of vortex generators is $d=12.5mm$, the distance between the pairs of vortex generators is $D=30mm$ and the incidence angle is $\beta=18^{\circ}$ (see figure~\ref{fig:vgdefn}).
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[width=0.45\textwidth]{figures_vg/vgschem.png}
+        \caption{Rectangular vane VG pair~\cite{Baldacchino_VG}.}
+        \label{fig:fpvgschem}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[trim = 0 0 0 0, clip, width=\textwidth]{figures_vg/vg_spacing.png}
+        \caption{Array of VGs~\cite{Baldacchino_VG} (top view).}
+        \label{fig:vgdefn}
+    \end{subfigure}
+    \caption{Schematic of a pair of rectangular vortex generators (a) and the mesh of the rectangular pair used in the $3D$ CFD simulations (b).}
+\end{figure}
+
+For the numerical study, only one pair used and a periodic boundary condition is applied on the spanwise boundaries. The domain and the other boundary conditions used for the simulation are shown in figure~\ref{fig:fpdomain} and the vortex generators in figure~\ref{fig:vgstrm}. The trailing edge of the vortex generator is placed at $x_{VG}=985mm$ from the start of the plate. The domain is $2.1m$ long and $0.25m$ high. There are $82$ points in the normal direction with a minimum grid spacing at the wall of $1\times 10^{-5} m$. There are $816$ nodes in the stream wise direction with the nodes clustered in the vicinity of the vortex generator. A simulation without vortex generators on the same domain with the same grid resolutions was also conducted. 
+%Baldacchino~\cite{Baldacchino_VG} report that the Reynolds number based on the momentum thickness, $Re_{\theta}$ is approximately $2600$, but
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \begin{subfigure}[b]{0.48\textwidth}
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/fp_domain}
+        \caption{Flat plate domain}
+        \label{fig:fpdomain}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[width=0.9\textwidth]{figures_vg/vg_vel_streamlines.png}
+        \caption{Pair of vortex generators.}
+        \label{fig:vgstrm}
+    \end{subfigure}
+    \caption{Computational domain used for flat plate simulations (a), VG model (b).}
+\end{figure}
+
+\subsubsection{Results}
+The results for the simulations with VGs are denoted as 'VG' and the simulations without VG as 'Clean'. The results are presented in terms of the scaled stream wise location, $s_{VG}$,  given by
+\begin{equation*}
+s_{VG} = \frac{x-x_{VG}}{h_{VG}},
+\end{equation*}
+where $x_{VG}$ the location of the trailing edge of the VG and $h_{VG}$ is the height of the VG. The results are presented in different planes as shown in figure~\ref{fig:yplanesvg}. Here $y=0$ represents the plane between the VG pair, $y=TE$ represents the plane through the trailing edge of the VG and $y=D/3$ represents the plane $D/3$ away from the centerline. The solution is also extracted along the planes $y=-TE$ and $y=-D/3$ that are symmetrically away from the $y=0$ plane, as $y=TE$ and $y=D/3$.
+\begin{figure}[h!]
+\centering
+\captionsetup{justification=centering}
+\includegraphics[width=0.25\textwidth]{figures_vg/yplanes.png}
+\caption{Different planes along which the information is presented. }
+\label{fig:yplanesvg}
+\end{figure}
+
+Figure~\ref{fig:allplan3d} shows the velocity profile from the clean and VG cases at different streamwise locations downstream of the VG. The velocity profiles in all the planes deviate from the clean boundary layer. 
+Figure~\ref{fig:allplanxhm3} shows the velocity profiles at a location $s_{VG}=-3$ which is located upstream of the leading edge of the VG. As the flow approaches the VGs, deviations are observed along the $y=\pm TE$ planes. Relatively less deviation is observed along other planes because the VG is only physically present along the $y=\pm TE$ plane. 
+Figure~\ref{fig:allplanxh10} shows the velocity profiles at a distance of $s_{VG}=10$. The velocity near the wall is much larger than the clean simulation along the centerline $y=0$. Along the $y=\pm TE$ plane, the velocity near the wall is higher but the profile around the $z=h_{VG}$ level is still recovering after encountering the trailing edge of the VG. A sharp shear layer appears at this height. A velocity deficit appears along the $y=\pm D/3$ around $z=h_{VG}$ while the profile near the wall is similar to the clean boundary layer. The shear layers formed are confined to a height of $2h_{VG}$.
+Figure~\ref{fig:allplanxh25} shows the velocity along the same planes at a location further downstream, $s_{VG}=25$. The effect of the VG on the velocity profiles is now spread out over a larger region. The velocity near the wall along the $y=0$ plane remains higher than the clean boundary layer.  The velocity profile along the $y=\pm TE$ planes near the wall is also larger than the clean boundary layer and the shear layer formed due the trailing edge of the VG is now more diffuse. 
+Further downstream at $s_{VG} = 50$ (figure~\ref{fig:allplanxh50}), the effect of the VG has spread over an even larger distance in the direction normal to the wall. The velocity close to the wall is larger than the clean simulations along all the planes and shear layers formed have diffused. The effect of the VG can now be seen upto a height of approximately $4h_{VG}$ along all the planes. The deviations in the velocity profiles in all the planes are similar to those reported in Baldacchino et al~\cite{Baldacchino_VG}.
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \begin{subfigure}[b]{0.48\textwidth}
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/Vel_comp_all_planes_xhm3.eps}
+        \caption{$s_{VG} = -3$}
+        \label{fig:allplanxhm3}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\textwidth}
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/Vel_comp_all_planes_xh10.eps}
+        \caption{$s_{VG} = 10$}
+        \label{fig:allplanxh10}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/Vel_comp_all_planes_xh25.eps}
+        \caption{$s_{VG} = 25$.}
+        \label{fig:allplanxh25}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/Vel_comp_all_planes_xh50.eps}
+        \caption{$s_{VG} = 50$.}
+        \label{fig:allplanxh50}
+    \end{subfigure}
+    \caption{Boundary layer velocity profile from the $3D$ simulations at different spanwise locations.}
+    \label{fig:allplan3d}
+\end{figure}
+
+Figure~\ref{fig:spanall} shows the spanwise variation of the velocity at different streamwise locations at three different heights normal to the wall. The first two locations at a height of $z=h_{VG}$ and $z=2h_{VG}$ are well within the boundary layer and the third location at a height of $z=6h_{VG}$ is just outside the edge of the boundary layer. Figure~\ref{fig:spanxhm3} shows the velocity profiles just upstream of the VG. The flow has slowed down in the vicinity of the VG at a height of $z=h_{VG}$ while the other two locations remain largely unaffected. Figure~\ref{fig:spanxh10} shows the velocity profiles at a location $s_{VG}=10$ and the effect of the vortices can be seen clearly at heights $z=h_{VG}$ and $z=2h_{VG}$. The two troughs in velocity observed at $z=h_{VG}$ correspond to the $y=\pm TE$ planes. At $z=2h_{VG}$, the flow is affected only in the region between $y=0$ and $y=\pm TE$. This was also observed in the normal velocity profiles in figure~\ref{fig:allplanxh10}.
+At a location $s_{VG}=25$ (figure~\ref{fig:spanxh25}), the vortices appear to have spread out wider beyond the $y=\pm TE$ planes and a greater influence is observed at $z=2h_{VG}$. Further downstream at $s_{VG}=50$ (figure~\ref{fig:spanxh50}) the effect of the vortices is more diffuse at $z=h_{VG}$, but stronger at $z=2h_{VG}$. The velocity just outside the boundary layer at $z=6h_{VG}$ remains unaffected at all the streamwise locations.
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \begin{subfigure}[b]{0.48\textwidth}
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/span_svgm3.eps}
+        \caption{$s_{VG} = -3$}
+        \label{fig:spanxhm3}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/span_svg10.eps}
+        \caption{$s_{VG} = 10$.}
+        \label{fig:spanxh10}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/span_svg25.eps}
+        \caption{$s_{VG} = 25$.}
+        \label{fig:spanxh25}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/span_svg50.eps}
+        \caption{$s_{VG} = 50$.}
+        \label{fig:spanxh50}
+    \end{subfigure}
+    \caption{Results from the $3D$ simulations along different planes at different spanwise locations.}
+    \label{fig:spanall}
+\end{figure}
+
+\paragraph{Discussion}
+As expected, the flow is symmetric about the centerline, $y=0$. While such a symmetry is natural at the location of the VG due to the periodic array of VGs, this symmetry extends far downstream after the VG as seen in figure~\ref{fig:spanxh50}. Similar analysis must be be performed for airfoils with VGs to verify this behavior. The spanwise variation in the flow appears to be dominated by the orientation of the VG upstream. This strong influence of the VG orientation on the flow far downstream can be useful to understand the behavior of the turbulent boundary layer using faster methods using simplified equations like the integral boundary layer equations. 
+
+The integral boundary layer methods are used for two dimensional flow analysis and while the flow behind a VG is not strictly two dimensional, the spanwise interaction occurs only around the VG and the flow downstream develops as a two dimensional boundary layer. 
+%Thus, if the effect of the orientation of the VG can be modeled differently, integral boundary layer methods can be used to analyze the effect of VGs.
+In order to understand the differences between the $3D$ flow field around a VG and a strictly two dimensional boundary layer as modeled using IBL methods, a $2D$ simulation of only the $y=TE$ plane is carried out and described in the following section.
+
+\subsection{Two dimensional numerical simulation}
+$2D$ CFD simulations are performed under the same conditions as before using the Spalarat-Allmaras turbulence models for steady, incompressible flow conditions, first for no VG (clean) cases and then for cases including the VG under the same flow conditions as the $3D$ simulation. The flat plate is $4.0 m$ long and the VG is placed at $x_{VG}=0.985m$ corresponding to the $y=TE$ plane. The trailing edge of the VG is represented in the $2D$ domain as a zero thickness solid wall of the same height, $h_{VG}$ perpendicular to the flat plate. The boundary conditions used are the same as those shown in figure~\ref{fig:fpdomain}.
+%As the aim of the study is to implement the effect of the VGs in a 2D IBL method, the CFD simulations are carried out on a 2D flat plate configuration where the VG is presented as a wall boundary condition with height, $h_{VG}$, and zero thickness.
+%Near wall behavior is not shown here to emphasize the behavior in the mixing region. 
+
+Figure~\ref{fig:velprcl} shows that the effect of the VG on the velocity profile are observed as far upstream as $-10 h_{VG}$ and extends up to approximately $100 h_{VG}$ (figure~\ref{fig:velpr}). However, significant differences in the velocity profile are observed over a much narrower range. In figure~\ref{fig:2d3dvgvel} the comparison between the $2D$ and $3D$ simulations can be seen. Evidently, the behavior of the near wall region is completely different in the $2D$ and $3D$ cases very close to the VG as seen in figure~\ref{fig:2d3dcl}, but the profiles appear to behave similarly albeit with an offset as the flow moves further downstream in figure~\ref{fig:2d3dfar}.
+%In a clean boundary layer, the vorticity is usually maximum at the wall and the vortex strength tends to zero as we approach to the edge of the boundary layer. However, in the VG case, a new vortex starts to appear away from the wall near the VG location (about $-7h_{VG}$ upstream) and gets dissipated as it moves downstream. The difference in vorticity magnitude near the wall (figure~\ref{fig:vortcl}) between the clean and VG is due to the fact that the boundary layer is laminar in the clean case whereas transition has already been triggered in the VG case. Identical vorticity profiles can be observed far downstream where both cases are turbulent and the effect of VG is not felt.
+%Figure~\ref{fig:nutcl} shows the eddy viscosity profile around the VG. The eddy viscosity reaches it's peak value at a higher distance from the wall compared to the clean case. This can be explained by the additional shear layers introduced (Fig. \ref{fig:velgradcl}) due to mixing and thus the traditional eddy viscosity profile in a boundary layer~\cite{drelaphdthesis, pope_2000} is not observed anymore.
+% As proposed in Sec. \ref{ssec:mixingtheory}, there is an additional turbulent kinetic energy production which leads to a larger eddy viscosity (Fig. \ref{fig:nuturb}). The mean velocity profile shows the velocity deficit along the boundary layer downstream of the VG. There is very large deficit immediately after the VG (Fig. \ref{fig:velprcl}) and correspondingly there is a sharp gradient (Fig. \ref{fig:velgradcl}). As the flow moves downstream, the velocity deficit starts to decrease and the mean flow gradient reduces but spreads over a larger distance. The velocity profile recovers and after sufficient distance downstream (Fig. \ref{fig:velpr}) the mean flow gradients become zero (Fig. \ref{fig:velgrad}). In an undisturbed flow, the mean flow gradient quickly reaches zero and viscous dissipation becomes negligibly small after a short distance away from the wall along the normal direction, however, the introduction of the VG has led to formation of another region of mean flow gradients away from the wall due to the mixing.
+% Within this study CFD simulations are performed as numerical experiments mainly to compare the global boundary layer properties (e.g. displacement thickness, momentum thickness, etc.) for the cases of with and without VGs (clean case). These comparisons will help to modify the existing closure set and/or derive new closure relations. Furthermore it would be possible to correlate the numerical results with the effect of VGs on the mixing and wall regions defined above.
+% While it is not possible to exactly determine the edges of the wall and the mixing regions ($\delta_w$ and $\delta_m$, see Sec. \ref{sec:mixingeqns}), the profile of the mean flow gradients along the wall normal directions can be used to approximately locate the regions where mixing due to the VG occurs. The mixing layer can be assumed to form immediately after the VG and spread gradually downstream as is the case in a plane mixing layer under zero pressure gradient (e.g., Fig. \ref{fig:refprofile} \cite{pope_2000}).
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \begin{subfigure}[b]{0.45\textwidth}
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/2Dbeforevgpb.eps}
+        \caption{Before VG}
+        \label{fig:velprcl}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.45\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/2Daftervgpb.eps}
+        \caption{Downstream of VG}
+        \label{fig:velpr}
+    \end{subfigure}
+    \caption{Comparison of velocity profiles with and without VG at various $x$ locations.}
+    \label{fig:velprofile}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \begin{subfigure}[b]{0.45\textwidth}
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/2D3DVel1.eps}
+        \caption{around VG}
+        \label{fig:2d3dcl}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.45\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/2D3DVel2.eps}
+        \caption{downstream of VG}
+        \label{fig:2d3dfar}
+    \end{subfigure}
+    \caption{Comparison of velocity profiles with VG between $2D$ and $3D$ simulations at various $x$ locations.}
+    \label{fig:2d3dvgvel}
+\end{figure}
+
+Figure~\ref{fig:nut2d} shows the eddy viscosity in the boundary layer for the $2D$ simulation at various locations upstream and downstream of the VG. The effect of the VG is felt slightly upstream starting in the $2D$ simulation. Figure~\ref{fig:nutcmp} shows the comparison of the eddy viscosity in the boundary layer between the $2D$ simulation and the $3D$ simulation along the $y=TE$ plane. Once again, near the VG, the behavior of the two cases are very different. As the flow moves further downstream, both cases behave qualitatively similarly but there is a difference in the magnitudes of the eddy viscosity. 
+\begin{figure}[h!]
+\centering
+\captionsetup{justification=centering}
+\begin{subfigure}[b]{0.45\textwidth}
+  \centering
+  \captionsetup{justification=centering}
+  \includegraphics[width=\textwidth]{figures_vg/2DNuT_comp1.eps}
+  \caption{$2D$ clean and VG comparison}
+  \label{fig:nut2d}
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+  \centering
+  \captionsetup{justification=centering}
+  \includegraphics[width=\textwidth]{figures_vg/2D3DNuT.eps}
+  \caption{$2D$ and $3D$ comparison}
+  \label{fig:nutcmp}
+ \end{subfigure}
+ \caption{Comparison of eddy viscosity profiles between (a) clean and VG simulations and (b) $2D$ and $3D$ simulations at various $x$ locations.}
+ \label{fig:nuturbvg}
+\end{figure}
+
+%\begin{figure}[h!]
+%\centering
+%\captionsetup{justification=centering}
+%\begin{subfigure}[b]{0.45\textwidth}
+%  \centering
+%  \captionsetup{justification=centering}
+%  \includegraphics[width=\textwidth]{figures_vg/flowgrad_around_vg.eps}
+%  \caption{around VG}
+%  \label{fig:velgradcl}
+%\end{subfigure}
+%\begin{subfigure}[b]{0.45\textwidth}
+%  \centering
+%  \captionsetup{justification=centering}
+%  \includegraphics[width=\textwidth]{figures_vg/flowgrad_far_after_vg.eps}
+%  \caption{downstream of VG}
+%  \label{fig:velgrad}
+%\end{subfigure}
+%\caption{Comparison of mean flow gradient profiles with and without VG at various locations.}
+%\label{fig:meangrad}
+%\end{figure}
+
+The velocity and eddy viscosity results, especially in the near vicinity of the VG indicate that the mixing process in this region are very different in $2D$ and $3D$ cases. However, encouragingly, the results further downstream display similar qualitative behavior. While representing the effect of the VG in $2D$ by a solid wall of zero thickness is not accurate, the intention of this simulation was to check if the same mixing process that occurs due to the VG can be approximated to some degree in $2D$. To verify this, a brief introduction of the mixing layer is given below and the results from the two simulations are examined further.
+
+\section{Mixing layer}\label{sec:mixingres}
+
+%As mentioned in section \ref{sec:mixingeqns}, to close the system of IBL equations a closure needed for both laminar and turbulent flow conditions are usually obtained from parametric velocity profiles based either on extensive experimental data or theory. These velocity profiles are not valid for boundary layers with VGs and different relations are needed. To obtain these new relations, the plane mixing layer theory is used. 
+The plane mixing layer is a free shear flow and is widely studied~\cite{pope_2000,Schubauer1960}. 
+Earlier work (e.g., see, \cite{Rebello1973},\cite{Konig} and \cite{sabin1965analytical}) in studying mixing layers have reported some correlations for parameters like momentum thickness (of the mixing layer), width of mixing region, eddy diffusivity and spreading rate under zero pressure gradient and adverse pressure gradients~\cite{sabin1965analytical, Konig}. 
+However, most of these studies are conducted in the context of free shear flows and assume that the mixing layer can spread without any constraints. This will not be the case here as the wall will significantly impact the spreading of the mixing layer in one direction.
+As no external pressure gradient exists in the flow over a flat plate, a self similar velocity profile can be expected to form within the boundary layer region~\cite{Rebello1973}. However, due to presence of the wall, the similarity profiles are likely to be very different compared to the standard plane mixing layer.
+
+For a mixing layer~\cite{pope_2000} (figure~\ref{fig:refmixing}), two imposed velocities, $U_h$ and $U_l$ of the two parallel streams can be defined (figure~\ref{fig:refmixing}).
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    %\begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[trim=60 0 0 0,clip,width=0.5\textwidth]{figures_vg/mixing_profile}
+        \caption{An example of a plane mixing layer.}
+        \label{fig:refmixing}
+    %\end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    %\begin{subfigure}[b]{0.45\textwidth}
+    %\centering
+    %    \includegraphics[width=0.5\textwidth]{figures_vg/ref_mixing_profile}
+    %    \caption{Example of a scaled velocity profile in a mixing layer.}
+    %    \label{fig:refmix2}
+    %\end{subfigure}
+    %\caption{A plane mixing layer\cite{pope_2000}.}
+    %\label{fig:refmixing}
+\end{figure}
+Based on these velocities, a characteristic convection velocity, $U_c$, and a characteristic velocity difference, $U_s$, is defined as,
+\begin{align*}
+U_c \equiv \frac{1}{2}(U_h + U_l),\\
+U_s \equiv U_h - U_l.
+\end{align*}
+In the present case, the mixing layer can be assumed to form in the vicinity of the VG as the flow above $y=h_{VG}$ mixes with the flow below it. The characteristic velocities, $U_h$ and $U_l$, are however not uniform and need to be computed. These characteristic velocities are found as follows,
+\begin{eqnarray}
+U_l = \frac{\int^{h_{VG}}_{0}(\rho u) u dy}{\int^{h_{VG}}_{0}(\rho u)dy},\\
+U_h = \frac{\int_{h_{VG}}^{\delta}(\rho u)u dy}{\int_{h_{VG}}^{\delta}(\rho u)dy}.
+\end{eqnarray}
+%\nomenclature[A]{$U_c$}{Characteristic convection velocity}
+%\nomenclature[A]{$U_l$}{Velocity at the lower side of the mixing region}
+%\nomenclature[A]{$U_h$}{Velocity at the upper side of the mixing region}
+%\nomenclature[A]{$U_s$}{Characteristic velocity difference}
+In both equations, the numerator represents the momentum flux and the denominator represents the mass flux within the bounds of integration. Thus, $U_h$ and $U_l$ can be viewed as the average velocity with which the mass flux is convected in the boundary layer. The stream wise location where this integration is carried out is important since the mixing layer is assumed to form immediately after the VG.
+%the characteristic velocities are found at a small distance downstream ($\approx 3h_{VG}$) from the location of VG.
+
+To define the characteristic width of the mixing layer based on the local mean velocity, $U$, a new weighting factor, $\alpha$, is introduced such that
+\begin{equation}
+U = U_l + \alpha(U_h - U_l),\label{eq:ualfa}
+\end{equation}
+and then the width, $w(x)$, defined as
+\begin{equation}
+w(x) = z_{\alpha=0.9}(x) - z_{\alpha=0.1}(x),
+\end{equation}
+and a reference lateral position is defined as
+\begin{equation}
+\overline{w}(x) = \frac{1}{2}(z_{\alpha=0.9}(x) + z_{\alpha=0.1}(x)).
+\end{equation}
+Here $z_{\alpha=0.9}$ represents the location where the local velocity can be found by setting $\alpha =0.9$ in equation~\ref{eq:ualfa} and analogously $z_{\alpha=0.1}$ is the location where $\alpha=0.1$. Based on these definitions, a scaled wall normal distance can be defined as,
+\begin{equation}
+\xi = \frac{z - \overline{w}(x) - h_{VG}}{w(x)},
+\end{equation}
+and the scaled velocity as
+\begin{equation}
+f(\xi) = \frac{U - U_c}{U_s}.
+\end{equation}
+For a plane mixing layer, the scaled velocity must be self similar as shown in figure~\ref{fig:refmix2}. The scaled velocity profile is bound by the two velocities of the two streams, $U_h$ and $U_l$. The upper half of the scaled profile tends towards the velocity $U_h$ and the lower half tends towards $U_l$. 
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    %\begin{subfigure}[b]{0.45\textwidth}
+        %\includegraphics[trim=60 0 0 0,clip,width=0.5\textwidth]{figures_vg/mixing_profile}
+        %\caption{An example of a plane mixing layer.}
+        %\label{fig:refmixing}
+    %\end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    %\begin{subfigure}[b]{0.45\textwidth}
+    %\centering
+       \includegraphics[width=0.45\textwidth]{figures_vg/ref_mixing_profile}
+        \caption{Example of a scaled velocity profile in a mixing layer~\cite{pope_2000}.}
+        \label{fig:refmix2}
+    %\end{subfigure}
+    %\caption{A plane mixing layer\cite{pope_2000}.}
+    %\label{fig:refmixing}
+\end{figure}
+These equations will now be applied to the results from the $2D$ and the $3D$ simulations. The characteristic velocities $U_h$ and $U_l$ are computed at the start of the mixing layer which is assumed to be at $s_{VG}=3$. $x_{VG}$ is assumed to be the same on all the planes for the $3D$ simulation and is set to $x_{VG}=0.985m$ corresponding to the $TE$ location the $y=\pm TE$ plane, see figure~\ref{fig:yplanesvg}.
+
+\subsection{Three dimensional simulation}
+The velocities at three different spanwise planes are scaled according to the mixing layer relations and are presented in this section.
+
+\paragraph*{$y = 0$}
+Figure~\ref{fig:scaledveld0} shows the scaled velocity as a function of the scaled distance in the plane $y=0$. All the scaled velocity profiles collapse on a single curve, especially away from the VG location. The collapse is not as good as the analytical example because the two mixing velocities considered here are not uniform. The scaled velocities deviate from the plane mixing layer profile in the lower half as the effect of the wall is dominant.
+\begin{figure}[h!]
+\centering
+\captionsetup{justification=centering}
+\begin{subfigure}[b]{0.45\textwidth}
+  \centering
+  \captionsetup{justification=centering}
+  \includegraphics[width=1.0\textwidth]{figures_vg/yd0_3to12.eps}
+  \caption{$s_{VG} = 3$ to $s_{VG}=12$.}
+  \label{fig:scaleyd01}
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+  \centering
+  \captionsetup{justification=centering}  
+  \includegraphics[width=1.0\textwidth]{figures_vg/yd0_14to30.eps}
+  \caption{$s_{VG} = 14$ to $s_{VG}=30$.}
+  \label{fig:scaleyd02}
+\end{subfigure}
+\caption{Scaled velocity and cross stream distance on the $y=0$ plane.}
+\label{fig:scaledveld0}
+\end{figure}
+
+\paragraph*{$y = \pm TE$}
+Figure~\ref{fig:scaledveldte} shows the scaled velocity as a function of the scaled distance in the plane $y=\pm TE$. The collapse of the velocities is not as close as in the $y=0$ plane. The deviation is stronger in the lower half of the profile, which is nearer to the wall. Once again, the velocities in the upper half are more similar as the mixing effect is more dominant than the presence of the wall.
+\begin{figure}[h!]
+\centering
+\captionsetup{justification=centering}
+\begin{subfigure}[b]{0.45\textwidth}
+   \includegraphics[width=1.0\textwidth]{figures_vg/ydmte_3to12.eps}
+   \caption{$s_{VG} = 3$ to $s_{VG}=12$.}
+   \captionsetup{justification=centering}
+   \label{fig:scaleydte1}
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+   \centering
+   \captionsetup{justification=centering}
+   \includegraphics[width=1.0\textwidth]{figures_vg/ydmte_14to30.eps}
+   \caption{$s_{VG} = 14$ to $s_{VG}=30$.}
+   \label{fig:scaleydte2}
+\end{subfigure}
+\caption{Scaled velocity and cross stream distance on the $y=\pm TE$ plane.}
+\label{fig:scaledveldte}
+\end{figure}
+
+\paragraph*{$y = \pm D/3$}
+Figure~\ref{fig:scaledveld3} shows the scaled velocity as a function of the scaled distance in the plane $y=\pm D/3$. The collapse of the velocity profiles is better on this plane. There is some deviation in the lower half where the flow encounters the wall, but it is not as much as observed in the $y=\pm TE$ plane.
+\begin{figure}[h!]
+\centering
+\captionsetup{justification=centering}
+\begin{subfigure}[b]{0.45\textwidth}
+   \centering    
+   \captionsetup{justification=centering}
+   \includegraphics[width=1.0\textwidth]{figures_vg/yd3_3to12.eps}
+   \caption{$s_{VG} = 3$ to $s_{VG}=12$.}
+   \label{fig:scaleyd31}
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+   \centering
+   \captionsetup{justification=centering}
+   \includegraphics[width=1.0\textwidth]{figures_vg/yd3_14to30.eps}
+   \caption{$s_{VG} = 14$ to $s_{VG}=30$.}
+   \label{fig:scaleyd32}
+\end{subfigure}
+\caption{Scaled velocity and cross stream distance on the $y=\pm D/3$ plane.}
+\label{fig:scaledveld3}
+\end{figure}
+
+While the scaled velocities do not behave exactly as a plane mixing layer, self similarity is still observed to some extent in all the planes so far. The plane $y=0$ displays the strongest self similarity indicating the mixing to be the strongest in this plane. In the other planes, the scaled velocities deviate considerably in the lower half of the mixing layer (when the scaled distance is negative). This is due to increasing influence of the wall. The upper half of the scaled profiles match the analytical profile more closely as mixing effects dominate in this region. The scaled velocity profile is bound by the edge velocity of the boundary layer which is close to the value of $U_h$ whereas the velocities in the lower half of the profile are not bound by $U_l$ and reach zero at the wall. Thus, as the effect of the wall becomes more prominent, the scaled velocity profile deviates further away from the analytical one. Also, at the local Reynolds numbers, the $y^+$ at the $h_{VG}$ is approximately $500$. Thus, part of the lower half of the mixing layer is likely interfering with the inner layer of the boundary layer. %From the three planes it can be seen that further away from the wall, the scaled velocities collapse on to a single curve much like the theoretical plane mixing layer.
+\subsection{Two dimensional mixing layer}
+Now the plane mixing layer scaling is applied to the results from the $2D$ simulation to compare the difference between the qualitative behavior between the $2D$ and $3D$ cases. The scaled velocity profiles for the $2D$ simulation are shown in figure~\ref{fig:scaledvel}. In figure~\ref{fig:scaleclose}, the scaled velocities all collapse on top of each other, however just as with the $3D$ case, the shape of the collapsed curve is different from the standard mixing layer due to the non uniform velocities at the start of the mixing layer. As the flow moves downstream, the width of the mixing layer grows and the presence of the wall inhibits the development leading to truncated profiles as seen in figure~\ref{fig:scalefar}. 
+%The spreading of the mixing layer is seen in figure~\ref{fig:spreading} . No such self similar profile exists in the clean case (figure~\ref{fig:cleanscale}).
+
+\begin{figure}[h]
+    \centering
+    \captionsetup{justification=centering}
+    \begin{subfigure}[b]{0.45\textwidth}
+    \captionsetup{justification=centering}
+        \includegraphics[width=1.0\textwidth]{figures_vg/2d_3to10.eps}
+        \caption{$s_{VG}=3$ to $s_{VG}=10$.}
+        \label{fig:scaleclose}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.45\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[width=1.0\textwidth]{figures_vg/2d_11to20.eps}
+        \caption{$s_{VG}=11$ to $s_{VG}=20$}
+        \label{fig:scalefar}
+    \end{subfigure}
+    \caption{Scaled velocity and cross stream distance for the $2D$ simulation.}
+    \label{fig:scaledvel}
+\end{figure}
+
+The scaled velocity profiles show a much closer resemblance to the plane mixing layer in $2D$ than $3D$ which is expected. However away from the wall, both $2D$ and $3D$ simulations show a strong self similarity indicating that the mixing behavior is dominant and is captured in both cases. These results indicate that the mixing layer equations can be used to derive a parametric relation for the velocities. However, as seen in the velocity and eddy viscosity profiles, the behavior in the near wall region is completely different in the $2D$ and $3D$ simulations.
+%While such self similar profiles are not possible on airfoils due to the external gradients~\cite{Rebello1973}, other parametric definitions of the velocity profiles are available as shown by Sabin~\cite{sabin1965analytical}. 
+
+%\begin{figure}[h]
+%    \centering
+%    \begin{subfigure}[b]{0.45\textwidth}
+%        \includegraphics[width=1.0\textwidth]{figures_vg/spreading.eps}
+%        \caption{Mixing layer growth.}
+%        \label{fig:spreading}
+%    \end{subfigure}
+%    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+%      %(or a blank line to force the subfigure onto a new line)
+%    \begin{subfigure}[b]{0.45\textwidth}
+%    \centering
+%        \includegraphics[width=1.0\textwidth]{figures_vg/mixing_clean_scaled.eps}
+%        \caption{Scaled velocity in a flatplate without VG.}
+%        \label{fig:cleanscale}
+%    \end{subfigure}
+%     \caption{Spreading of the mixing region for the VG case (a) and the scaled velocity profiles for the clean case (b).}
+%\end{figure}
+
+% \begin{figure}[h]
+%     \centering
+%     \begin{subfigure}[b]{0.45\textwidth}
+%   \includegraphics[width=\textwidth]{figures/mixing_profile}
+%   \caption{An example of a mixing layer \cite{pope_2000}}
+%   \label{fig:refprofile}
+%     \end{subfigure}
+%     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+%       %(or a blank line to force the subfigure onto a new line)
+%     \begin{subfigure}[b]{0.45\textwidth}
+%     \centering
+%         \includegraphics[width=\textwidth]{figures/mixingprofile}
+%         \caption{Spread of mixing region in wall bounded flows.}
+%         \label{fig:mixinglayer}
+%     \end{subfigure}
+%     \caption{Mixing layer.}
+% \end{figure}
+
+% {\color{red} Once again, it must be made clear that while the effect of introducing a VG is three dimensional, we seek an approximate model for two dimensional IBL method. To obtain a two-dimensional model, the above analysis is repeated for different span-wise locations ($y-$direction) and the results are averaged appropriately.} 
+
+
+Before exploring the methods to model the effect of vortex generators on turbulent boundary layers using a $2D$  integral boundary layer method, a brief introduction of the integral boundary layer equations is presented.
+\section{Integral boundary layer equations}\label{sec:iblvgeqns}
+The integral boundary layer (IBL) equations can be obtained by taking the zeroth and the first moment of the boundary layer equations and integrating them across the direction normal to the wall. The $n^{th}$ moment of the boundary layer equation is defined as~\cite{Matsushita}
+\begin{equation}
+[\text{Eq. }\ref{eq:mom1}]\times(n+1)u^n - [\text{Eq. }\ref{eq:cont1}]\times(u_e^{n+1} - u^{n+1}) = 0.
+\label{eq:moment}
+\end{equation}
+Integrating the boundary layer equations in the direction normal to the wall reduces their dimensionality by one. New integral thicknesses are introduced as
+\begin{align}
+\delta^{\ast} = \int_0^{\delta} \left(1-\frac{u}{u_e}\right) dy,\label{eq:dstar} \\
+\theta = \int_0^{\delta}\frac{u}{u_e} \left(1-\frac{u}{u_e}\right) dy, \label{eq:theta}\\
+\delta^{k} = \int_0^{\delta}\frac{u}{u_e} \left(1-\frac{u^2}{u_e^2}\right) dy.\label{eq:dkin}
+\end{align}
+Here $\delta^{\ast}$ is the displacement thickness, $\theta$ is the momentum thickness and $\delta^{k}$ is the kinetic energy thickness. The corresponding shape factors are defined as
+\begin{align}
+H = \frac{\delta^{\ast}}{\theta}, \label{eq:Hdefn} \\
+H^k = \frac{\delta^k}{\theta}.\label{eq:Hkdefn}
+\end{align}
+$H$ and $H^k$ are called shape factors. The integral boundary layer equations are written in terms of the integral thicknesses and shape factors.
+
+\paragraph{Momentum integral equation}
+
+The momentum integral equation is obtained by taking the zeroth moment of the boundary layer equations where the $n = 0$ in equation~\ref{eq:moment}. 
+\begin{equation}
+\frac{d u_e \theta}{dx} = \frac{C_f}{2}u_e - (\delta^{\ast} + \theta)\frac{d u_e}{dx}.
+\end{equation}
+Here $u_e$ is the velocity at the edge of the boundary layer, $\delta^{\ast}$ and $\theta$ are the displacement and momentum thickness respectively defined in equations~\ref{eq:dstar} and \ref{eq:theta}. $C_f$ is the skin friction coefficient and is defined as
+\begin{equation}
+C_f = \frac{\tau_w}{\frac{1}{2}\rho u_e^2},
+\end{equation}
+where $\tau_w$ is the wall shear stress. Using the shape factor defined in equation~\ref{eq:Hdefn}, the momentum integral equation can also be written as
+\begin{equation}
+\frac{d\theta}{dx}+(2+H)\frac{\theta}{u_e}\frac{du_e}{dx} =\frac{C_f}{2}.
+\label{eq:ibleq1}
+\end{equation}
+\paragraph{Kinetic energy integral equation}
+
+The kinetic energy integral equation is obtained by taking the first moment of the boundary layer equations where $n=1$ in equation~\ref{eq:moment}.
+%Thus, the first moment is 
+%\begin{equation}
+%2u^2\frac{\partial u}{\partial x} + 2uv\frac{\partial u}{\partial y} - 2uu_e\frac{\partial u_e}{\partial x} -(u_e^2 - u^2)\frac{\partial u}{\partial x} - (u_e^2 - u^2)\frac{\partial v}{\partial y} = 2u\nu\frac{\partial^2 u}{\partial y^2},
+%\end{equation}
+%Integration along the wall normal direction from $y=0$ to $y=\delta$,and using equation~\ref{eq:velsplit} similar to the momentum integral equation leads to
+%The kinetic energy thickness, $\delta^k$ is defined as
+Using the energy thickness definition in equation~\ref{eq:dkin} the following equation is obtained,
+\begin{equation}
+\frac{d u_e^3\delta^k}{d x} = 2C_D u_e^3,
+\label{eq:ibleq2int}
+\end{equation}
+where $\delta^k$ is the kinetic energy thickness defined in equation~\ref{eq:dkin}. The dissipation coefficient, $C_D$, is defined as
+\begin{align*}
+D = \int_{0}^{\delta}2\tau\frac{\partial u}{\partial y}dy, \\
+C_D = \frac{D}{1/2\rho u_e^3}.
+\end{align*}
+Using the shape factor defined in equation~\ref{eq:Hkdefn} and equation~\ref{eq:ibleq1}, the kinetic energy integral equation can also be written as
+\begin{equation}
+\theta\frac{dH^k}{dx} + H^k(1-H)\frac{\theta}{u_e}\frac{du_e}{dx} = 2C_D - H^k\frac{C_f}{2}.
+\label{eq:ibleq2}
+\end{equation}
+\subsection{Closure relations}
+The new variables introduced in equations~\ref{eq:ibleq1} and \ref{eq:ibleq2} are $\theta$, $\delta^*$, $\delta^k$, $C_f$ and $C_D$. Using the shape factors $H$ and $H^k$ will only replace the variables $\delta^{\ast}$ and $\delta^k$. The edge velocity $u_e$ can be found using an inviscid flow analysis and is considered to be a known quantity in this system of equations. Equations~\ref{eq:ibleq1} and \ref{eq:ibleq2} make no assumptions about whether the flow is laminar or turbulent and are valid in both cases. However despite starting from a closed system of equations, there are more unknowns than the number of equations and this system of equations is not closed. To close the system of equations, two dependent variables can be chosen from the equations and closure relations must be defined for the other variables in terms of the two chosen dependent variables. Typically, the momentum and displacement thicknesses, $\theta$ and $\delta^{\ast}$, or $\theta$ and the shape factor $H$ are chosen. For ease of analysis, closure relations are defined based on the non-dimensional shape factor $H$ and the Reynolds number based on momentum thickness, $Re_{\theta}$, as 
+\begin{equation*}
+Re_{\theta} = \frac{\theta u_e}{\nu}.
+\end{equation*}
+
+As noted earlier, despite starting from a closed system of equations the integral boundary layer equations are not closed. This situation is a result of the integration of the equations. While integrating the Navier-Stokes equations along the direction normal to the wall, the details of the flow in the normal direction is lost. Thus, in order to close the integral boundary layer equations, a velocity profile family of one or more parameters that represent the flows under consideration must be used to account for the simplification introduced during the integration procedure. 
+
+\subsubsection{Laminar flow closure relations}
+Previously in section~\ref{ssec:blasisus}, a semi analytical velocity profile based on the solution to the Blasisus equations was shown. However, the solution to Blasisus equation is valid only for the flow over a flat plate and a more general profile is required. The Falkner-Skan solution to the laminar boundary layer equations can be used to find the laminar closure relations. Consider the flow over a wedge with an angle of $\pi \beta/2$ with an incoming velocity of $U_0$ as shown in figure~\ref{fig:wedge}.
+\begin{figure}[h]
+\centering
+\captionsetup{justification=centering}
+ \includegraphics[width=0.25\textwidth]{figures_vg/wedge.pdf}
+ \caption{A schematic of the flow past a wedge.}
+ \label{fig:wedge}
+\end{figure}
+The edge velocity along the solid surface is assumed to follow the relation
+\begin{equation}
+u_e(x) = U_0 \left(\frac{x}{L}\right)^m,
+\end{equation}
+where $L$ is a characteristic length scale and $m$ is a dimensionless constant which is determined by the wedge angle as
+\begin{equation}
+\beta = \frac{2m}{m+1}.
+\end{equation}
+$\beta = 0$ corresponds to the Blasisus solution for flow over a flat plate. Drela~\cite{drelaphdthesis} solved the Falkner-Skan equation using a prescribed shape parameter to obtain the laminar closure relations as follows
+\begin{equation}
+H^k = \begin{cases}
+1.515 + 0.076\frac{(4-H)^2}{H},\quad H < 4,\\
+1.515 + 0.040\frac{(H-4)^2}{H},\quad H > 4.
+\end{cases}
+\end{equation}
+\begin{equation}
+Re_{\theta}\frac{C_f}{2} = \begin{cases}
+-0.067+ 0.01977\frac{(7.4-H)^2}{H-1},\quad H < 7.4,\\
+-0.067+0.022\left(1-\frac{1.4}{H-6}\right)^2,\quad H > 7.4.
+\end{cases}
+\end{equation}
+\begin{equation}
+Re_{\theta}\frac{2C_D}{H^k} = \begin{cases}
+0.207 + 0.00205(4-H)^{5.5},\quad H < 4,\\
+0.207 - 0.003\frac{(H-4)^2}{(1+0.02(H-4)^2)},\quad H > 4.
+\end{cases}
+\end{equation}
+\subsubsection{Turbulent flow closure relations}
+Unlike laminar flows, no analytical or single parameter self similar solutions can be found for the velocity profile in a turbulent boundary layer. As seen in section~\ref{ssec:turbprofile}, the turbulent boundary layer consists of a two layer structure. In the inner layer both turbulent and molecular viscous stresses are relevant whereas in the the outer layer, only the turbulent stress are important. Thus, the inner layer thickness scales differently compared to the outer layer.
+
+As seen in section~\ref{ssec:turbprofile}, the velocity profile in the inner layer of the boundary layer is defined based on the friction velocity, $u_{\tau}$, which in turn depends on the wall shear stress. Thus, the wall shear stress is the primary scaling factor in the inner layer of a turbulent boundary layer~\cite{drelaphdthesis} and will be used to define other quantities. The most commonly used formula to compute the skin friction for turbulent boundary layers is the formula derived by Swafford~\cite{swafford1979cf}
+\begin{align}
+\noindent C_f = \frac{0.3\exp(-1.33H)}{(log_{10}Re_{\theta})^{1.74+0.31H}} + 0.00011\left(tanh \left(4.0 - \frac{H}{0.875}\right) - 1.0\right).
+    \label{eq:cfrf}
+\end{align}
+Drela~\cite{drelaphdthesis} derived the closure relation for the kinetic energy shape factor $H^k$ using the combination of the velocity profile in the inner and outer layers of the turbulent boundary layer. The velocity profile used was first derived by Swafford~\cite{swafford1979cf} as
+\begin{equation}
+\frac{u}{u_e} = \frac{u_{\tau}}{u_e}\frac{s}{0.09}tan^{-1}(0.09y^+) + \left(1- \frac{u_{\tau}}{u_e}\frac{s\pi}{0.18}\right)tanh^{1/2}\left(a\left(\frac{y}{\theta}\right)^b\right),
+\end{equation}
+where
+\begin{align*}
+\frac{u_{\tau}}{u_e} = \Bigg|\frac{C_f}{2}\Bigg|^{\frac{1}{2}}, \quad s = \frac{C_f}{|C_f|}, \quad y^+ = \frac{u_{\tau} y}{\nu}.
+\end{align*}
+$a$ and $b$ are two constants which are calculated for a given $\delta^{\ast}$ and $\theta$ by using the skin friction formula in equation~\ref{eq:cfrf} and substituting the velocity profile in the defintiions of $\delta^{\ast}$ and $\theta$. The closure relation for the kinetic energy shape factor obtained by Drela~\cite{drelaphdthesis} is
+\begin{align}
+H^k = \begin{cases}
+1.505 + \frac{4}{Re_{\theta}}+\left(0.165 - \frac{1.6}{\sqrt{Re_{\theta}}}\right)\frac{(H_0 -H)^{1.6}}{H}, \qquad \qquad H < H_0 \\ \\
+1.505 + \frac{4}{Re_{\theta}} + (H_0 - H)^2\left(\frac{0.04}{H}+0.007\frac{ln(Re_{\theta}}{(H-H_0+\frac{4}{ln(Re_{\theta})})^2}\right), \quad H > H_0.
+\end{cases}
+\end{align}
+where 
+\begin{equation*}
+H_0 = 3.0 + \frac{400}{Re_{\theta}}.
+\end{equation*}
+
+Two distinct approaches can be used to find the closure relations for the dissipation coefficient. The first approach assumes that there are two distinct contributions to the integral dissipation coefficient - one from the wall layer and one from the outer layer (also known as the wake layer). One such closure relation from Le Balleur (taken from Drela~\cite{drelaphdthesis}) is
+\begin{equation}
+C_D = \frac{C_f}{2}\frac{u_s}{u_e} + \frac{K\pi^2}{16}\left(1-\frac{u_s}{u_e}\right)^3.
+\end{equation}
+The second approach~\cite{drelaphdthesis} is based on the concept of an equilibrium boundary layer. A new pressure gradient parameter analogous to the  Falkner-Skan pressure gradient parameter and a modified shape parameter are introduced for turbulent flows. The turbulent boundary layers can be shown to be self similar when using the new parameters and closure relations can be derived similar to the laminar flow closures. The new pressure gradient parameter, $\beta$ is given by
+\begin{equation}
+\beta = -\frac{2}{C_f}\frac{\delta^{\ast}}{u_e}\frac{du_e}{dx}.
+\end{equation}
+Experimental evidence shows that if the new pressure gradient parameter is constant, the modified shape factor, $G$,
+\begin{equation}
+G=\frac{H-1}{H}\sqrt{\frac{2}{C_f}}
+\end{equation}
+is also constant. The empirical relation between $G$ and $\beta$ is~\cite{drelaphdthesis}
+\begin{equation}
+G = 6.7\sqrt{1+0.75\beta}.
+\end{equation}
+Using the expressions for $G$, $\beta$ and assuming equilibrium conditions in the boundary layer (i.e. constant shape factor), the closure relation for $C_D$ is given by
+\begin{equation}
+\frac{2C_D}{H^k} = \frac{C_f}{2}\left(\frac{4}{H}-1\right)\frac{1}{3} + 0.03\left(\frac{H-1}{H}\right)^3.
+\end{equation}
+Both the closure relations presented so far for $C_D$ are based on equilibrium flow conditions. 
+%In a turbulent boundary layer the velocity can be split using the Reynolds decomposition as
+%\begin{equation*}
+%u = \bar{u} + u^{\prime},
+%\end{equation*}
+%where $\bar{u}$ is the mean or time averaged component and $u^{\prime}$ is the fluctuating component. The momentum and kinetic energy integral equations can be derived by following the same procedure outlined above for the time averaged equations. 
+As discussed earlier in section~\ref{ssec:turbbl}, in a turbulent flow additional stresses appear as a result of the Reynolds averaging of the turbulent fluctuations and is given by,
+\begin{equation}
+\tau = \mu\frac{\partial u}{\partial y} - \rho \overline{u^{\prime}v^{\prime}}.
+\label{eq:tauturb}
+\end{equation}
+Under the equilibrium boundary layer assumption, the closure relations for the dissipation coefficient, $C_D$, already involve a velocity gradient weighted integral of the Reynolds stress~\cite{drelaphdthesis}. However such equilibrium profiles assume only a local dependence of boundary layer parameters on Reynolds stresses. This assumption does not hold in many situations like flows under an adverse pressure gradient that is increasing downstream or in flows were an adverse pressure gradient is suddenly removed, both of which can occur around airfoil trailing edges.
+
+To account for upstream history effects another equation known as the shear lag equation~\cite{drela1989xfoil,RFOIL1} is added to the system of equations. 
+First, a new non dimensional quantity, $C_{\tau}$, the maximum Reynolds shear stress coefficient is introduced as,
+\begin{equation}
+C_{\tau} = \frac{1}{u_e^2}(-\overline{u^{\prime}v^{\prime}})_{max}.
+\end{equation}
+%\nomenclature[S]{$\tau$}{Shear stress}%
+%\nomenclature[B]{$EQ$}{Value at the equilibrium condition}%
+Then it is assumed that the maximum Reynolds shear stress point is representative of the Reynolds shear stress level of the entire boundary layer. The local shear stress is obtained by solving a shear-stress transport equation. A parameter, the equilibrium shear stress coefficient, $C_{\tau_{EQ}}$, is defined as the value of the shear stress coefficient which would occur if the local boundary layer was part of an equilibrium flow~\cite{drelaphdthesis,drela1989xfoil}.
+The shear lag equation is defined as
+\begin{equation}
+\frac{\delta}{C_{\tau}}\frac{d C_{\tau}}{d x} = 2a_1\frac{u_e}{u}\frac{\delta}{L}(C_{\tau_{EQ}}^{1/2} - C_{\tau}^{1/2} ).
+\label{eq:ctaueq}
+\end{equation}
+\noindent The values of the constants commonly used are~\cite{drelaphdthesis,drela1989xfoil,RFOIL1}
+\begin{align*}
+a_1 = 0.15, \quad
+\frac{u_e}{u} = 1.5, \quad
+\frac{L}{\delta} = 0.08.
+\end{align*}
+Here $L$ represents the conventional mixing length used in turbulence modeling.
+
+\subsection{Effect of vortex generators}
+\subsubsection{Boundary layer thickness}
+The effect of VG on the integral boundary layer parameters is examined by extracting the displacement and momentum thicknesses and shape factors from the CFD simulations. The edge of the boundary layer is located based on vorticity magnitude and then the displacement, momentum thickness and other boundary layer parameters are calculated by integrating the velocity profiles numerically. The extracted thicknesses are shown in figures~\ref{fig:dstr3d} and \ref{fig:thet3d}. There is  a significant increase in the displacement and a drop in momentum thickness at the $x_{VG}=0.985m$. Once again, the planes $y=\pm TE$ and $y=\pm D/3$ are symmetric. As the flow moves downstream all the planes tend towards a similar value.
+\begin{figure}[h]
+    \centering
+    \captionsetup{justification=centering}
+    \begin{subfigure}[b]{0.4\textwidth}
+    \captionsetup{justification=centering}
+    \centering
+  \includegraphics[trim=0 390 0 0,clip,width=\textwidth]{figures_vg/dstar3d.eps}
+  \caption{$\delta^{\ast}$ along the different planes.}
+  \label{fig:dstr3d}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[trim=0 390 0 0,clip,width=\textwidth]{figures_vg/theta3d.eps}
+        \caption{$\theta$ along the different planes.}
+        \label{fig:thet3d}
+    \end{subfigure}
+    \caption{Displacement and momentum thickness along the flat plate computed from the $3D$ CFD simulations.}
+\end{figure}
+Figures~\ref{fig:H3dvg} and \ref{fig:Hk3dvg} show the shape factors $H$ and $H^k$ computed from the CFD simulations. The shape factor along the planes $y=\pm D/3$ is very close to the clean simulation whereas the other planes deviate significantly in the vicinity of the VG and then match the clean simulation as the flow moves downstream.
+\begin{figure}[h]
+    \centering
+    \captionsetup{justification=centering}
+    \begin{subfigure}[b]{0.4\textwidth}
+    \captionsetup{justification=centering}
+    \centering
+  \includegraphics[trim=0 390 0 0,clip,width=\textwidth]{figures_vg/H3dvg.eps}
+  \caption{$H$ along the different planes.}
+  \label{fig:H3dvg}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[trim=0 390 0 0,clip,width=\textwidth]{figures_vg/Hk_3dvg.eps}
+        \caption{$H^k$ along the different planes.}
+        \label{fig:Hk3dvg}
+    \end{subfigure}
+    \caption{Shape factors $H$ and $H^k$ along the flat plate computed from the $3D$ CFD simulations.}
+\end{figure}
+
+Figures~\ref{fig:dt2dvg} and \ref{fig:HHk2dvg} show the integral boundary layer quantities computed from the $2D$ CFD simulation. While a sharp increase in the displacement thickness similar to the $3D$ simulation is observed, the behavior of the momentum thickness is different. The shape factors $H$ and $H^k$ behave similarly in both the $2D$ and $3D$ simulations. The values of $H$ and $H^k$ from both the $2D$ and $3D$ simulations tend towards approximately $1.34$ and $0.78$ away from the VG.
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \begin{subfigure}[b]{0.4\textwidth}
+    \captionsetup{justification=centering}
+    \centering
+  \includegraphics[trim=0 390 0 0,clip,width=\textwidth]{figures_vg/dstartheta2d.eps}
+  \caption{$\delta^{\ast}$ and $\theta$.}
+  \label{fig:dt2dvg}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[trim=0 390 0 0,clip,width=\textwidth]{figures_vg/HHk2d.eps}
+        \caption{$H$ and $H^k$.}
+        \label{fig:HHk2dvg}
+    \end{subfigure}
+    \caption{Integral boundary layer parameters along the flat plate computed from the $2D$ CFD simulations.}
+\end{figure}
+
+From these results, it appears that the $2D$ simulation matches the behavior of the integral boundary layer properties of the $3D$ simulation except in the immediate vicinity of the VG. 
+
+\subsubsection{Closure relations}
+Figure~\ref{fig:cfcmpvgcl} shows the skin friction coefficient from the numerical simulations with and without VGs. For the VG simulations, the skin friction coefficient is shown in five different planes - $y=0$, $y=\pm TE$ and $y=\pm D/3$. Upstream of the VG location, the skin friction coefficient behaves identically with and without VGs in all the planes considered. There is a sharp spike at the location of the VG and subsequently, the $C_f$ is significantly different to the clean simulations. Symmetry is observed in the $C_f$ results around $y=0$, similar to the velocity profiles. 
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+      \includegraphics[width=0.65\textwidth]{figures_vg/Cf_cmp_vgcl.eps}
+      \caption{Comparison of skin friction coefficient ($C_f$) with and without a VG.}
+    \label{fig:cfcmpvgcl}
+\end{figure}
+The deviation from the clean results are the largest in the $y=0$ plane and lowest in the $y=\pm D/3$ planes. As the flow moves downstream, the $C_f$ from the VG simulations start to match the clean simulation results. The $C_f$ along the planes $y=\pm D/3$ match the clean results earlier than the other planes. From these results, there appears to be a region immediately downstream of the VG where the behavior of the turbulent boundary layer even in the near wall region is altered and this behavior recovers back to the standard turbulent boundary layer further downstream. 
+
+
+While the near wall region or the inner boundary layer recovers to a profile similar to the clean boundary layer, the behavior in the outer layer is yet to be examined. Figure~\ref{fig:nutplan3d} shows the eddy viscosity computed from the CFD simulations at different streamwise locations in the $y=0$, $y=\pm TE$ and $y=\pm D/3$ planes. As expected no difference between the clean and VG eddy viscosity in the outer layer is observed at $s_{VG}=-3$. As the flow moves downstream, the outer layer is significantly different in the VG simulation. At $s_{VG}=10$ and $s_{VG}=50$ (figures~\ref{fig:nutplanxh50} and \ref{fig:nutplanxh50}), the eddy viscosity profiles are symmetric around $y=0$. Further downstream, the eddy viscosity remains different at $s_{VG}=199$ as seen in figure~\ref{fig:nutplanxh99}. However, at this location no difference between the planes is observed.
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \begin{subfigure}[b]{0.48\textwidth}
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/NuT_comp_all_planes_xhm3.eps}
+        \caption{$s_{VG} = -3$}
+        \label{fig:nutplanxhm3}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\textwidth}
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/NuT_comp_all_planes_xh10.eps}
+        \caption{$s_{VG} = 10$}
+        \label{fig:nutplanxh10}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/NuT_comp_all_planes_xh50.eps}
+        \caption{$s_{VG} = 50$.}
+        \label{fig:nutplanxh50}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \captionsetup{justification=centering}
+        \includegraphics[width=\textwidth]{figures_vg/NuT_comp_all_planes_xh199.eps}
+        \caption{$s_{VG} = 199$.}
+        \label{fig:nutplanxh99}
+    \end{subfigure}
+    \caption{Boundary layer velocity profile from the $3D$ simulations at different spanwise locations.}
+    \label{fig:nutplan3d}
+\end{figure}
+
+The presence of the VG causes a deviation in not only the outer layer of the turbulent boundary layer, but also in the near wall region or the inner layer. However, the inner layer appears to recover back to the standard turbulent boundary layer, but the outer layer remains different. As seen in figure~\ref{fig:cfcmpvgcl}, the skin friction coefficient, which is used as a scaling parameter for the inner layer, is different and equation~\ref{eq:cfrf} is no longer valid. Similarly, since the eddy viscosity profiles are now different, the Reynolds stresses in the boundary layer will behave differently and the shear lag equation needs to be re-examined.
+
+In order to derive these closure relations the mixing layer scaling shown in section~\ref{sec:mixingres} can be used. However, in order to derive such relations, more data from numerical simulations and experiments of VGs at different Reynolds numbers and configurations are required. 
+
+
+%%\section{Boundary layer modeling}\label{sec:nummodel}
+%%
+%%% Here we show bl data, show the results of the model and incorporate it into RFOIL and UniFy2D.
+%%Currently, the VG model obtained for the flat plate is implemented in an in-house unsteady interactive boundary layer method~\cite{ozdemir2017unsteady}. As noted in section~\ref{sec:mixingres}, more extensive work to characterize the velocity profile due to VGs are needed and in this section, a preliminary implementation of the proposed model is presented. The purpose of this implementation is to verify if the presented concept is valid.
+%%
+%%To model the effect of VG in an IBL method, the boundary layer parameters are extracted from the CFD simulations. The edge of the boundary layer is located based on vorticity magnitude and then the displacement, momentum thickness and other boundary layer parameters are extracted by integrating the velocity profiles numerically. The extracted thicknesses are shown in figures~\ref{fig:cfdblcvg} and \ref{fig:cfdiblc}. There is  a significant increase in the displacement and momentum thickness because of the VG as seen in figure~\ref{fig:cfdblcvg}. The results from the CFD simulation matches the IBL results closely in figure~\ref{fig:cfdiblc}.
+%%\begin{figure}[h]
+%%    \centering
+%%    \captionsetup{justification=centering}
+%%    \begin{subfigure}[b]{0.45\textwidth}
+%%    \captionsetup{justification=centering}
+%%    \centering
+%%  \includegraphics[width=\textwidth,height=0.55\textwidth]{figures_vg/cfd2dbl.eps}
+%%  \caption{CFD for clean and VG flat plate.}
+%%  \label{fig:cfdblcvg}
+%%    \end{subfigure}
+%%    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+%%      %(or a blank line to force the subfigure onto a new line)
+%%    \begin{subfigure}[b]{0.45\textwidth}
+%%    \centering
+%%    \captionsetup{justification=centering}
+%%        \includegraphics[width=\textwidth,height=0.55\textwidth]{figures_vg/cfd2d_iblcfd.eps}
+%%        \caption{CFD and IBL for clean case.}
+%%        \label{fig:cfdiblc}
+%%    \end{subfigure}
+%%    \caption{Boundary layer thickness}
+%%\end{figure}
+%%\begin{figure}[h!]
+%%    \centering
+%%    \captionsetup{justification=centering}
+%%    \begin{subfigure}[b]{0.45\textwidth}
+%%    \captionsetup{justification=centering}
+%%        \includegraphics[width=1.0\textwidth]{figures_vg/cfd_bl_data_Cf_clean_vs_vg.eps}
+%%        \caption{Skin friction along the flat plate}
+%%        \label{fig:cffull}
+%%    \end{subfigure}
+%%    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+%%      %(or a blank line to force the subfigure onto a new line)
+%%    \begin{subfigure}[b]{0.45\textwidth}
+%%    \centering
+%%    \captionsetup{justification=centering}
+%%        \includegraphics[width=1.0\textwidth]{figures_vg/cfd_bl_data_Cf_clean_vs_vg_zoom.eps}
+%%        \caption{Skin friction around the VG.}
+%%        \label{fig:cfzoom}
+%%    \end{subfigure}
+%%    \caption{Skin friction (magnitude).}
+%%    \label{fig:cfprofile}
+%%\end{figure}
+%%
+%%%\begin{figure}[h]
+%%%    \centering
+%%%    \captionsetup{justification=centering}
+%%%    \begin{subfigure}[b]{0.45\textwidth}
+%%%    \captionsetup{justification=centering}
+%%%  \includegraphics[width=\textwidth]{figures_vg/cfd_bl_data_Ctau_eq.eps}
+%%%  \caption{Maximum shear stress coefficients.}
+%%%  \label{fig:ctaucompcfd}
+%%%    \end{subfigure}
+%%%    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+%%%      %(or a blank line to force the subfigure onto a new line)
+%%%    \begin{subfigure}[b]{0.45\textwidth}
+%%%    \centering
+%%%    \captionsetup{justification=centering}
+%%%        \includegraphics[width=\textwidth]{figures_vg/cfd_bl_data_H_clean_vs_vg.eps}
+%%%        \caption{Shape factor, $H$.}
+%%%        \label{fig:hcompcfd}
+%%%    \end{subfigure}
+%%%    \caption{CFD for clean and VG}
+%%%\end{figure}
+%%%As a result of the presence of VG, the transition from laminar to turbulent flow is triggered sooner as also discussed above. However, it should be noted that this transition occurs some distance downstream of the VG and not at the location of VG. Additionally, there is a very significant increase in both momentum and displacement thicknesses due to the VG, but the shape factor in the turbulent region is actually lower than the clean flow case (figure~\ref{fig:hcompcfd}) . This is along expected lines as the increased mixing will increase the momentum within the boundary layer by a larger magnitude than the mass flux~\cite{Schubauer1960}. The difference in skin friction coefficient is shown in figures~\ref{fig:cffull},\ref{fig:cfzoom}). The maximum shear stress in the VG case sees a very sharp peak (figure~\ref{fig:ctaucompcfd}) just downstream of the VG but then recovers and matches the clean case as the flow moves downstream. Interestingly, the largest difference between the shear stress coefficient is in the region between $h_{VG}$ to $30h_{VG}$ which is also where self similar velocity profiles were observed. As the flows moves downstream, the wall inhibits the growth of the mixing layer and the $C_f$ and $C_{\tau}$ also recovers back to traditional boundary layer profile. 
+%%% {\color{red} Add H figure here}
+%%
+%%Before the VG model can be implemented in the IBL method, first a comparison between the boundary layer parameters obtained for the clean case from the CFD simulations and the IBL method is made to verify the agreement between the two methods.
+%%The two methods are in good agreement in the laminar region but the CFD simulations predict transition to occur earlier than the IBL method which leads to a difference in thickness values in the turbulent region. The IBL method uses the $e^N$ method~\cite{drela1989xfoil,RFOIL1} to detect the location of transition and the correlation based BC transition model~\cite{BCtransition} is used in CFD. Subsequently, a forced transition method is used in the IBL code by triggering the transition at the same location as obtained from CFD and the non dimensional shear stress parameter, $C_{\tau}$, and skin friction coefficient, $C_f$, (shown in figures~\ref{fig:comCtau} and \ref{fig:compCf}) are compared. In all three cases, the skin friction in the turbulent region agrees closely. Both CFD and natural transition model of IBL display an erratic behavior in $C_f$ around their respective transition regions. The maximum Reynolds stress predicted by CFD is generally greater than both the IBL cases. It is somewhat more difficult to obtain the dissipation coefficient from CFD data and is not plotted here.
+%%\begin{figure}[h!]
+%%    \centering
+%%    \captionsetup{justification=centering}
+%%    \begin{subfigure}[b]{0.45\textwidth}
+%%    \captionsetup{justification=centering}
+%%  \includegraphics[width=\textwidth]{figures_vg/ibl_vs_cfd_Ctau}
+%%  \caption{Maximum shear stress}
+%%  \label{fig:comCtau}
+%%    \end{subfigure}
+%%    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+%%      %(or a blank line to force the subfigure onto a new line)
+%%    \begin{subfigure}[b]{0.45\textwidth}
+%%    \centering
+%%    \captionsetup{justification=centering}
+%%        \includegraphics[width=\textwidth]{figures_vg/ibl_vs_cfd_Cf}
+%%        \caption{Skin friction coefficient}
+%%        \label{fig:compCf}
+%%    \end{subfigure}
+%%    \caption{Non dimensional coefficients from CFD and IBL (natural and forced transition)}
+%%\end{figure}
+%%
+%%In order to properly introduce a VG model in IBL, closure relations need to be derived starting from the new velocity profiles. However, there is not enough data (not enough test cases simulated) to derive a reliable model yet. To test the VG model concept presented, a rudimentary model is implemented using the data extracted from CFD simulations (not necessarily building a general closure set). This gives a first impression on the validity of the described procedure. Naturally, in the follow up studies the model will be refined with more numerical and experimental data. To this end a comparison between the shape factor, $H$,  in the boundary layer parameters from CFD for the clean and VG cases are made and is implemented in the IBL code. 
+%%The resulting displacement and momentum thicknesses are shown in figures~\ref{fig:dstarvgiblcfd} and \ref{fig:thetavgiblcfd} and maximum shear stress profile in figure~\ref{fig:ctauvgiblcfd}. A forced transition method was used for this simulation. While it was not possible to match the extreme peaks observed in CFD by the IBL method, a similar trend can be observed in the behavior of shear stress and the boundary layer thicknesses. The extreme peak observed in the displacement thickness profile from CFD is most likely due to the offset in the wall boundary at the location of the VG and currently different ways to incorporate this offset is being investigated.
+%%\begin{figure}[h!]
+%%%\centering
+%%\captionsetup{justification=centering}
+%%    \begin{subfigure}[b]{0.45\textwidth}
+%%    \centering
+%%    \captionsetup{justification=centering}
+%%  \includegraphics[width=\textwidth]{figures_vg/ibl_vs_cfd_vg_deltastar}
+%%  \caption{Displacement thicknesses}
+%%  \label{fig:dstarvgiblcfd}
+%%    \end{subfigure}
+%%    \begin{subfigure}[b]{0.45\textwidth}
+%%    \centering
+%%    \captionsetup{justification=centering}
+%%  \includegraphics[width=\textwidth]{figures_vg/ibl_vs_cfd_vg_theta}
+%%  \caption{Momentum thicknesses}
+%%  \label{fig:thetavgiblcfd}
+%%    \end{subfigure} \\
+%%    \centering
+%%    \captionsetup{justification=centering}
+%%    \begin{subfigure}[b]{0.45\textwidth}
+%%        \includegraphics[width=\textwidth]{figures_vg/ibl_vs_cfd_vg_Ctau}
+%%        \caption{Maximum shear stress}
+%%        \label{fig:ctauvgiblcfd}
+%%    \end{subfigure}
+%%    \caption{A comparison of displacement and momentum thicknesses (a) and the maximum shear stress (b) obtained by CFD simulation and by the IBL method with the preliminary VG.}
+%%    \label{fig:vgiblcfd}
+%%\end{figure}
+
+\section{Conclusions and future work}\label{sec:future}
+CFD simulations of the flow over a vortex generator(VG) on a flat plate were performed using the new pressure based solver. The nature of the turbulent boundary layer in the presence of a VG was examined and compared to a clean boundary layer. It was observed that while the boundary layer is three dimensional, the spanwise variation of the velocity in the boundary layer is determined by the orientation of the VG. Spanwise symmetry was observed not only in the vicinity of the VG but also far downstream. This symmetry can be taken advantage of to model the effect of VGs in simpler two dimensional methods. To identify the difference between a two dimensional approximation and the fully resolved VG simulation in $3D$, a $2D$ CFD simulation of one of the planes of the $3D$ domain was carried out. The $2D$ boundary layer with the VG (represented by a zero thickness line) behaves differently in the vicinity of the VG and in the near wall region. However, away from the wall, both the $2D$ and $3D$ boundary layers show similar qualitative behavior downstream of the VG. To better understand the qualitative behavior of the two boundary layers,the velocities in the boundary layers were scaled using the plane mixing layer relations. Since the vortex generators mixes high energy fluid from outside the boundary layer with the slower moving boundary layer the velocities are likely to resemble a mixing layer. The scaled velocities within this embedded mixing layer behave differently than a standard plane mixing layer especially in near the wall. Away from the wall, the scaled velocities show very good self symmetry. This self symmetry was observed along the different planes in the $3D$ simulation and in the $2D$ simulation. The velocities in the mid plane between the two VGs resembled the plane mixing layer more closely than in other planes.
+
+This velocity scaling can be taken advantage of to model the effect of VGs using simpler two dimensional methods based on the integral boundary layer (IBL) equations. To solve the IBL equations closure relations need to be derived. These closure relations are currently based on velocity profiles observed in standard turbulent boundary layers. To derive new closure relations based on the mixing layer scaling, more numerical simulations and experiments need to be carried out at different Reynolds numbers and VG configurations.
+
+
+\bibliographystyle{dissertation}
+\bibliography{ch5_fpvg/VG_reference}

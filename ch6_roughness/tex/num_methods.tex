@@ -1,0 +1,166 @@
+\section{Numerical method}\label{sec:nummethods}
+
+\subsection{SU2}\label{ssec:su2}
+% \textcolor{red}{[Do we need this much details for SU2?]} \\ Not citing SciTech2020 since we don't use PB anywhere. The extension for incompressible flows I mention is the DB one. 
+SU2, the CFD solver used in this study, is an open-source collection of C++ based software tools for performing Partial Differential Equation (PDE) analysis and solving PDE-constrained optimization problems \cite{SU22014}. 
+Originally developed for aerospace applications, the solver has been extended for incompressible flows \cite{SU2incomp2019,koodly2020implementation}. In this study, we use the low Mach preconditioned incompressible flow solver \cite{SU2incomp2019}. The governing equations of SU2 solved on a domain $\Omega$ are written in the general form as
+\begin{equation}
+\frac{\partial U}{\partial t} + \frac{\partial F^c_i}{\partial x_i}-\frac{\partial F^v_i}{\partial x_i}=Q \quad \text{in} \quad \Omega, \quad t>0,
+\label{eq:generic}
+\end{equation}
+where $U$ is the vector of conservative variables, $F^c_i$ are the convective fluxes, $F^v_i$ are the viscous fluxes and $Q$ is a source term defined as
+\begin{align}
+    U=\begin{bmatrix}{}
+    \rho \\
+    \rho u_i
+    \end{bmatrix},
+    F^c_i = \begin{bmatrix}{}
+    \rho u_i \\
+    \rho u_i u_j + P\delta_{ij}
+    \end{bmatrix},
+    F^v_i = \begin{bmatrix}{}
+   0 \\
+    \tau_{ij} 
+    \end{bmatrix},
+    Q = \begin{bmatrix}{}
+    0 \\
+    0
+    \end{bmatrix}.
+\end{align}{}
+% \begin{align}
+%     U = \begin{bmatrix}
+%             \rho \\
+%           \rho u_{1} \\
+%           \rho u_{2} \\
+%           \rho u_{3}
+%          \end{bmatrix},\quad
+%     \vec{F}^c_i = \begin{bmatrix}
+%             \rho u_i \\
+%           \rho u_i u_{1} + P\delta_{i1} \\
+%           \rho u_i u_{2} + P\delta_{i2} \\
+%           \rho u_i u_{3} + P\delta_{i3}
+%          \end{bmatrix},\quad
+%     \vec{F}^v_i = \begin{bmatrix}
+%             0 \\
+%           \tau_{i1} \\
+%           \tau_{i2} \\
+%           \tau_{i3}
+%          \end{bmatrix}.
+%          \label{eq:defns}
+% \end{align}
+Here $u_i$ are the components of the velocity vector, $\rho$ is the density, $P$ is the dynamic pressure and the viscous stresses are $\tau_{ij}=\mu_{tot}\big(\partial_j u_i + \partial_i u_j -\frac{2}{3} \delta_{ij}\partial_k u_k \big)$. The total viscosity coefficient, $\mu_{tot}$ is the sum of the dynamic viscosity $\mu_{dyn}$ and turbulent viscosity $\mu_{tur}$, which is computed via a turbulence model. The Spalart-Allmaras (SA)\cite{spalart1992one} and the Mean Shear Stress Transport (SST)\cite{wilcox1998turbulence} turbulence models can be used to compute $\mu_{tur}$. More details on the low Mach number preconditioning method can be found in \cite{SU2incomp2019}.
+
+% For the low Mach preconditioning approach, the equations are written in primitive variables, $V=\{p,\vec{u}\}$. The preconditioning matrix, $\Gamma$, can be then written as 
+%  \begin{align}
+%      \Gamma = \begin{bmatrix}{}
+%       \frac{1}{\beta^2} & 0 & 0 & 0 \\
+%       \frac{u}{\beta^2} & \rho & 0 & 0  \\
+%       \frac{v}{\beta^2} & 0 & \rho & 0  \\
+%       \frac{w}{\beta^2} & 0 & 0 & \rho
+%      \end{bmatrix},
+%      \label{eq:preconmatrix}
+%  \end{align}{}
+% \noindent where $\beta$ is the preconditioning factor. More details on the derivation of the preconditioning matrix can be found in \cite{SU2incomp2019}. The final form of governing equations are
+%  \begin{equation}
+%      \Gamma\partial_t V + \nabla \cdot \vec{F}^c-\nabla \cdot \vec{F}^{v}=Q \quad \text{in} \quad \Omega, \quad t>0.
+%  \label{eq:primvarform}
+%  \end{equation}{}
+% The solution vector in equation \ref{eq:primvarform} is recast into primitive variable form compared to equation \ref{eq:generic}, and the other terms are defined in equation \ref{eq:defns}. 
+
+
+\subsubsection{Spatial discretization}\label{ssec:spdisc}
+\noindent The spatial discretization is performed on an edge based dual grid using a finite volume approach. The control volumes are constructed using a median-dual (vertex-based) scheme. 
+% Integrating the equation \ref{eq:primvarform} on the control volume $\Omega$ gives
+%  \begin{equation}
+%  \int_{\Omega}\Gamma\frac{\partial V}{\partial t}d\Omega + \int_{\Omega}\nabla(\vec{F}^c-\vec{F}^{v})d\Omega = \int_{\Omega}Qd\Omega.
+%  \end{equation}
+%  The semi discrete version is
+%  \begin{equation}
+%  \int_{\Omega}\Gamma\frac{\partial V}{\partial t}d\Omega = -R(V),
+%  \label{eq:fvmeqn}
+%  \end{equation}
+% where $R(V) = \sum(\Tilde{F}^c - \Tilde{F}^v)\Delta S + Q|\Omega|$ is the residual vector, $\Tilde{F}^c$ and $\Tilde{F}^v$ are the discretized convective term and viscous term respectively, $\Delta S$ is the area of the face of the control volume and $|\Omega|$ is the volume of the control volume. 
+An upwind Flux Difference Splitting (FDS) scheme is used to compute the convective flux residual. 
+%  For a face $f$ between two nodes $i$ and $j$, the resulting convective flux vector $\Tilde{F}^c$ using the FDS scheme can be written as \cite{SU2incomp2019}
+%  \begin{equation}
+%      \Tilde{F}_{ij}^c = \bigg( \frac{\vec{F}^c_i + \vec{F}^c_j}{2} \bigg).\vec{n}_{ij} - \frac{1}{2}\Gamma P |\Lambda_{\Gamma}| P^{-1} (V_i - V_j).
+%      \label{eq:fds}
+%  \end{equation}{}
+% Here $\vec{n}_{ij}$ is the normal vector of the face $f$ between nodes $i$ and $j$, $\vec{F}^c_i$ is the convective flux defined in equation \ref{eq:defns} at a node $i$, $P$ is the matrix of eigenvectors of the preconditioned flux jacobian matrix, $|\Lambda_{\Gamma}|$ is a diagonal matrix with diagonal entries corresponding to the eigenvalues of the convective preconditioned flux jacobian matrix. 
+The MUSCL scheme in combination with the van Albada slope limiter is used to obtain second order accuracy. The gradients for flux reconstruction are computed using the Weighted Least Squares method. The gradients required to evaluate the viscous fluxes are computed using either the Least Squares method or the Green Gauss theorem.
+
+\subsubsection{Time discretization}\label{ssec:timedisc}
+\noindent Steady state problems are also solved using a pseudo-time stepping approach where the solution is marched in time until convergence. Time integration is carried out using the Implicit Euler method. 
+%  The final equation for the update of the solution at a node $i$ is of the form \cite{SU2incomp2019}
+%  \begin{equation}
+%      \Bigg(\Gamma_i\frac{|\Omega|}{\Delta t_i^n}\delta_{ij}+\frac{\partial R_{i}(V^n)}{\partial U_{j}}\Bigg)\Delta V_{j}=-R_i(V^{n}),
+%      \label{eq:momeqdisc}
+%  \end{equation}
+
+
+ \subsubsection{Boundary conditions}
+%\noindent The solution of equations \ref{eq:momeqdisc} is subject to boundary conditions. 
+For the test cases considered in this study, only the no-slip wall boundary condition on the surface of the airfoil and the far field boundary condition on the external domain is necessary. Since SU2 uses a vertex-based dual grid approach, the implementation of the no slip boundary condition is relatively straightforward. For the momentum equations, a no slip condition is enforced strongly by setting the velocity on the wall to zero (since no wall movement is necessary) and a Neumann boundary condition is used for the other equations. For the far field boundaries, the flux across the face is computed in a similar manner to internal faces where the neighboring states are assumed to be the internal solution and the free stream value. 
+
+\subsection{Turbulence modeling}
+
+\subsubsection{Spalart-Allamaras (SA)}
+
+\noindent The SA model\cite{spalart1992one} with no trip term can be written in the general form of equation \ref{eq:generic} as 
+\begin{align}
+    U= \Tilde{\nu}, \qquad
+    F^c_i = u_i \Tilde{\nu}, \qquad
+    F^v_i = \frac{(\nu + \Tilde{\nu})}{\sigma}\frac{\partial \Tilde{\nu}}{\partial x_i} \nonumber \\
+    Q =  c_{b1}\Tilde{S}\Tilde{\nu} -c_{w1}f_w\big(\frac{\Tilde{\nu}}{d_S} \big)^2 + \frac{c_{b2}}{\sigma}\bigg|\frac{\partial \Tilde{\nu}}{\partial x_i}\bigg|^2.
+    \label{eq:SAmodel}
+\end{align}{}
+The turbulent viscosity is then computed as
+\begin{eqnarray*}
+    \mu_{tur} = \rho \Tilde{\nu} f_{v1},\quad f_{v1} = \frac{\chi^3}{\chi^3 + c_{v1}^3}, \quad \chi = \frac{\Tilde{\nu}}{\nu},\\
+    \quad \Tilde{S}= \Omega+\frac{\Tilde{\nu}}{\kappa^2 d^2}f_{v2}, \quad f_{v2}=1-\frac{\chi}{1+\chi f_{v1}}.
+\end{eqnarray*}
+Here $\nu = \frac{\mu}{\rho}$ is the kinematic viscosity and $d$ is the distance to the nearest wall. The definitions of the other model constants can be found in the literature\cite{spalart2000trends,spalart1992one}.
+
+\subsubsection{SST $k$-$\omega$}
+\noindent Following the general form of the equations in equation \ref{eq:generic}, the corresponding terms for the SST $k$-$\omega$\cite{wilcox1998turbulence} model are
+\begin{align}
+    U=\begin{bmatrix}{}
+    \rho k \\
+    \rho\omega
+    \end{bmatrix},
+    F_i^c = \begin{bmatrix}{}
+    \rho u_i k \\
+    \rho u_i \omega
+    \end{bmatrix},
+    F^v_i = \begin{bmatrix}{}
+    (\mu + \sigma_k \mu_t) \frac{\partial k}{\partial x_i} \\
+    (\mu + \sigma_{\omega} \mu_t) \frac{\partial \omega}{\partial x_i}
+    \end{bmatrix} \nonumber \\
+    Q = \begin{bmatrix}{}
+    P - \beta^* \rho\omega k \\
+    \frac{\gamma}{\nu_t}P - \beta \rho \omega^2 + 2(1-F_1)\frac{\rho\sigma}{\omega}{\frac{\partial k}{\partial x_i}}{\frac{\partial \omega}{\partial x_i}}
+    \end{bmatrix}.
+\end{align}{}
+Here the production term, $P = \tau_{ij} \frac{\partial u}{\partial x_j}$, where $\tau_{ij}$ is defined earlier in section \ref{ssec:su2}, $\rho$ is density, $\nu_t = \mu_t/\rho$ is the kinematic turbulent viscosity and $\mu$ is dynamic viscosity. The turbulent eddy viscosity is computed as
+\begin{equation}
+    \mu_t = \frac{\rho a_1 k}{\text{max}(a_1 \omega, \Omega F_2)},
+    \label{eq:kweddyvisc}
+\end{equation}{}
+where $\Omega$ is the vorticity magnitude and $F_2$ is a model constant. More information can be found in the literature \cite{wilcox1998turbulence}.
+
+ \subsubsection{Boundary conditions:}
+ At the far field the boundary conditions for the SA and SST $k-\omega$ model are respectively
+\begin{eqnarray*}
+ \nu_{t,\infty} &= 0.210438 \nu_{\infty}\quad \text{to}\quad 1.294234\nu_{\infty},\\ 
+ k_{\infty}  &= (3.0/2.0)V_{\infty}^2 TI^{2},\\
+ \omega_{\infty} &= \rho k_{\infty}/(\mu_{lam}(\mu_t/\mu_{lam})).
+\end{eqnarray*}
+Here $\nu_{\infty}$ is the kinematic viscosity in the free stream, $V_{\infty}$ is the free stream velocity magnitude, $\rho$ is the density and $TI$ is the turbulent intensity. The ratio $\mu_t/\mu_{lam}$ and turbulent intensity $TI$ are specified as inputs. 
+On solid walls, the boundary conditions for clean walls are defined below. 
+ \begin{eqnarray*}
+ \nu_t &= 0, \\
+  k &= 0, \\
+  \omega &= 10 \frac{6 \nu}{\beta_1(\Delta d)^2}.
+ \end{eqnarray*}{}
+$\Delta d$ is the distance to the nearest normal neighbor and $\beta_1$ is a model constant.
+Model constant definitions can be found in the literature\cite{SU22014, wilcox2006turbulence}.

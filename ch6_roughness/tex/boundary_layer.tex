@@ -1,0 +1,170 @@
+\section{Boundary layer analysis}\label{sec:blanalysis}
+Since the NACA $65_2215$ airfoil has a larger rough surface than the DU-96-W-180, it is chosen for the boundary layer analysis. The boundary layer parameters for SU2  are computed by extracting the velocity vector along surface normals at various points along the airfoil. The edge of the boundary layer is assumed to be at the location where the ratio of the magnitude of the vorticity at that location to the value at the wall is less than $10^{-4}$. In this section the effect of roughness on the boundary layer properties of airfoils will be investigated.
+\subsection{Integral boundary layer methods}
+\noindent Viscous inviscid interaction methods like RFOIL~\cite{rfoil_orig} are widely used to analyze the performance of airfoils. Panel methods are typically used to model the inviscid part of the flow and integral boundary layer methods for the viscous part. Integral boundary layer equations are obtained by integrating the boundary layer equations in the direction normal to the wall. More details on deriving the governing equations can be found in~\cite{drela1986two, Ozdemir2020}. 
+The new integral quantities introduced are displacement thickness $\delta^*$, momentum thickness $\theta$ and kinetic energy thickness $\delta_k$. 
+\begin{equation*}
+\delta^* = \int_0^{\delta}\Bigg(1-\frac{u}{u_e}\Bigg)dy, \quad
+\theta = \int_0^{\delta}\frac{u}{u_e}\Bigg(1-\frac{u}{u_e}\Bigg)dy.
+\end{equation*}
+\begin{equation}
+\centering
+\delta_k = \int_0^{\delta}\frac{u}{u_e}\Bigg(1-\Bigg(\frac{u}{u_e}\Bigg)^2\Bigg)dy, 
+\end{equation}
+Here $u$ is the local velocity, $\delta$ is the boundary layer thickness, $u_e$ is the velocity magnitude at the edge of the boundary layer and $y$ is the wall normal direction. Further, the following shape parameters are defined 
+\begin{equation}
+H = \frac{\delta^*}{\theta}, \quad H_k = \frac{\delta_k}{\theta}.
+\label{eq:Hstar}
+\end{equation}
+The governing equations, resulting from integration of the continuity and momentum equations, used in RFOIL are
+\begin{equation}
+\frac{d\theta}{dx} + (2+H-M_e^2)\frac{\theta}{u_e}\frac{du_e}{dx} = C_f/2,
+\end{equation}
+\begin{equation}
+\theta\frac{dH_k}{dx} + (2H^{**} + H_k(1-H))\frac{\theta}{u_e}\frac{du_e}{dx}= 2C_D-H_kC_f/2.
+\end{equation}
+Note that other formulations of the integral boundary layer equations are used in other tools~\cite{Ozdemir2020}. In order to close the equations, closure relations~\cite{drela1986two,Ozdemir2020} are defined for the kinetic energy shape factor $H_k$, the skin friction coefficient $C_f$ and the dissipation coefficient $C_D$. The closure relations are different for laminar and turbulent flows. For turbulent flows, an additional equation for lag in Reynolds shear stress ($C_{\tau}$) is also solved. $H^{**}$ is a shape factor based on the variation of density within the boundary layer and $M_e$ is the Mach number of the external flow. Both can be ignored for incompressible flows. These closure relations are defined in terms of the shape factors introduced earlier and the Reynolds number based on momentum thickness $Re_{\theta}$,  where $Re_{\theta} = u_e \theta/\nu$ with $\nu$ being the kinematic viscosity. In the following sections, the effect of roughness on the different thicknesses, shape factors and closure relations are examined.
+\subsection{Clean results}
+\noindent First the calculated integral boundary layer quantities from SU2 under clean conditions are compared against the RFOIL results. It must be noted that the $X-$axis of all the plots in this section range from $x/c=0.025$ to $x/c=1$ to avoid the stagnation region. Figure~\ref{fig:dstar_clean} shows the displacement thickness on both the upper and lower sides at angles of attack of $0^{\circ}$ and $4^{\circ}$. The calculated displacement thickness matches closely with the values from RFOIL with some deviation near the trailing edge in both cases. 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/dstar_clean.eps} 
+    \includegraphics[width=0.45\textwidth]{images/dstar_clean_a4.eps}
+    %\vspace*{-0.5cm}
+    \caption{Displacement thickness ($\delta^*$) from SU2 and RFOIL at an angle of attack of $0^{\circ}$ (left) and $4^{\circ}$ (right) for the NACA $65_2215$ airfoil.}
+    \label{fig:dstar_clean}
+\end{figure}
+The momentum thickness is slightly overpredicted by SU2 after $x/c=0.4$ at an angle of attack of $0^{\circ}$ but matches closely for an angle of attack of $4^{\circ}$ as seen in figure \ref{fig:theta_clean}. 
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.45\textwidth]{images/theta_clean.eps} 
+    \includegraphics[width=0.45\textwidth]{images/theta_clean_a4.eps}
+    %\vspace*{-0.5cm}
+    \caption{Momentum thickness ($\theta$) from SU2 and RFOIL at an angle of attack of $0^{\circ}$ (left) and $4^{\circ}$ (right) for the NACA $65_2215$ airfoil.}
+    \label{fig:theta_clean}
+\end{figure}
+The comparisons of the shape factors are shown in figure~\ref{fig:H_clean}. The shape factor is larger for $AoA=4^{\circ}$ compared to $AoA=0^{\circ}$ indicating a thicker boundary layer as the angle of attack increases. While the computed shape factors from RFOIL and SU2 do not match exactly, both display similar behavior initially decreasing towards the middle of the airfoil and increasing near the trailing edge.
+
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.45\textwidth]{images/H_clean.eps} 
+    \includegraphics[width=0.45\textwidth]{images/H_clean_a4.eps}
+    %\vspace*{-0.5cm}
+    \caption{Shape factor ($H$) from SU2 and RFOIL at an angle of attack of $0^{\circ}$ (left) and $4^{\circ}$ (right) for the NACA $65_2215$ airfoil.}
+    \label{fig:H_clean}
+\end{figure}
+
+In RFOIL the local skin friction coefficient is computed as~\cite{drela1986two}
+\begin{eqnarray}
+\noindent C_f = \frac{0.3\exp(-1.33H)}{(log_{10}Re_{\theta})^{1.74+0.31H}} \nonumber  + \\0.00011\Big(tanh \Big(4.0 - \frac{H}{0.875}\Big) - 1.0\Big).
+    \label{eq:cfclean}
+\end{eqnarray}
+Here $Re_{\theta}$ is the local Reynolds number based on momentum thickness $\theta$. Figure~\ref{fig:cf_clean} shows the comparison of the skin friction coefficient between RFOIL, the values originally reported by SU2 for the RANS computation (denoted as 'SU2 original') and the skin friction calculated based on the computed integral boundary layer quantities in equation~\ref{eq:cfclean} (denoted as 'SU2 Computed'). The $C_f$ computed from the integral quantities using equation~\ref{eq:cfclean} match the SU2 RANS solution and RFOIL results quite well after $x/c=0.25$. The mismatch near the leading edge for $AoA=0^{\circ}$ is likely due to errors in computing the integral quantities near the stagnation region.
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.45\textwidth]{images/cf_clean.eps}
+    \includegraphics[width=0.45\textwidth]{images/cf_clean_a4.eps} 
+    %\vspace*{-0.5cm}
+    \caption{Skin friction coefficient ($C_f$) from SU2 and RFOIL at an angle of attack of $0^{\circ}$ (left) and $4^{\circ}$ (right) for the NACA $65_2215$ airfoil.}
+    \label{fig:cf_clean}
+\end{figure}
+
+\subsection{Rough results}
+\noindent Since only the entire upper surface is rough, only the results for the upper surface only are presented in this section. Figures~\ref{fig:dstar_rough} and~\ref{fig:theta_rough} show the displacement and momentum thickness for different roughness levels compared to the clean case. As expected, these thicknesses increase with increasing roughness. A very steep increase is observed in the momentum thickness near the trailing edge for the largest roughness. 
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.45\textwidth]{images/dstar_rough.eps} 
+    \includegraphics[width=0.45\textwidth]{images/dstar_rough_a4.eps}
+    %\vspace*{-0.5cm}
+    \caption{Displacement thickness ($\delta^*$) from SU2 under different roughness levels at an angle of attack of $0^{\circ}$ (left) and $4^{\circ}$ (right) for the NACA $65_2215$ airfoil.}
+    \label{fig:dstar_rough}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.45\textwidth]{images/theta_rough.eps} 
+    \includegraphics[width=0.45\textwidth]{images/theta_rough_a4.eps}
+    %\vspace*{-0.5cm}
+    \caption{Momentum thickness ($\theta$) from SU2 under different roughness levels at an angle of attack of $0^{\circ}$ (left) and $4^{\circ}$ (right) for the NACA $65_2215$ airfoil.}
+    \label{fig:theta_rough}
+\end{figure}
+Figure~\ref{fig:H_rough} shows the shape factors for different roughness levels compared to the clean case at $AoA=0^{\circ}$ and $AoA=4^{\circ}$. The shape factor increases for all roughness levels with the largest increase for $k_s=1.23\times10^{-3}$. The maximum $k_s^+$ values varies with angle of attack. At an angle of attack of $0^{\circ}$, the $k_s^+$ are $25$, $75$ and $286$ indicating that the flow is in the transitional rough region for the two lower roughness levels and is fully rough for the highest roughness level. However, at an angle of attack of $4^{\circ}$, the maximum $k_s^+$ values are $75$, $180$ and $750$ indicating that the flow is fully rough for the $k_s/c = 3.08\times 10^{-4}$ case also. From figure~\ref{fig:H_rough} it is seen that the behavior of the shape factor in the $k_s/c = 3.08\times 10^{-4}$ case is similar for both angles of attack despite one being transitionally rough and the other fully rough. 
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.45\textwidth]{images/H_rough.eps} 
+    \includegraphics[width=0.45\textwidth]{images/H_rough_a4.eps} 
+    %\vspace*{-0.5cm}
+    \caption{Shape factor ($H$) from SU2 under different roughness levels at an angle of attack of $0^{\circ}$ (left) and $4^{\circ}$ (right) for the NACA $65_2215$ airfoil.}
+    \label{fig:H_rough}
+\end{figure}
+
+\subsubsection{Skin friction coefficient}
+Equation~\ref{eq:cfclean} will not be valid here as the properties of the boundary layer change due to roughness. Olsen et al.~\cite{olsen2020improved} suggested a new closure relation for skin friction for rough surfaces including the Reynolds number based on roughness height, $Re_k = u_e k/\nu$ as
+\begin{eqnarray}
+\noindent C_f = \frac{0.9\exp(-2.4H)}{(|log_{10}Re_{\theta}-log_{10}Re_k+1.11|)^{2.45-0.15H}} .
+    \label{eq:cfrgh}
+\end{eqnarray}
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.45\textwidth]{images/Cf_roughk3.eps} 
+    \includegraphics[width=0.45\textwidth]{images/Cf_roughk3_a4.eps}
+    %\vspace*{-0.5cm}
+    \caption{Skin friction coefficient ($C_f$) comparison between RANS solution from SU2 (clean in red and rough in blue) and closure relations from Olsen et al.\cite{olsen2020improved} and RFOIL\cite{rfoil_orig} at an angle of attack of $0^{\circ}$ (top) and $4^{\circ}$ (bottom) for the NACA $65_2215$ airfoil.}
+    \label{fig:a0cf_rough}
+\end{figure}
+
+Figure~\ref{fig:a0cf_rough} shows the skin friction from equations~\ref{eq:cfclean} and \ref{eq:cfrgh}, clean and rough SU2 results at angles of attack of $0^{\circ}$ (left) and $4^{\circ}$ (right). Clearly equation~\ref{eq:cfclean} is not valid for rough surfaces. The new closure relation proposed by Olsen et al. appears to overpredict the skin friction. However, since the computed $Re_k$ for the first two roughness levels are approximately $400$ and $800$, it is outside the range of the data used by the authors in their study. The third roughness level has an average $Re_k \approx 3000$ and is within the valid range of data used to derive the model. The authors report convergence difficulties when roughness was applied to regions before $x/c=0.6$ and from the figure~\ref{fig:a0cf_rough} it can be seen that $C_f$ is overpredicted by a significant amount in that region and is closer to the values reported by SU2 after $x/c=0.6$.
+
+\subsubsection{Kinetic energy shape factor}
+As seen above the closure sets for skin friction are not valid for rough airfoils. The other closure relation defined in terms of $H$ and $Re_{\theta}$ is for the kinetic energy shape factor $H_k$. Closure relations for other quantities are defined in terms of $C_f$ and $H_k$. Thus, the validity of the $H_k$ closure is examined here in detail.
+For turbulent flows in RFOIL the following closure relations are used to compute $H_k$. First define 
+\begin{equation}
+H_0 = 
+\begin{cases}
+ 3.0 + \frac{400}{Re_{\theta}},\qquad Re_{\theta} > 400, \\
+ 4.0 \qquad Re_{\theta} \leq 400.
+ \end{cases}
+\end{equation}
+Then for $H< H_0$
+\begin{equation}
+H_k = \bigg(0.5 - \frac{4.0}{Re_{\theta}}\bigg)\bigg(\frac{H_0-H}{H_0-1}\bigg)^2\frac{1.5}{H+0.5}+1.5+\frac{4}{Re_{\theta}},
+\label{eq:Hstarth1}
+\end{equation}
+otherwise
+\begin{equation}
+H_k = 1.5 + \frac{4.0}{Re_{\theta}}+(H-H_0)^2\bigg[\frac{0.04}{Re_{\theta}}+ 0.007\frac{ln Re_{\theta}}{\big(H-H_0+\frac{4}{Re_{\theta}}\big)^2}\bigg]
+\label{eq:Hstarth2}
+\end{equation}
+The computed $H_k$ based on equation~\ref{eq:Hstar} (denoted by symbols) and those based on the closure relations in equations~\ref{eq:Hstarth1} and \ref{eq:Hstarth2} (denoted by solid lines) are shown in figure~\ref{fig:Hs_rough}. The computed values agree with the closure relations closely for the clean case and also for the two lowest roughness cases. However, as the level of roughness increases the closure relation does not predict $H_k$ accurately. The $Re_{k_s}$ of the first two roughness cases are approximately 400 and 800, indicating that the closure sets are likely valid for small roughness levels but deviate for higher roughness levels. The deviation observed in the third roughness level is also much less than the deviation observed for the skin friction coefficient. Figure~\ref{fig:Hs_rough2} shows the variation of $H_k$ for a higher angle of attack of $12^{\circ}$. From the top figure it is seen that the behavior of $H_k$ is similar to that observed for lower angles of attack when the flow is attached. However, as the bottom figure shows, the deviation increases for all roughness levels when the flow separates. The wiggles observed are likely an artifact of how the edge of the boundary layer is detected during the post processing. 
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.45\textwidth]{images/Hstar_rough.eps} 
+    \includegraphics[width=0.45\textwidth]{images/Hstar_rough_a4.eps} 
+    %\vspace*{-0.5cm}
+    \caption{$H_k$ from SU2 under different roughness levels at an angle of attack of $0^{\circ}$ (left) and $4^{\circ}$ (right) for the NACA $65_2215$ airfoil. Computed values (equation~\ref{eq:Hstar}) shown as symbols and result from the closure relations (equations~\ref{eq:Hstarth1} and \ref{eq:Hstarth2}) as solid lines.}
+    \label{fig:Hs_rough}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.45\textwidth]{images/Hstar_rough_a12_1.eps} 
+    \includegraphics[width=0.45\textwidth]{images/Hstar_rough_a12_2.eps} 
+    %\vspace*{-0.5cm}
+    \caption{$H_k$ from SU2 under different roughness levels at an angle of attack of $12^{\circ}$ for the NACA $65_2215$ airfoil. Left figure shows the plot from $x/c=0.025$ to $x/c=0.5$. Right figure shows the zoomed in region around the TE for all roughness levels. Computed values (equation~\ref{eq:Hstar}) shown as symbols and result from the closure relations (equations~\ref{eq:Hstarth1} and \ref{eq:Hstarth2}) as solid lines.}
+    \label{fig:Hs_rough2}
+\end{figure}
+
+Since the closure relations for the dissipation coefficient ($C_D$) and for turbulent flows the Reynolds shear stress coefficient ($C_{\tau}$) are based on $H$, $Re_{\theta}$, $C_f$ and $H_k$, all of which change with roughness, new closure relations need to be defined. Thus, in order to  model roughness in integral boundary layer method based tools like RFOIL, new closure relations need to be derived for all of the above quantities.
+
+\paragraph*{Discussion}
+In this section, the different integral boundary layer quantities and closure relations used in RFOIL are examined under clean and rough conditions. Three different roughness levels were considered corresponding to $Re_{k_s}$ of approximately $400$, $800$ and $3000$. The boundary layer thicknesses increase due to roughness and the shape factor is also higher. A larger shape factor typically implies a thicker boundary layer that is prone to separation. The shape factor remained less than $2$ for the lower two roughness levels but for the highest roughness level the shape factor neared the value for separation even at low angles of attack. Additionally, it was seen that the variation of the shape factor followed the variation of $Re_{k_s}$ more closely than the variation of $k_s^+$. 
+
+Closure relations are crucial for an accurate solution in integral boundary layer methods. The performance of the closures for skin friction and kinetic energy shape factor was examined under rough conditions. The closure relation for skin friction underpredicted significantly for all cases. The new closure relation proposed by Olsen et al.~\cite{olsen2020improved} was observed to overpredict the skin friction. The kinetic energy shape factor closure relation was less sensitive to roughness and showed significant deviation only for the largest roughness case and separated flow. 

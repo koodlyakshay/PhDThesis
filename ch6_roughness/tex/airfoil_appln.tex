@@ -1,0 +1,365 @@
+\section{Roughness on airfoil sections}\label{sec:airfoilappln}
+As seen in section~\ref{ssec:fpgridref}, a very fine grid in the wall normal direction is required for the SST roughness model compared to the SA roughness model, which gives grid independent results with meshes comparable to the clean cases. Additionally, despite the fine grid the SST roughness model performed poorly compared to the SA roughness model in predicting the skin friction for the flat plate. Therefore in the following sections only the SA roughness model will be used. A chord length ($c$) of $1 m$ is assumed and the roughness values are normalized by the chord length.
+\subsection{NACA $65_2215$}
+In this section the SA model is further validated against the NACA $65_2215$ airfoil. The Reynolds number is $Re=2.6\times10^6$ and the roughness covers the entire upper surface and on the lower surface from the leading edge up to $x/c=0.15$. Three roughness heights $k_s/c=1.54\times 10^{-4}$, $k_s/c=3.08\times 10^{-4}$ and $k_s/c=1.23\times 10^{-3}$ are considered here. Clean experiments were performed by Abbot and von Doenhoff~\cite{abbott2012theory}. Ljungstrom performed experiments with different roughness heights on the NACA $65_2A215$ airfoil, a closely related airfoil. These experiments have been used to validate roughness models by Knopp~\cite{knopp2009new} and Hellsten~\cite{hellsten1997extension} previously. The experimental data are also extracted from Knopp and Hellsten.
+\subsubsection{Grid details}
+A two dimensional C-grid topology (figure~\ref{fig:n652215gridfull}) is used for all the simulations. A grid refinement study is carried out at an angle of attack of $8^\circ$ on meshes with $150$, $250$ and $450$ nodes on the airfoil surface. A $y^+ \approx 0.3$ is maintained for the three grids. A growth ratio of $1.09$ is used within the boundary layer. The computational domain extends to $150$ chord lengths in all directions . The grid is shown in figure~\ref{fig:n652215grid}. The resulting lift and drag coefficients are listed in table~\ref{tab:gridref}. Since no appreciable difference is observed between the results on the grids with $250$ and $450$ points (see table~\ref{tab:gridref}), the grid with $250$ points on the airfoil was used for further computations. The far field and wall boundary conditions are applied at the outer edge of the domain and on the airfoil respectively.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/airfoil_mesh_n652215full.png}
+    %\vspace*{-0.5cm}
+    \caption{Grid used for NACA $65_2215$ simulations.}
+    \label{fig:n652215gridfull}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/airfoil_mesh_n652215.png}
+    %\vspace*{-0.5cm}
+    \caption{Zoom of the grid around NACA $65_2215$ airfoil.}
+    \label{fig:n652215grid}
+\end{figure}
+\begin{table}[h!]
+\centering
+\begin{tabular}{ |c|c|c| } 
+\hline
+$N$ & $C_l$ & $C_d$ \\
+ \hline
+ $150$ & $1.0273$ & $0.0149$ \\ 
+ $250$ & $1.0336$ & $0.0141$ \\ 
+ $450$ & $1.0346$ & $0.0138$ \\ 
+ \hline
+\end{tabular}
+\caption{Lift and Drag coefficients with different grid resolutions for the NACA $65_2215$ airfoil.}
+\label{tab:gridref}
+\end{table}
+
+\subsubsection{Clean Results}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/polar_clean.eps}
+    %\vspace*{-0.5cm}
+    \caption{Comparison of NACA $65_2215$ polars against experiments and numerical results from SU2 and RFOIL. Expt(L) refers to results from Ljungstrom and Expt(A) from Abbot and von Doenhoff\cite{abbott2012theory}.}
+    \label{fig:n652215cmp}
+\end{figure}
+Figure \ref{fig:n652215cmp} shows the comparison of the numerical results from the SA model under clean conditions. %and a roughness height of $k_s/c = 1.23\times 10^{-3}$. 
+The results from SU2 compare very well against results from RFOIL~\cite{rfoil_orig} and the experiments from Abbot~\cite{abbott2012theory} at lower angles of attack, but SU2 overpredicts the maximum lift. This could be due to a later prediction of the flow separation by the SA turbulence model compared to the experiments. 
+Since no experimental pressure data is available, this cannot be confirmed. However, the lift values reported by Ljungstrom are significantly lower. Since the two airfoils under consideration are supposed to be very similar, Hellsten~\cite{hellsten1997extension} concludes that lift values reported by Ljungstrom are too low likely due to imperfections from a retracted flap in the airfoil geometry setup. The absolute values of the lift coefficients do not compare well against the experimental data from Ljungstrom, but considering the comments of Hellsten the absolute lift coefficient values are not comparable under clean or rough conditions. The maximum lift is observed around an angle of attack of $16^\circ$ for the clean case in both numerical and experimental data. 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/polar_rough.eps}
+    %\vspace*{-0.5cm}
+    \caption{Comparison of NACA $65_2215$ polars against experiments and numerical results with different roughness heights. Expt(L) refers to results from Ljungstrom.}
+    \label{fig:n652215rgh}
+\end{figure}
+\subsubsection{Rough Results}
+In figure~\ref{fig:n652215rgh} the predicted lift coefficients with different roughness heights are shown. With increasing roughness, the maximum lift value and the angle at which this occurs decrease. Based on the computed skin friction values at an angle of attack of $8^\circ$, $k_s^+$ varies from $70$ to about $850$. These values suggest the wall is likely to be fully rough but it will vary depending on the flow conditions. As noted earlier, the absolute values of the lift coefficients do not match, but the relative drop of lift from SU2 matches closely with the experiments (table~\ref{tab:maxcl}). However, SU2 predicts a higher value for the angle at which the maximum lift occurs compared to experiments. This is again likely due to the later prediction of the separation location by the SA model.%Due to some of the deficiencies observed with the SST roughness model at larger $k_s^+$ values previously, only the SA model is used in this work. 
+\begin{table}[h!]
+\centering
+\begin{tabular}{ |c|c|c| } 
+\hline
+$k_s/c$ & Experiment & SU2 \\
+ \hline
+ $1.54\times10^{-4}$ & $14.22$ & $13.38$ \\ 
+ $3.08\times10^{-4}$ & $22.20$ & $19.50$ \\ 
+ $1.23\times10^{-3}$ & $29.08$ & $30.03$ \\ 
+ \hline
+\end{tabular}
+\caption{Reduction in maximum lift ($\%$) observed in experiments and SU2 for different roughness heights.}
+\label{tab:maxcl}
+\end{table}
+\subsection{DU-96-W300}
+A typical wind turbine airfoil, DU-97-300, is chosen to test the effect of roughness and verify if VGs can alleviate the anticipated drop in performance. This choice is motivated by the availability of experimental data for clean and VG cases. The geometry of the VG is chosen from the AVATAR experimental database (figure~\ref{fig:geo_vg_mesh})~\cite{Schepers_2018,baldacchino2018experimental}. The simulations are carried out at $Re=2.0\times10^6$ for both clean and VG cases, for which a 3D mesh is generated where the airfoil is extruded in span direction and a body-fitted mesh is generated around the VG geometry. A symmetry boundary condition is used on the spanwise extrusion boundaries.
+% However, no experimental data exists for rough conditions. 
+%{\color{blue}Different roughness heights in different regimes are chosen. - \textit{Or we only choose one based on some literature say the worst case scenario}}.
+
+The following cases are considered:
+\begin{enumerate}
+    \item Airfoil with no roughness or VGs under fully turbulent conditions (denoted as 'clean'),
+    %\item airfoil with no roughness or VGs under natural transition(denoted as 'tr clean'),
+    \item Airfoil with VG under fully turbulent conditions ('VG'),
+    \item Airfoil with roughness ('rough') and
+    % \item airfoil with VG under natural transition ('VGclean') and 
+    \item Airfoil with VG and roughness ('VGrough').
+\end{enumerate} 
+
+For the clean airfoil, a grid refinement study is carried out at $AoA=2.5^{\circ}$, which corresponds to the design angle of attack of this airfoil section on the AVATAR reference turbine blade under normal operating conditions (incoming wind speed of $10m/s$). The coarsest grid has 128 points (lvl1), the reference grid (lvl2) has 300 points and the finest grid (lvl3) has 512 points on the airfoil and 4 points in the span direction. Figure~\ref{fig:geo_vg_mesh} shows the vortex generator on the airfoil section and details of the geometry. For the airfoil with VG (zero thickness), 1000 points are used on the airfoil and 15 points in the span direction (a maximum aspect ratio of $3$ and an average of $1.15$ is maintained on the airfoil surface) and no refinement study is made. The VG geometry is also shown in figure~\ref{fig:geo_vg_mesh}. The corresponding dimensions are $h=5mm$, $D=35mm$, $d=17.5mm$ and $\beta = 15^{\circ}$. The chord length of the airfoil is $0.65m$ and the VG is placed at $20\%$ chord on the upper surface of the airfoil~\cite{baldacchino2018experimental}. Since a symmetry boundary condition is used on the extrusion boundaries, the geometry represents a row of counter-rotating VGs as shown in the right part of figure~\ref{fig:geo_vg_mesh}.
+\begin{figure}[h]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.45\textwidth]{images/du300_trq_vg.PNG}
+    \includegraphics[width=0.45\textwidth]{images/vg_geo_top_view.png} 
+    \vspace*{-0.2cm}
+    \caption{VG on the airfoil surface (left) and VG geometry details~\cite{baldacchino2018experimental}(right)}
+   \label{fig:geo_vg_mesh}
+\end{figure}
+
+Figure~\ref{fig:gridrefcfcp} shows the pressure coefficient and skin friction coefficient along the airfoil obtained from the three grids. The results from reference grid and fine grid are almost identical and thus the reference grid will be used for further computations. The resulting lift and drag coefficients are listed in table~\ref{tab:gridref2}. Only fully turbulent cases are considered for comparison here because the roughness model does not predict the early onset of transition.
+\begin{table}[h!]
+\centering
+\captionsetup{justification=centering}
+\begin{tabular}{ |c|c|c|c| } 
+\hline
+Name & $N$ & $C_l$ & $C_d$  \\
+ \hline
+ lvl1 & $128$ & $0.5308$ & $0.0180$ \\ 
+ lvl2 & $300$ & $0.5011$ & $0.0161$ \\ 
+ lvl3 & $512$ & $0.5077$ & $0.0160$ \\ 
+ \hline
+\end{tabular}
+\caption{Lift and Drag coefficients with different grid resolutions for the DU-97-W300 airfoil in clean conditions.}
+\label{tab:gridref2}
+\end{table}
+\begin{figure}[h]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.49\textwidth]{images/cp_grid_ref.eps}
+    \includegraphics[width=0.49\textwidth]{images/cf_grid_ref.eps} 
+%    \vspace*{-0.5cm}
+    \caption{Comparison of the pressure coefficient (left) and the skin friction coefficient (right) at an $AoA = 2.5^{\circ}$, $Re=2.0\times10^6$ for different grid resolutions in clean conditions.}
+   \label{fig:gridrefcfcp}
+\end{figure}
+
+\subsubsection{Clean polars}\label{ssec:clean}
+\begin{figure}[h]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.49\textwidth]{images/cleancl.eps}
+    \includegraphics[width=0.49\textwidth]{images/cleancd.eps} 
+    \caption{Lift (left) and drag (right) polars for the fully turbulent(clean) case at $Re=2.0\times10^6$ in clean conditions.}
+   \label{fig:cleanpolar}
+\end{figure}
+Figure~\ref{fig:cleanpolar} shows the lift and drag polars from SU2 and the experimental data from Baldaccino~\cite{baldacchino2018experimental}. Additionally, the lift data from other CFD methods obtained from the Avatar report~\cite{Schepers_2018} is also given. The maximum lift angle and the maximum $C_l$ is over estimated by CFD compared to experiments. However, the results from SU2 are in close agreement to those reported by Ellipsys in AVATAR~\cite{Avatarwebsite} (task 3.2). Similar behavior is observed for $C_d$ as well. The SA model predicts the separation to occur later than the experiments which results in poor performance at higher angles of attack and over prediction of the maximum lift. While the use of pseudo time stepping scheme helps to overcome some of the convergence issues that a purely steady-state solver would face at higher angles of attack, accuracy of the results remains poor.
+
+\subsubsection{VG polars}\label{ssec:vg}
+\begin{figure}[h]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.49\textwidth]{images/clvg.eps}
+    \includegraphics[width=0.49\textwidth]{images/cdvg.eps} 
+
+    \caption{Lift (left) and drag (right) polars for the fully turbulent case at $Re=2.0\times10^6$ with VG (VG).}
+   \label{fig:vgpolar}
+\end{figure}
+Figure~\ref{fig:vgpolar} shows the comparison of the lift and drag polars from SU2 with experimental data~\cite{baldacchino2018experimental} at $Re = 2\times10^6$ under fully turbulent conditions. Good agreement between the numerical and experimental data is observed at lower angles of attack. SU2 underpredicts the value of the maximum $C_l$ but the stall angle is over predicted. In section~\ref{ssec:clean}, the stall angle predicted by SU2 is around $12^{\circ}$ which is higher than the experimentally obtained value. From figure~\ref{fig:vgpolar} we observe that the addition of the VG has delayed the stall until an $AoA=18^{\circ}$, as expected. A very close match is observed at lower angles but deviations increase at higher angles of attack. Looking at the drag polar on the right the SA model once again predicts separation to occur later than the experiments. However, the maximum lift and the stall angle prediction is much better with VGs than compared to the fully turbulent clean case.
+% The numerical results from the clean case is also shown for reference.
+
+\subsubsection{Roughness effects}
+Determination of the appropriate value of the roughness height, $k$, is difficult due to lack of experimental data for the airfoil under consideration in rough conditions. Additionally, since no transition model is used in this study, the roughness height used must ideally trigger a very early onset of transition to ensure the flow remains turbulent over the airfoil. Several studies on isolated 3-D roughness elements have reported a critical $Re_{k,crit} > 600$~\cite{ref:langel2014} based on the roughness height which induces larger instabilities in the flow that trigger transition at the location of roughness or even upstream. The study on critical values for distributed roughness is an ongoing research problem~\cite{ref:langel2014}. In this case, the roughness height is set to ensure that $Re_k=800$. Once the roughness height, $k$, is defined, an equivalent sand grain roughness height, $k_s$, must be estimated. Langel et al.~\cite{ref:langel2015} assume $k_s/k = 1$ for densely packed roughness distribution and a lower value of $k_s/k \approx 0.47$ for lower density ($15\%$ distribution density). Aupoix et al.~\cite{SAroughorig} use correlations from Dirling~\cite{dirling1973method} to estimate $k_s/k$. Following the Dirling's correlation and assuming the distributed roughness to be closely spaced we find $k_s/k \approx 0.539$ which is used to specify the input for the turbulence model considered in this study. Based on these estimates, $k_s/c = 400.0\times10^{-6}$ is used. In order to mimic leading edge erosion, the airfoil surface from the leading edge to $x/c=0.13$ on the pressure side and from leading edge to $x/c=0.02$ on the suction side is assumed to be rough.
+
+\begin{figure}[h]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.45\textwidth]{images/cl_clean_vg_rough_exp.eps}
+    \includegraphics[width=0.45\textwidth]{images/cd_clean_vg_rough_exp.eps} 
+    \caption{Lift (left) and drag (right) polars for the fully turbulent case at $Re=2.0\times10^6$ under different conditions ('clean' -black, 'VG' - blue, 'rough' - red, 'VGrough' - green).}
+   \label{fig:vgroughpolar}
+\end{figure}
+
+The addition of roughness causes a reduction in the lift and an increase in drag compared to the clean case (the black and red curves in figure~\ref{fig:vgroughpolar}). Based on the computed wall shear stress values the resulting $k_s^+\approx 240$ corresponds to the fully rough regime. Despite a fairly moderate choice of roughness height (keeping transition in mind), the flow is already in the fully rough regime. Additionally, the airfoil appears to stall slightly earlier due to presence of roughness. Adding a VG on the rough airfoil appears to counteract some of the negative effects of roughness by increasing the lift, however the drag increases further. The VG does delay the stall and the airfoil now stalls at approximately $15^{\circ}$, even with leading edge roughness. 
+
+\begin{figure}[h]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.45\textwidth]{images/cp_aoa12_all.eps}
+    \includegraphics[width=0.45\textwidth]{images/cp_aoa15_all.eps} 
+    \caption{Pressure coefficient ($C_p$) distribution under different cases at $AoA = 12^{\circ}$ (left) and $AoA = 15^{\circ}$ (right).}
+   \label{fig:cpallaoa}
+\end{figure}
+
+A clearer picture emerges when we investigate the pressure coefficient in different cases (figure~\ref{fig:cpallaoa}). At an $AoA=12^{\circ}$, the fully turbulent (clean) flow is separated close to the trailing edge around $x/c=0.9$. This angle of attack also corresponds to the maximum $C_l$. Under rough conditions, the flow separates much earlier however, the VG helps the flow to remain attached throughout. The difference is clearer when examining the $C_p$ for $AoA=15^{\circ}$ in figure~\ref{fig:cpallaoa}. Under both 'clean' and 'rough' conditions, the airfoil is under stall. The flow remains attached longer with the VG as expected under both clean and rough conditions. 
+\subsubsection{Aerodynamic efficiency}
+\begin{figure}[h]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.45\textwidth]{images/aeroperf.eps}
+    \includegraphics[width=0.45\textwidth]{images/aeroperf2.eps} 
+    \caption{Comparison of aerodynamic efficiency for the different cases.}
+   \label{fig:aeroeff}
+\end{figure}
+Figure~\ref{fig:aeroeff} shows the aerodynamic efficiencies under different conditions. On the left, the comparison between numerical SU2 results and experiments are shown. There is an under prediction of efficiency at lower angles of attack due to over prediction of the drag. As also seen in the lift polar results, there is an over prediction in maximum efficiency and the angle where it occurs. However, in the VG case, there is a consistent under prediction in efficiency due to over prediction of the drag. Comparing the clean and VG cases, the efficiency at lower angles is lower with VG due to additional drag but at higher angles of attack (beyond stall), the efficiency with VGs remains high as expected. On the right, the comparison of efficiencies with roughness is shown. Due to roughness, a reduction in efficiency is observed both with and without VGs as expected. The maximum efficiency is also reduced in both cases. At higher angles of attack, the VG increases the efficiency even under rough conditions.
+
+\subsection{DU 96-W-180}
+In this section, the SA roughness model is applied to the DU96-W-180 airfoil. This is an $18\%$ thick airfoil developed by Delft University~\cite{timmer2003summary} and is widely used in the wind energy community. Sareen et al~\cite{sareen2014effects} performed experiments on this airfoil at different Reynolds numbers under different stages and types of erosion. They determine the levels of erosion based on photographs of eroded blades. In this study, the leading edge erosion due to pits and gouges (see figure~\ref{fig:pitsandgouges}) under the two most severe stages are considered at $Re=1.85\times10^6$. These cases correspond to Type B stage 3 and stage 4 as reported in~\cite{sareen2014effects}. 
+
+The depths of pits and gouges for these cases are respectively $0.51mm$ and $2.54mm$. The pits and gouges have equal depths and diameters. The chord-wise extent of the pits and gouges are $10\%$ on the upper surface and $13\%$ on the lower surface. The number of pits and gouges on the lower surface is also $1.3$ times that on the upper surface. In stage 3 there are $400$ pits and $200$ gouges on the upper surface and in stage 4 there are $800$ pits and $400$ gouges on the upper surface.
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.45\textwidth]{images/expt_img_2.png}
+    %\vspace*{-0.5cm}
+    \caption{Illustration of pits, gouges and delamination of a turbine blade from Sareen et al\cite{sareen2014effects}.}
+    \label{fig:pitsandgouges}
+\end{figure}
+
+\subsubsection{Grid details}
+As seen in section~\ref{ssec:fpgridref}, the SA roughness model requires a wall normal grid spacing that corresponds to $y^+\approx0.3$ under clean conditions to obtain grid converged results in rough conditions. Thus, this minimum grid spacing is maintained. A grid refinement study is carried out at an angle of attack of $8^{\circ}$ with $N=125,250,500$ and $750$ points along the airfoil. A growth ratio of $1.09$ is used in the normal direction. The resulting lift and drag coefficients are listed in table~\ref{tab:dugridref} along with the fully turbulent results obtained from RFOIL~\cite{rfoil_orig}. Based on these results the grid with $N=500$ points on the airfoil is chosen for further analysis.
+\begin{table}[h!]
+\centering
+\captionsetup{justification=centering}
+\begin{tabular}{ |c|c|c| } 
+\hline
+$N$ & $C_l$ & $C_d$ \\
+ \hline
+ $125$ & $1.028934$ & $0.020944$ \\ 
+ $250$ & $1.065950$ & $0.016588$ \\ 
+ $500$ & $1.069648$ & $0.015781$ \\ 
+ $750$ & $1.069287$ & $0.015704$ \\ 
+ RFOIL & $1.054832$ & $0.015551$ \\
+ \hline
+\end{tabular}
+\caption{Lift and Drag coefficients with different grid resolutions for the DU95-W-180 airfoil at an angle of attack of $8^{\circ}$.}
+\label{tab:dugridref}
+\end{table}
+
+%Reference : Effects of leading edge erosion on wind turbine blade performance Agrim Sareen, Chinmay A. Sapre and Michael S. Selig
+\subsubsection{Clean results}
+A baseline case of fully turbulent flow is considered first. A transition model is not considered since the effect of roughness on transition is not implemented. 
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.75\textwidth]{images/clean_clalphadu180.eps}
+    %\vspace*{-0.5cm}
+    \caption{Comparison of lift coefficient ($C_l$) against angle of attack for fully turbulent flow against experimental data.}
+    \label{fig:du180clalclean}
+\end{figure}
+Figure~\ref{fig:du180clalclean} shows the lift coefficient at different angles of attack from SU2 and RFOIL under fully turbulent conditions compared to experimental data. Since no mention of tripping the flow is made in~\cite{sareen2014effects}, it is likely that the flow is not fully turbulent but transitional, especially at lower angles of attack. Consequently, a consistent underprediction of lift is observed in both numerical tools. The results from SU2 and RFOIL match closely in the linear region and deviate at higher angles of attack.
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.75\textwidth]{images/clean_clcddu180.eps}
+    %\vspace*{-0.5cm}
+    \caption{Comparison of lift coefficient ($C_l$) against drag coefficient ($C_d$) for fully turbulent flow against experimental data.}
+    \label{fig:du180clcdclean}
+\end{figure}
+Figure~\ref{fig:du180clcdclean} shows the comparison of lift and drag coefficients of the two numerical results from SU2 and RFOIL with the experimental data. Once again, since the experimental flow conditions were not fully turbulent, there is a consistent overprediction of the drag coefficient by both SU2 and RFOIL. As seen in figure~\ref{fig:du180clalclean}, there is good agreement between the numerical results at lower angles of attack. However, RFOIL predicts increasing flow separation to occur from an $AoA=9^{\circ}$, which is close to what is observed in the experiment but this is not predicted by SU2. This is likely due to the poor prediction of separation by the SA turbulence model, which was also observed earlier.
+
+
+\subsubsection{Equivalent sand grain roughness}\label{ssec:eqks}
+The roughness height, $k$, is usually defined as the height or depth of roughness elements on the surface, for example, the depth of pits and gouges in figure~\ref{fig:pitsandgouges}. Determination of the equivalent sand grain roughness height, $k_s$, from the roughness height $k$ is an active area of research. The roughness density parameter, $\Lambda_s$, is widely used in literature as a means of relating geometric surface roughness with equivalent sand grain roughness
+\begin{equation}
+ \Lambda_s = \frac{S}{S_f}\Bigg(\frac{A_f}{A_s}\Bigg)^{1.6},
+\end{equation}
+where $S$ is the total wall area where roughness is present, $S_f$ is the roughness frontal area, $A_f$ is the frontal area of a single roughness element, and $A_s$ is the surface area of a single roughness element in the direction of the flow. Based on data from Schlichtling's experiments, Danberg and Sigal~\cite{danberg1988analysis} proposed the following relations for 2-D 
+\begin{equation}
+\frac{k_s}{k} = \begin{cases}
+3.21\times10^{-3}\Lambda_s^{4.935},\quad1.4\leq \Lambda_s\leq 4.89,\\
+8,\quad 4.89\leq \Lambda_s\leq 13.25,\\
+151.71\Lambda_s^{-1.1379},\quad 13.25 \leq \Lambda_s\leq 100,
+\end{cases}
+\end{equation}
+and 3-D
+\begin{equation}
+\frac{k_s}{k} = 160.77\Lambda_s^{-1.3376},\quad 16 \leq \Lambda_s\leq 200.
+\end{equation}
+Van Rij et al.~\cite{van2002analysis} generalized the roughness shape factor $A_f/A_s$ for irregular 3-D roughness elements as $S_f/S_w$ where $S_f$ is the total frontal area of all roughness elements and $S_w$ is the total wetted area of all roughness elements and proposed the following relation
+\begin{equation}
+\frac{k_s}{k} = \begin{cases}
+1.58\times10^{-5}\Lambda_s^{5.683},\quad \Lambda_s\leq 7.84,\\
+1.802\Lambda_s^{0.03038},\quad 7.84\leq \Lambda_s\leq 28.12,\\
+255.5\Lambda_s^{-1.454},\quad 28.12 \leq \Lambda_s.
+\end{cases}
+\end{equation} 
+McClain~\cite{McClain} used the discrete element method approach and proposed a single relation as 
+\begin{equation}
+\frac{k_s}{k} = 927.317\Lambda_s^{-1.669}.
+\end{equation}
+However, these correlations are mainly derived by adding roughness elements like spheres, cones and hemispheres and their validity for negative roughness like pits and gouges is not clear. Various researchers have used statistical representations of rough surfaces in combination with experiments and numerical simulations using  LES and DNS to obtain more general correlations based on $rms$ height ($k_{rms}$), skewness ($Sk$) and higher order moments of the rough surface height probability density functions. The $k_{rms}$ and skewness $Sk$ can be computed as 
+\begin{equation}
+k_{rms} = \sqrt{\frac{1}{N}\sum_i k_i^2}, \quad Sk = \frac{1}{N}\sum_i \Bigg(\frac{k_i}{k_{rms}}\Bigg)^3,
+\end{equation}
+where $k_i$ are the heights or depths of individual roughness elements, for example a pit, and $N$ is the total number of such roughness elements. Flack and Schultz~\cite{flack2014roughness} proposed 
+\begin{equation}
+k_{s} = 4.43 k_{rms}(1+Sk)^{1.37}
+\end{equation}
+but note that it is not very general since it does not include information about roughness density. In a more recent study, Flack et al~\cite{flack2020skin} proposed different relations for different types of skewness as
+\begin{equation}
+k_{s} = 2.48 k_{rms}(1+Sk)^{2.24}
+\end{equation}
+for positive skewness, 
+\begin{equation}
+k_{s} = 2.73 k_{rms}(2+Sk)^{-0.45}
+\end{equation}
+for negative skewness and
+\begin{equation}
+k_{s} = 2.11 k_{rms}
+\end{equation}
+for zero skewness. They also note that negatively skewed surfaces like those with pits and gouges have a smaller impact on drag due to roughness elements than positive skewness. Flack and Schultz~\cite{flack2010review} and Forooghi et al.~\cite{forooghi2017} also note that another parameter that accounts for sparse roughness is necessary and propose a relation of the form
+\begin{equation}
+k_s/k_z = F(Sk)G(ES),
+\label{eq:ksgen}
+\end{equation}
+where $ES$ is the effective slope which is related to the solidity of roughness ($\lambda$) as $ES=2\lambda$ and $k_z$ is related to $k_{rms}$ as $k_z=4.4k_{rms}$. Note that solidity is defined as the ratio of total roughness frontal area ($S_f$) to total wall area ($S$) i.e. $\lambda=S_f/S$. They recommend
+\begin{equation}
+F(Sk) = 0.67Sk^2+0.93Sk+1.3
+\label{eq:fsk}
+\end{equation}
+and
+\begin{equation}
+G(ES)=1.07(1-e^{-3.5ES}).
+\label{eq:ges}
+\end{equation}
+ In this study, equations.~\ref{eq:ksgen}, \ref{eq:fsk} and \ref{eq:ges} suggested by~\cite{forooghi2017} are used. 
+\subsubsection{Roughness definition}
+Sareen et al.~\cite{sareen2014effects} create different amounts of roughness on the upper and lower surface with the lower surface being $1.3$ times rougher than the upper surface. For the type B stage 3 erosion level they add 400 pits and 200 gouges on the upper surface and 520 pits and 260 gouges on the lower surface. In stage 4 the number of pits and gouges are doubled both on the upper and lower surfaces. The rough surface extends from the leading edge to $x/c=0.1$ on the upper surface and from the leading edge to $x/c=0.13$ on the lower surface in both cases. The computed statistics are listed in table~\ref{tab:rghdef}. 
+\begin{table}[h!]
+\centering
+\captionsetup{justification=centering}
+\begin{tabular}{ |c|c|c| } 
+\hline
+ & Stage 3 & Stage 4 \\
+ \hline
+ $k_{rms}$ & $1.524mm$& $1.524mm$ \\ 
+ $Sk$ & $-1.56695$ &$-1.56695$ \\ 
+ $ES$ & $0.0563$ & $0.1126$ \\ 
+ $k_s/c$ & $0.00418$ & $0.00760$ \\ 
+ \hline
+\end{tabular}
+\caption{Roughness definition for DU-96-W-180 based on Sareen et al\cite{sareen2014effects}.}
+\label{tab:rghdef}
+\end{table}
+
+\subsubsection{Rough results}
+Figure~\ref{fig:du180clals3} shows the comparison of the lift coefficient as a function of the angle of attack between SU2 and experiments for stage 3 erosion. There is a small underprediction of lift at lower angles of attack, similar to what was observed in the clean case. This is likely due to the flow still being mildly transitional at lower angles of attack. With increasing angle of attack, the prediction from SU2 matches the experimental data quite closely, likely due to the flow becoming fully turbulent in the experiment.
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.75\textwidth]{images/stage3_clalphadu180.eps}
+    %\vspace*{-0.5cm}
+    \caption{Comparison of lift coefficient ($C_l$) against angle of attack for fully turbulent flow against experimental data (stage 3 see table \ref{tab:rghdef}).}
+    \label{fig:du180clals3}
+\end{figure}
+Figure~\ref{fig:du180clcds3} shows the drag and lift coefficients. Once again, the numerical results from SU2 overpredict the drag compared to the experimental data. Flow separation starts to occur before $AoA\approx 8^{\circ}$ in the experiments whereas SU2 does not predict separation till after $AoA\approx 9^{\circ}$.
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.75\textwidth]{images/stage3_clcddu180.eps}
+    %\vspace*{-0.5cm}
+    \caption{Comparison of lift coefficient ($C_l$) against drag coefficient ($C_d$) for fully turbulent flow against experimental data (stage 3 see table \ref{tab:rghdef}).}
+    \label{fig:du180clcds3}
+\end{figure}
+
+Figure~\ref{fig:du180clals4} shows the comparison of the lift coefficient as a function of the angle of attack between SU2 and experiments forstage 4 erosion. The numerical results agree with the experiments more closely compared to stage 3 likely due to the flow being fully turbulent due to the higher roughness level.
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.75\textwidth]{images/stage4_clalphadu180.eps}
+    %\vspace*{-0.5cm}
+    \caption{Comparison of lift coefficient ($C_l$) against angle of attack for fully turbulent flow against experimental data (stage 4 see table~\ref{tab:rghdef}).}
+    \label{fig:du180clals4}
+\end{figure}
+Figure \ref{fig:du180clcds4} shows the drag and lift coefficients. Once again, numerical results from SU2 overpredict the drag compared to the experimental data. 
+%Flow separation is also predicted better with this extent of erosion compared to stage 3.
+\begin{figure}[h!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.75\textwidth]{images/stage4_clcddu180.eps}
+    %\vspace*{-0.5cm}
+    \caption{Comparison of lift coefficient ($C_l$) against drag coefficient ($C_d$) for fully turbulent flow against experimental data (stage 4 see table~\ref{tab:rghdef}).}
+    \label{fig:du180clcds4}
+\end{figure}
+
+Figures~\ref{fig:du180clcds3} and \ref{fig:du180clcds4} also show the lift and drag values in clean conditions. The increase in drag even at lower angles of attack can be seen clearly. The maximum lift also decreases in rough conditions for both roughness levels considered. However, since Sareen et al.~\cite{sareen2014effects} do not report lift and drag values at higher angles of attack, the magnitude of reduction cannot be compared. It is very likely that the airfoil will stall earlier for both the roughness cases compared to the clean conditions.
+
+\paragraph*{Discussion}
+In this section the SA roughness model was first validated against experiments on the NACA $65_2215$ airfoil with a given equivalent sand grain roughness. The SA model predicted the drop in lift very closely compared to the experiments. Subsequently, the SA model was used on the DU-96-W-180 airfoil with 'negative' roughness. It was seen that a statistical description of the surface is required to accurately calculate the equivalent sand grain roughness. Results under clean conditions differed from the experiments likely due to the the experiments not being under fully turbulent conditions, but the numerical results, especially lift coefficient, matched closely with the experimental data under roughness when the flow is likely fully turbulent. It was seen that roughness causes a considerable reduction in lift and increase in drag and can lead to premature stalling of the airfoils.
+

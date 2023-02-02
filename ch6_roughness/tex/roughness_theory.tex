@@ -1,0 +1,156 @@
+\section{Roughness modeling}\label{sec:roughness}
+To motivate the roughness model used in this study, a brief introduction of turbulent boundary layers and the impact of roughness is presented below.
+
+The turbulent boundary layer can be broadly divided into two regions~\cite{Pope2000,schlichting2016boundary}; the inner region where viscous dissipation is comparable to the turbulent dissipation and the outer region where turbulence dissipation dominates completely. The inner region can be further subdivided into three regions - the viscous sub-layer where viscous effects dominate and turbulent effects are absent, a buffer region where the turbulent stresses start to grow and finally an overlap region or a logarithmic region where the turbulent and viscous dissipation match. The overlap region leads into the outer layer of the boundary layer where viscous effects are minimal. The velocity profile in the viscous sub-layer and overlap region can be written respectively as
+\begin{equation}
+    u^+ = y^+, \qquad y^+ \leq 5,
+    \label{eq:visclaw}
+\end{equation}{}
+\begin{equation}
+    u^+ = \frac{1}{\kappa}ln(y^+) + C, \qquad y^+ > 30.
+    \label{eq:loglaw}
+\end{equation}{}
+The region of the boundary layer between $5 \leq y^+ \leq 30$ is the buffer region. In the above relations, $y^+$ is the non dimensional wall normal coordinate and $u^+$ is the normalized velocity defined as
+\begin{equation*}{}
+y^+ = \frac{y u_{\tau}}{\nu}, \qquad u^+ = \frac{u}{u_{\tau}}, \qquad  u_{\tau} = \sqrt{\frac{\tau_w}{\rho}}.
+\end{equation*}
+Here $u_{\tau}$ is known as the wall friction velocity and is used as the velocity scale close to the wall, $\tau_w$ is the wall shear stress, $\rho$ is the density, $u$ is the local velocity and $\nu$ is the kinematic viscosity. The constant in equation~\ref{eq:loglaw} for a smooth wall is known to be $C=5.0$.
+
+The presence of surface roughness on the wall alters the nature of the velocity distribution near the wall. The roughness elements will introduce new turbulent fluctuations in the flow increasing the skin friction. Typically, a standardized notion of roughness known as the "equivalent sand grain roughness height ($k_s$)" is used to denote roughness of a wall~\cite{nikuradse1950laws, SAroughorig,schlichting2016boundary}. A given physical roughness distribution is converted into the "equivalent sand grain roughness height" using empirical correlations~\cite{braslow1958simplified,dirling1973method,grabow1975surface}. A more detailed review is presented in section~\ref{ssec:eqks}. 
+% The equivalent sand grain roughness height can be considered in reference to experiments from Nikuradse\cite{nikuradse1950laws}, where pressure losses across a pipe and the shift in the boundary layer velocity profile $\Delta u^+$ was measured for different sand grain heights $k_S$. 
+Based on the non dimensional roughness height, 
+\begin{equation}
+k_s^+ = k_s u_{\tau}/\nu, 
+\label{eq:kpluseq}
+\end{equation}
+three regimes of roughness can be identified~\cite{schlichting2016boundary}.
+%\begin{enumerate}
+%    \item Hydraulically smooth for $k_S^+ \leq 5$,
+%    \item Transitionally rough for $5 \leq k_S^+ \leq 70 $,
+%    \item Fully rough for $k_S^+ > 70$.
+%\end{enumerate}{}
+If the roughness elements are within the viscous sub-layer ($k_s^+ \leq 5$, hydraulically smooth), the effect of roughness is not relevant and there is no difference with the smooth velocity profile. As the height of the roughness element increases ($5 \leq k_s^+ \leq 70 $, transitionally rough), a shift in the velocity profile is observed. Once the roughness elements are fully within the overlap region ($k_s^+ > 70$, fully rough), the viscous sub-layer plays no part and the flow is in the fully rough regime.  
+% To accurately model the effect of roughness with RANS simulations, the shift in velocity profile $\Delta u^+$ must be accurately reproduced for a given equivalent sand grain roughness height, $k_S$, and a proper correlation between the real roughness height and the equivalent sand grain height must be found.
+% Empirical correlations to convert real roughness to sand grain roughness can be found and will not be explored further in this paper and only the former is investigated. 
+It must be noted here that the equivalent sand grain roughness concept typically applies only to the commonly observed distributed roughness ($k-$ type roughness~\cite{ref:langel2014}) and not to isolated roughness elements. 
+To reproduce the proper shift $\Delta u^+$ in the boundary layer velocity profiles, turbulence models typically increase the eddy viscosity dissipation within the inner part of the boundary layer~\cite{SAroughorig}. Aupoix et al.~\cite{SAroughorig}, identify two methods to accomplish this with eddy viscosity based turbulence models (e.g SA and SST):
+\begin{enumerate}
+    \item Finite eddy viscosity at the wall which can be interpreted as using a virtual wall to represent roughness and
+    \item Zero eddy viscosity at the wall where the origin of the wall is at the bottom of roughness but turbulence damping in the wall region is reduced.
+\end{enumerate}{}
+With this background on roughness modeling in turbulent boundary layers, roughness models for the SA and SST turbulence models are presented.
+\subsection{Roughness modification for SA model}
+The roughness modification proposed by Boeing~\cite{spalart2000trends,SAroughorig} is considered in this section. An alternate modification was also proposed by ONERA in Aupoix et al.~\cite{SAroughorig}, but is not considered since it requires the additional input of the friction velocity. The effect of roughness is accounted for by shifting the virtual wall to the top of the roughness element. This can be achieved by offsetting the distance to the wall everywhere. The changes to the turbulence model are
+\begin{eqnarray}
+    d_{new} =& d_{min} + 0.03 k_s, \\
+    \chi =& \frac{\Tilde{\nu}}{\nu}+c_{R1}\frac{k_s}{d_{new}}, \\ f_{v2} =& 1 - \frac{\Tilde{\nu}}{\nu + \Tilde{\nu}f_{v1}}.
+\end{eqnarray}{}
+\noindent with $c_{R1} = 0.5$. The eddy viscosity at the wall is now changed from $\Tilde{\nu}=0$ to a non-zero value by using a mixed (Robin) boundary condition at the wall,
+\begin{equation}
+    \frac{\partial \Tilde{\nu}}{\partial n}\bigg|_{wall} = \frac{\Tilde{\nu}_{wall}}{0.03 k_s},
+\end{equation}{}
+\noindent where $\frac{\partial \Tilde{\nu}}{\partial n}$ is the gradient of $\Tilde{\nu}$ in the direction normal to the wall.
+\subsection{Roughness modification for SST model}
+The effect of roughness can be accounted for in the $k-\omega$ SST turbulence model by modifying the boundary conditions at the wall as~\cite{wilcox2006turbulence}
+\begin{eqnarray}
+& k_{rough} = 0, \\
+& \omega_{rough} = \frac{(\mu_{\tau})^2 S_R}{\nu},
+\end{eqnarray}{}
+where
+\begin{equation*}
+    S_R = \begin{cases}{}
+    (\frac{50}{k_s^+})^2, \qquad k_s^+ \leq 25,\\
+    (\frac{100}{k_s^+}), \qquad k_s^+ > 25.
+    \end{cases}
+\end{equation*}{}
+From equation~\ref{eq:kweddyvisc}, the eddy viscosity remains zero at the wall, but there is an increase in turbulence dissipation compared to the clean boundary conditions. Here $k_{rough}$ is the turbulent kinetic energy and $k_s^+$ is the non dimensional equivalent sand grain roughness height defined in equation~\ref{eq:kpluseq}.
+
+The two roughness models are implemented in SU2 and are validated below.
+\section{Model validation}\label{sec:fpvalid}
+\subsection{Turbulent flow over a 2-D flat plate}
+\subsubsection{Grid refinement study}\label{ssec:fpgridref}
+ Turbulent flow over a flat plate with different roughness heights is simulated with  the SA and the SST turbulence models and their respective roughness corrections presented above. The flat plate domain is $2m$ long and $1m$ high and $Re=6.0\times10^6$. A grid refinement study is carried out for the geometry under clean and three roughness levels. There are 57, 113 and 225 points on the surface of the 2-D flat plate for the three grids. The minimum grid spacing is $\Delta y_1 \approx 2\times10^{-6} m$. A second set of grids are made with same geometry and same number of points on the surface but with a minimum grid spacing of $\Delta y_2 \approx 3\times10^{-8} m$ for the SST roughness model. A growth ratio of 1.09 is used in the normal direction. The skin friction values computed at $x=0.93 m$ are tabulated in table~\ref{tab:fpgridref}.
+\begin{table}[h!]
+\centering
+\begin{tabular}{ |c|c|c|c|c| } 
+\hline
+$k_s (m)$ & $N$ & SA & SST($\Delta y_1$) & SST($\Delta y_2$) \\
+\hline
+ \multirow{3}{4em}{Clean} & $57$ & $0.00273$ & $0.00267$ & $0.00272$ \\ 
+  &  $113$ & $0.00274$ & $0.00271$ & $0.00274$\\ 
+  &  $225$ &  $0.00274$  & $0.00273$ & $0.00274$\\ 
+ \hline
+ \multirow{3}{4em}{$1.23\times10^{-4}$} & $57$ & $0.00369$ & $0.00335$ & $0.00346$\\ 
+  &  $113$ & $0.00382$ & $0.00341$ & $0.00346$\\ 
+  &  $225$ &  $0.00382$  & $0.00344$ & $0.00346$\\ 
+ \hline
+ \multirow{3}{4em}{$2.46\times10^{-4}$} & $57$ & $0.00451$ & $0.00348$ & $0.00374$\\ 
+  &  $113$ & $0.00457$ & $0.00361$ & $0.00374$\\ 
+  &  $225$ & $0.00457$ & $0.00368$ & $0.00374$\\ 
+ \hline
+\multirow{3}{4em}{$9.84\times10^{-4}$} & $57$ & $0.00605$ & $0.00375$ & $0.00424$\\ 
+  &  $113$ & $0.00599$ & $0.00392$ & $0.00425$\\ 
+  &  $225$ & $0.00593$ & $0.00413$ & $0.00425$\\ 
+ \hline
+\end{tabular}
+\caption{Skin friction ($C_f$) at $x=0.93 m$ for different grid resolutions and roughness levels with SA and SST. $N$ denotes the number of points on the surface of the flat plate.}
+\label{tab:fpgridref}
+\end{table}
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.45\textwidth]{images/yplus_vs_uplus_sst.eps}
+%     \includegraphics[width=0.45\textwidth]{images/yplus_vs_uplus_sa.eps}
+%     \caption{Velocity profiles for different roughness heights with $k-\omega$ SST model(left) and the SA model(right).}
+%     \label{fig:roughvel}
+% \end{figure}{}
+Three different roughness heights, $k_s=1.23\times10^{-4} m$, $k_s=2.46\times10^{-4} m$ and $k_s=9.48\times10^{-4} m$ are tested. The $k_s^+$ values are around $25$, $50$ and $200$ respectively. A grid spacing of $\Delta y_1$ gives $y^+\approx0.3$ at $x=0.93$ under clean conditions. As seen in table~\ref{tab:fpgridref}, a grid independent solution is obtained for the clean case for both turbulence models with this minimum grid spacing. The SA roughness model gives largely grid independent result for all the roughness heights. However, a grid independent solution is not possible under rough conditions with the SST model. The variation is marginal at low roughness heights and increases as the roughness height increases. With the grid spacing of $\Delta y_2$, grid independent solutions at different roughness heights are obtained with the SST model as well. The $y^+$ under clean conditions for this grid spacing is $0.006$. 
+
+The first two roughness heights are in the transitional roughness regime while the third roughness height is in the fully rough regime. The SA roughness modification gives a grid independent solution with a minimum $y^+\approx0.3$ whereas the SST roughness model fails to do so in the fully rough regime. This is likely due to how the roughness modification is introduced in the two models. The eddy viscosity at the wall is directly modified in SA but in SST it remains zero. In the fully rough regime, there is a non-zero eddy viscosity in the inner region of the boundary layer where the viscous sub layer previously existed. Since the eddy viscosity is still zero at the wall for the SST roughness modification, to capture the steep increase in eddy viscosity a finer mesh is likely required compared to the SA roughness modification. 
+%Knopp\cite{knopp2009new} recommend a grid spacing of $y^+\approx0.3$ for SA.
+\subsubsection{Velocity profiles}
+Despite the finer mesh the skin friction values predicted by the SST roughness model do not match those from the SA model especially under fully rough conditions (table~\ref{tab:fpgridref}). The velocity profiles in the inner boundary layer are now investigated to determine the accuracy of the two models. The velocity profiles for different roughness heights are presented in figures~\ref{fig:compsa} and \ref{fig:compsst}. The profiles are computed based on the grid independent results i.e. with a grid spacing of $\Delta y_1$ for SA and $\Delta y_2$ for SST.
+From figures~\ref{fig:compsa} and \ref{fig:compsst}, we can see that the clean case matches the viscous sub-layer and log law in the overlap region closely for both the SA and SST models. Further, increasing the equivalent roughness height has the predicted effect of a shift of the velocity profile away from the clean case and once $k_s^+>70$, the viscous sub-layer disappears. 
+% Similar behavior is observed with both the turbulence models. 
+% However, it is clear that there are differences in the velocity shift predicted for similar roughness heights. 
+To further verify the two results, a comparison is made with the empirical shift in velocity profile as proposed by Nikuradse~\cite{aupoix2015sstroughness} shown below.
+\begin{equation}
+     u^+ = \frac{1}{\kappa}log(\frac{y^+}{k_s^+}) + B, 
+\end{equation}{}
+where $\kappa=0.40$ and the shift $B$ is given by
+\begin{eqnarray*}
+     1 < k_s^+ < 3.5, &B = 5.5 + \frac{1}{\kappa}log(k_s^+), \\
+     3.5 < k_s^+ < 7, &B = 6.59 + 1.52 log(k_s^+), \\
+     7 < k_s^+ < 14, &B = 9.58, \\
+     14 < k_s^+ < 68, &B = 11.5 - 0.7log(k_s^+), \\
+     68 < k_s^+ , &B = 8.48.
+\end{eqnarray*}{}
+\noindent Comparing the empirical predictions of the velocity shift (figure~\ref{fig:compsa}), a slight overprediction is observed in the transitionally rough region by the SA roughness model. This was also reported in Knopp et al\cite{knopp2009new}. The SST roughness model does not perform as well as the SA model especially in the fully rough regime (figure~\ref{fig:compsst}) despite using a much finer grid. The limitations in the $k-\omega$ SST roughness model are also reported elsewhere~\cite{knopp2009new,aupoix2015sstroughness,SSTrough}. 
+%The roughness heights due to leading edge erosion is likely to span all the regimes of roughness at various stages of erosion and in order to ensure that even fully rough cases can be adequately modeled, the SA model is chosen for further analysis. 
+It must be noted that various corrections for the SST roughness model have been proposed (for example~\cite{knopp2009new,aupoix2015sstroughness}) but are not investigated in the current study.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/yplus_vs_uplus_sa_comp.eps} 
+    %\vspace*{-0.5cm}
+    \caption{A comparison of velocity shifts obtained from the SA model to the theoretical value. Numerical results shown in solid and theoretical results shown by dashed lines. }
+    \label{fig:compsa}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/yplus_vs_uplus_sst_comp.eps} 
+    %\vspace*{-0.5cm}
+    \caption{A comparison of velocity shifts obtained from the SST model to the theoretical value.Numerical results shown in solid and theoretical results shown by dashed lines.}
+    \label{fig:compsst}
+\end{figure}
+
+\subsection{Blanchard experiments}
+In this section, the two roughness models are compared to the experimental data from Blanchard obtained from Aupoix et al~\cite{SAroughorig}. The sand grain roughness height was $4.25\times10^{-4}m$. With an incoming velocity of $45ms^{-1}$, the simulation is carried out on a $2m$ long flat plate. The resulting Reynolds number is $Re=6.46\times10^6$. The $y^+$ of the mesh used is less than $0.4$ throughout the domain for the SA roughness model and less than $0.007$ for the SST roughness model. The comparison is shown in figure~\ref{fig:blan}. Both the SA and SST models predict a higher skin friction compared to the clean flat plate but the results from the SA roughness model are significantly closer to the experimental data. The resulting $k_s^+ \approx 150$ makes the flow fully rough. As seen in figure~\ref{fig:compsst}, the SST roughness model performs poorly in this regime which results in an underprediction of the skin friction.% further justifying the choice of SA model in this study.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/blanchard_comp.eps}
+    %\vspace*{-0.5cm}
+    \caption{Comparison of skin friction coefficient ($C_f$) from SST and SA roughness models to experimental data from Blanchard\cite{SAroughorig}.}
+    \label{fig:blan}
+\end{figure}
+
+
+% =============================================
