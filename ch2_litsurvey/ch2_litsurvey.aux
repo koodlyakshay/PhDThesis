@@ -1,0 +1,222 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\@writefile{toc}{\contentsline {chapter}{\numberline {2}Incompressible flow equations}{15}{chapter.2}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:ch2incompeq}{{2}{15}{Incompressible flow equations}{chapter.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}Navier Stokes equations}{15}{section.2.1}}
+\newlabel{eq:continuity}{{2.1}{15}{Navier Stokes equations}{equation.2.1.1}{}}
+\newlabel{eq:xmommentum}{{2.2}{15}{Navier Stokes equations}{equation.2.1.2}{}}
+\newlabel{eq:ymommentum}{{2.3}{15}{Navier Stokes equations}{equation.2.1.3}{}}
+\newlabel{eq:zmommentum}{{2.4}{15}{Navier Stokes equations}{equation.2.1.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.1}Non-dimensionalization}{16}{subsection.2.1.1}}
+\newlabel{eq:Stdefn}{{2.5}{16}{Non-dimensionalization}{equation.2.1.5}{}}
+\newlabel{eq:Redefn}{{2.6}{16}{Non-dimensionalization}{equation.2.1.6}{}}
+\citation{Moukalled,hirsch1997numerical,Ferziger2002}
+\newlabel{eq:contindx}{{2.7}{17}{Non-dimensionalization}{equation.2.1.7}{}}
+\newlabel{eq:momindx}{{2.8}{17}{Non-dimensionalization}{equation.2.1.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}Numerical methods}{17}{section.2.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Region of interest for flow over a cylinder.\relax }}{18}{figure.caption.14}}
+\newlabel{fig:airfoildom}{{2.1}{18}{Region of interest for flow over a cylinder.\relax }{figure.caption.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Finite Volume discretization}{18}{subsection.2.2.1}}
+\newlabel{sec:ch2disceqnphi}{{2.2.1}{18}{Finite Volume discretization}{subsection.2.2.1}{}}
+\newlabel{eq:genphi}{{2.9}{18}{Finite Volume discretization}{equation.2.2.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces $2D$ control volume around a node $P$.\relax }}{18}{figure.caption.15}}
+\newlabel{fig:2ddaxis}{{2.2}{18}{$2D$ control volume around a node $P$.\relax }{figure.caption.15}{}}
+\newlabel{eq:genphidisc}{{2.10}{19}{Finite Volume discretization}{equation.2.2.10}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Discretization of the viscous term}{19}{equation.2.2.10}}
+\newlabel{eq:viscsumm}{{2.13}{19}{Discretization of the viscous term}{equation.2.2.13}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Discretization of the advective term}{20}{equation.2.2.14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces $1D$ control volume around node $P$ and neighboring nodes $E$ and $W$.\relax }}{20}{figure.caption.16}}
+\newlabel{fig:ch2pefrcinterp}{{2.3}{20}{$1D$ control volume around node $P$ and neighboring nodes $E$ and $W$.\relax }{figure.caption.16}{}}
+\@writefile{toc}{\contentsline {paragraph}{Central scheme}{20}{figure.caption.16}}
+\citation{Moukalled,Ferziger2002}
+\@writefile{toc}{\contentsline {paragraph}{Upwind scheme}{21}{equation.2.2.18}}
+\newlabel{eq:advecphieqn}{{2.21}{21}{Upwind scheme}{equation.2.2.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces Comparison of numerical solutions and exact solution for one dimensional scalar advection equation using central and first order upwind schemes.\relax }}{22}{figure.caption.17}}
+\newlabel{fig:upwcen}{{2.4}{22}{Comparison of numerical solutions and exact solution for one dimensional scalar advection equation using central and first order upwind schemes.\relax }{figure.caption.17}{}}
+\@writefile{toc}{\contentsline {paragraph}{Second order upwind}{22}{equation.2.2.23}}
+\citation{hirsch1997numerical}
+\citation{hirsch1997numerical,leveque2002finite}
+\citation{hirsch1997numerical,leveque2002finite}
+\citation{vanalbada}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.5}{\ignorespaces Comparison of numerical solution and exact solution for one dimensional scalar advection equation using central, first and second order upwind schemes.\relax }}{23}{figure.caption.18}}
+\newlabel{fig:upwcen2ord}{{2.5}{23}{Comparison of numerical solution and exact solution for one dimensional scalar advection equation using central, first and second order upwind schemes.\relax }{figure.caption.18}{}}
+\@writefile{toc}{\contentsline {paragraph}{Slope limiters}{23}{figure.caption.18}}
+\citation{Ferziger2002}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.6}{\ignorespaces Comparison of numerical solution and exact solution for one dimensional scalar advection equation using central, first, second order upwind schemes with and without slope limiter.\relax }}{24}{figure.caption.19}}
+\newlabel{fig:slopelim}{{2.6}{24}{Comparison of numerical solution and exact solution for one dimensional scalar advection equation using central, first, second order upwind schemes with and without slope limiter.\relax }{figure.caption.19}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Discretization of the source term}{24}{figure.caption.19}}
+\@writefile{toc}{\contentsline {subsubsection}{Discretized equation}{24}{equation.2.2.25}}
+\newlabel{eq:algeqnphist1}{{2.26}{24}{Discretized equation}{equation.2.2.26}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Time discretization}{24}{equation.2.2.26}}
+\@writefile{toc}{\contentsline {paragraph}{Explicit Euler}{25}{equation.2.2.28}}
+\@writefile{toc}{\contentsline {paragraph}{Implicit Euler}{25}{equation.2.2.31}}
+\newlabel{eq:algeqnphiv1}{{2.33}{25}{Implicit Euler}{equation.2.2.33}{}}
+\newlabel{eq:235}{{2.35}{26}{Implicit Euler}{equation.2.2.35}{}}
+\newlabel{eq:implaltform}{{2.36}{26}{Implicit Euler}{equation.2.2.36}{}}
+\newlabel{eq:algeqnphiv2}{{2.39}{26}{Implicit Euler}{equation.2.2.39}{}}
+\citation{Moukalled,Ferziger2002,van2003iterative,strang1993introduction,saad1986gmres}
+\citation{saad1986gmres}
+\citation{van2003iterative,strang1993introduction,saad1986gmres}
+\citation{Kwak2003,KWAK2005283,Ferziger2002,Moukalled,Shyy1994}
+\citation{Ferziger2002}
+\@writefile{toc}{\contentsline {paragraph}{System of linear algebraic equations}{27}{equation.2.2.40}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Pressure velocity coupling}{27}{section.2.3}}
+\citation{Tom2019,barsukow2017numerical}
+\citation{turkel1987preconditioned}
+\citation{hirsch1997numerical,Ferziger2002}
+\citation{Ferziger2002}
+\citation{Park1984,Kwak2003,chorinartcomp}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Solution methods}{28}{section.2.4}}
+\newlabel{ssec:pbdb}{{2.4}{28}{Solution methods}{section.2.4}{}}
+\citation{Tom2019}
+\citation{Tom2019}
+\citation{Patankar1980,Moukalled}
+\newlabel{eq:artcompbeta}{{2.44}{29}{Solution methods}{equation.2.4.44}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}Pressure based methods}{29}{section.2.5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.7}{\ignorespaces One dimensional control volumes around nodes $P$ and the neighboring nodes$E$ and $W$.\relax }}{29}{figure.caption.20}}
+\newlabel{fig:1dCV}{{2.7}{29}{One dimensional control volumes around nodes $P$ and the neighboring nodes$E$ and $W$.\relax }{figure.caption.20}{}}
+\citation{F.H.Harlow1965}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Staggered grids}{30}{subsection.2.5.1}}
+\newlabel{sec:pcorrstag}{{2.5.1}{30}{Staggered grids}{subsection.2.5.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.8}{\ignorespaces Staggered grid showing the locations of pressure and velocity variables in $2D$.\relax }}{30}{figure.caption.21}}
+\newlabel{fig:stagger}{{2.8}{30}{Staggered grid showing the locations of pressure and velocity variables in $2D$.\relax }{figure.caption.21}{}}
+\citation{Ferziger2002}
+\newlabel{eq:segueqn}{{2.50}{31}{Staggered grids}{equation.2.5.50}{}}
+\newlabel{eq:segueqn*}{{2.52}{31}{Staggered grids}{equation.2.5.52}{}}
+\newlabel{eq:segueqncorr}{{2.54}{31}{Staggered grids}{equation.2.5.54}{}}
+\citation{Patankar1972}
+\newlabel{eq:segveqncorr}{{2.55}{32}{Staggered grids}{equation.2.5.55}{}}
+\newlabel{eq:contstag}{{2.59}{32}{Staggered grids}{equation.2.5.59}{}}
+\newlabel{eq:simplestageqn}{{2.60}{32}{Staggered grids}{equation.2.5.60}{}}
+\newlabel{eq:pcorrstag1}{{2.61}{32}{Staggered grids}{equation.2.5.61}{}}
+\citation{Ferziger2002,Moukalled,Patankar1972}
+\citation{Patankar1972,caretto1973two}
+\newlabel{eq:ch2dfeqn}{{2.62}{33}{Staggered grids}{equation.2.5.62}{}}
+\newlabel{eq:pcorrstag2}{{2.63}{33}{Staggered grids}{equation.2.5.63}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Pressure and velocity corrections}{33}{equation.2.5.63}}
+\newlabel{eq:pcorrstg}{{2.64}{33}{Pressure and velocity corrections}{equation.2.5.64}{}}
+\newlabel{eq:ucorrstg}{{2.65}{33}{Pressure and velocity corrections}{equation.2.5.65}{}}
+\@writefile{toc}{\contentsline {subsubsection}{SIMPLE algorithm}{33}{equation.2.5.65}}
+\citation{Patankar1980,Moukalled,Murthy2002,Xiao2018,pisoref,simplerref}
+\citation{simplerref}
+\citation{Ferziger2002}
+\citation{pisoref}
+\citation{Patankar1980}
+\@writefile{toc}{\contentsline {subsubsection}{SIMPLE family of algorithms}{34}{Item.10}}
+\@writefile{toc}{\contentsline {paragraph}{SIMPLEC}{34}{Item.10}}
+\newlabel{eq:simplecstageqn}{{2.67}{34}{SIMPLEC}{equation.2.5.67}{}}
+\@writefile{toc}{\contentsline {paragraph}{PISO}{34}{equation.2.5.68}}
+\citation{Rhie1983}
+\@writefile{toc}{\contentsline {paragraph}{SIMPLER}{35}{equation.2.5.68}}
+\newlabel{eq:psimpler}{{2.70}{35}{SIMPLER}{equation.2.5.70}{}}
+\citation{Rhie1983}
+\@writefile{toc}{\contentsline {subsubsection}{Disadvantages of the staggered grid arrangement}{36}{Item.18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Collocated grids}{36}{subsection.2.5.2}}
+\newlabel{ssec:collocated}{{2.5.2}{36}{Collocated grids}{subsection.2.5.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.9}{\ignorespaces Pressure gradient approximation stencils in Rhie Chow interpolation.\relax }}{36}{figure.caption.22}}
+\newlabel{fig:faceinterp}{{2.9}{36}{Pressure gradient approximation stencils in Rhie Chow interpolation.\relax }{figure.caption.22}{}}
+\newlabel{eq:interpvel}{{2.71}{37}{Collocated grids}{equation.2.5.71}{}}
+\newlabel{eq:RCorig}{{2.72}{37}{Collocated grids}{equation.2.5.72}{}}
+\citation{Pope2000}
+\@writefile{toc}{\contentsline {section}{\numberline {2.6}Turbulent flows}{38}{section.2.6}}
+\citation{Moukalled}
+\citation{Moukalled}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.1}Reynolds averaging}{39}{subsection.2.6.1}}
+\newlabel{ssec:rans}{{2.6.1}{39}{Reynolds averaging}{subsection.2.6.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.10}{\ignorespaces Fluctuating and mean variable components for a general variable $\phi $~\cite  {Moukalled}.\relax }}{39}{figure.caption.23}}
+\newlabel{fig:ransfluct}{{2.10}{39}{Fluctuating and mean variable components for a general variable $\phi $~\cite {Moukalled}.\relax }{figure.caption.23}{}}
+\@writefile{toc}{\contentsline {paragraph}{Time averaging}{39}{equation.2.6.75}}
+\@writefile{toc}{\contentsline {paragraph}{Ensemble averaging}{39}{equation.2.6.76}}
+\@writefile{toc}{\contentsline {paragraph}{Spatial averaging}{40}{equation.2.6.77}}
+\@writefile{toc}{\contentsline {subsubsection}{Properties of Reynolds averaging}{40}{equation.2.6.78}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.2}Incompressible RANS equations}{40}{subsection.2.6.2}}
+\newlabel{ssec:incomprans}{{2.6.2}{40}{Incompressible RANS equations}{subsection.2.6.2}{}}
+\newlabel{eq:contindxrans}{{2.81}{40}{Incompressible RANS equations}{equation.2.6.81}{}}
+\newlabel{eq:momindxrans1}{{2.82}{40}{Incompressible RANS equations}{equation.2.6.82}{}}
+\citation{Pope2000}
+\citation{spalart1992one}
+\citation{wilcox1988komega,wilcox2008komega}
+\citation{launder1974kepsilon,jones1972kepsilon}
+\citation{menter1994two}
+\newlabel{eq:momindxrans2}{{2.83}{41}{Incompressible RANS equations}{equation.2.6.83}{}}
+\newlabel{eq:momindxrans3}{{2.84}{41}{Incompressible RANS equations}{equation.2.6.84}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Turbulent eddy viscosity models}{41}{equation.2.6.87}}
+\bibstyle{dissertation}
+\bibdata{ch2_litsurvey/su2references}
+\bibcite{Moukalled}{{1}{}{{Moukalled\ \emph  {et~al.}}}{{Moukalled, Mangani,\ and\ Darwish}}}
+\bibcite{hirsch1997numerical}{{2}{1997}{{Hirsch}}{{}}}
+\bibcite{Ferziger2002}{{3}{2002}{{Ferziger\ \emph  {et~al.}}}{{Ferziger, Peri{\'{c}},\ and\ Peric}}}
+\bibcite{leveque2002finite}{{4}{2002}{{LeVeque\ \emph  {et~al.}}}{{LeVeque \emph  {et~al.}}}}
+\bibcite{vanalbada}{{5}{1982}{{{van Albada}\ \emph  {et~al.}}}{{{van Albada}, {van Leer},\ and\ {Roberts}}}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.3}Solution procedure}{42}{subsection.2.6.3}}
+\@writefile{toc}{\contentsline {section}{References}{42}{Item.34}}
+\bibcite{van2003iterative}{{6}{2003}{{Van~der Vorst}}{{}}}
+\bibcite{strang1993introduction}{{7}{1993}{{Strang}}{{}}}
+\bibcite{saad1986gmres}{{8}{1986}{{Saad\ and\ Schultz}}{{}}}
+\bibcite{Kwak2003}{{9}{2003}{{Kwak\ and\ Kiris}}{{}}}
+\bibcite{KWAK2005283}{{10}{2005}{{Kwak\ \emph  {et~al.}}}{{Kwak, Kiris,\ and\ Kim}}}
+\bibcite{Shyy1994}{{11}{1994}{{Shyy}}{{}}}
+\bibcite{Tom2019}{{12}{2019}{{Economon}}{{}}}
+\bibcite{barsukow2017numerical}{{13}{2017}{{Barsukow\ \emph  {et~al.}}}{{Barsukow, Edelmann, Klingenberg, Miczek,\ and\ R{\"o}pke}}}
+\bibcite{turkel1987preconditioned}{{14}{1987}{{Turkel}}{{}}}
+\bibcite{Park1984}{{15}{1984}{{Park\ and\ Kwak}}{{}}}
+\bibcite{chorinartcomp}{{16}{1967}{{Chorin}}{{}}}
+\bibcite{Patankar1980}{{17}{1980}{{Patankar}}{{}}}
+\bibcite{F.H.Harlow1965}{{18}{1965}{{F.H.Harlow\ and\ J.E.Welch}}{{}}}
+\bibcite{Patankar1972}{{19}{1972}{{Patankar\ and\ Spalding}}{{}}}
+\bibcite{caretto1973two}{{20}{1973}{{Caretto\ \emph  {et~al.}}}{{Caretto, Gosman, Patankar,\ and\ Spalding}}}
+\bibcite{Murthy2002}{{21}{2002}{{Murthy\ and\ Mathur}}{{}}}
+\bibcite{Xiao2018}{{22}{2018}{{Xiao\ \emph  {et~al.}}}{{Xiao, Wang, Liu,\ and\ Liu}}}
+\bibcite{pisoref}{{23}{1993}{{Yen\ and\ Liu}}{{}}}
+\bibcite{simplerref}{{24}{1984}{{Van~Doormaal\ and\ Raithby}}{{}}}
+\bibcite{Rhie1983}{{25}{1983}{{Rhie\ and\ Chowt}}{{}}}
+\bibcite{Pope2000}{{26}{2000}{{Pope}}{{}}}
+\bibcite{spalart1992one}{{27}{1992}{{Spalart\ and\ Allmaras}}{{}}}
+\bibcite{wilcox1988komega}{{28}{1988}{{Wilcox}}{{}}}
+\bibcite{wilcox2008komega}{{29}{2008}{{Wilcox}}{{}}}
+\bibcite{launder1974kepsilon}{{30}{1974}{{Launder\ and\ Sharma}}{{}}}
+\bibcite{jones1972kepsilon}{{31}{1972}{{Jones\ and\ Launder}}{{}}}
+\bibcite{menter1994two}{{32}{1994}{{Menter}}{{}}}
+\@setckpt{ch2_litsurvey/ch2_litsurvey}{
+\setcounter{page}{45}
+\setcounter{equation}{88}
+\setcounter{enumi}{9}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{0}
+\setcounter{mpfootnote}{0}
+\setcounter{part}{0}
+\setcounter{chapter}{2}
+\setcounter{section}{6}
+\setcounter{subsection}{3}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{10}
+\setcounter{table}{0}
+\setcounter{parentequation}{0}
+\setcounter{ContinuedFloat}{0}
+\setcounter{EM@itemctr}{0}
+\setcounter{EM@etaremunectr}{0}
+\setcounter{pp@next@reset}{0}
+\setcounter{Item}{34}
+\setcounter{Hfootnote}{0}
+\setcounter{bookmark@seq@number}{28}
+\setcounter{DefaultLines}{2}
+\setcounter{DefaultDepth}{0}
+\setcounter{L@lines}{0}
+\setcounter{L@depth}{0}
+\setcounter{NAT@ctr}{32}
+\setcounter{@pps}{0}
+\setcounter{@ppsavesec}{0}
+\setcounter{@ppsaveapp}{0}
+\setcounter{lips@count}{0}
+\setcounter{subfigure}{0}
+\setcounter{subtable}{0}
+\setcounter{lemma}{0}
+\setcounter{corollary}{0}
+\setcounter{section@level}{0}
+}
