@@ -1,0 +1,121 @@
+\documentclass[print]{dissertation}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{cancel}
+\usepackage{epstopdf, epsfig}
+\usepackage{exscale}
+\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage{chapterbib}
+\usepackage{psfrag}
+\usepackage{soul}
+%\usepackage{subfigure}
+\usepackage{tikz}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{appendix}
+\usepackage{chngcntr}
+\usepackage{etoolbox}
+\usepackage{lipsum}
+\usepackage{arydshln}
+\usepackage[utf8]{inputenc}
+\usepackage{subcaption}
+\usepackage{mathtools, nccmath}
+%\usepackage{mathptmx}
+\usepackage{textcase}
+%\usepackage{hyperxmp}[2020/03/01]
+%\usepackage{embedfile}[2020/04/01]
+
+\AtBeginEnvironment{subappendices}{%
+\section*{Appendix}
+\addcontentsline{toc}{chapter}{Appendix}
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+}
+
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\dr}[1]{\frac{\partial #1}{\partial r}}
+\newcommand{\dz}[1]{\frac{\partial #1}{\partial z}}
+\newcommand{\dzz}[1]{\frac{\partial^2 #1}{\partial z^2}}
+\newcommand{\dzr}[1]{\frac{\partial^2 #1}{\partial zr}}
+\newcommand{\dt}[1]{\frac{\partial #1}{\partial t}}
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\AND}{\quad\text{and}\quad} 
+
+%To keep only one chapter for review
+%\includeonly{ch1_introduction/ch1_introduction}
+%\includeonly{ch2_litsurvey/ch2_litsurvey}
+%\includeonly{ch3_su2eqn/ch3_su2eqn}
+%\includeonly{ch4_results/ch4_results}
+%\includeonly{ch5_fpvg/ch5_fpvg}
+%\includeonly{ch6_roughness/ch6_roughness}
+%\includeonly{ch7_newmexico/ch7_newmexico}
+%\includeonly{ch8_conclusion/ch8_conclusion}
+
+%\DeclareUnicodeCharacter{FEFF}{ }
+\RequirePackage{chapterbib}
+\begin{document}
+{\color{black}
+%% Specify the title and author of the thesis. This information will be used on
+%% the title page (in title/title.tex) and in the metadata of the final PDF.
+
+\title[ ]{Development of a pressure based incompressible flow solver for wind turbine applications}
+
+\author{Akshay}{Koodly Ravishankara}
+
+%% Use Roman numerals for the page numbers of the title pages and table of
+%% contents.
+\frontmatter
+
+\include{title/title}
+
+%% The (optional) dedication can be used to thank someone or display a
+%% significant quotation.
+\begin{center}
+\dedication{\textit{Dedicated to my grandmothers N. Shantalakshmi and H.S. Narasamma.}{}}
+\end{center}
+\tableofcontents
+
+\include{summary/summary_mod}
+\include{acknowledgement/acknowledgement}
+%\include{preface/preface}
+%% Use Arabic numerals for the page numbers of the chapters.
+\mainmatter
+
+%% Turn on thumb indices.
+\thumbtrue
+\include{ch1_introduction/ch1_introduction}
+\include{ch2_litsurvey/ch2_litsurvey}
+\include{ch3_su2eqn/ch3_su2eqn}
+\include{ch4_results/ch4_results}
+\include{ch5_fpvg/ch5_fpvg}
+\include{ch6_roughness/ch6_roughness}
+\include{ch7_newmexico/ch7_newmexico}
+\include{ch8_conclusion/ch8_conclusion}
+%\begin{subappendices}
+%if necessary
+%\end{subappendices}
+%\include{conclusion/conclusion}
+%\include{acks/acks}
+
+%% Use letters for the chapter numbers of the appendices.
+
+%\appendix
+
+%% Turn off thumb indices for unnumbered chapters.
+\thumbfalse
+
+\include{cv/cv}
+\include{publications/publications}
+}
+
+\end{document}
+
