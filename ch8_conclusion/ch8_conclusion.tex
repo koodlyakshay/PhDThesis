@@ -1,0 +1,30 @@
+\chapter*{Conclusion}
+\addcontentsline{toc}{chapter}{Conclusion}
+\setheader{Conclusion}
+%\section*{Discussion}
+This thesis consists of two parts. The first part of the thesis from chapters 1 to 4 present the development and validation of the new pressure based solver. The second part of the thesis from chapters 5 to 7 present three typical wind turbine aerodynamics problems that are solved using the newly developed solver.
+
+\subsection*{Development and validation}
+A new pressure based solver has been implemented within the framework of SU2 with the intention of using it as a base for further research into wind turbine design and analysis. A finite volume discretization scheme is used and the new solver has been shown to be second order accurate in space and is capable of simulating a wide array of problems including steady, unsteady and rotating flow problems. The accuracy of the solver has been verified against analytical solutions for simplified flows. Validation of the solver has been done using widely used test cases like laminar and turbulent flow over a flat plate, backward facing step, turbulent flow over an airfoil and an airfoil undergoing pitching motion.
+
+\subsection*{Wind turbine aerodynamics applications}
+In the second part of the thesis, three typical wind turbine aerodynamics applications are presented - flow past vortex generators, effect of leading edge erosion and flow past a rotor blade. 
+
+\subsubsection*{Vortex generator modeling}
+As a first step towards modeling vortex generators (VGs) in integral boundary layer equation based methods, the flow past a pair of VGs on a flat plate is simulated using the pressure based solver. Since, the integral boundary layer equations are $1D$ and the flow $3D$, a reduction in dimension is necessary. To this end, the difference between a $3D$ flow field and a two dimensional approximation is studied. The two dimensional flow field can then be used to derive the closure relations necessary for the IBL equations analogous to the laminar and turbulent boundary layers.
+
+\subsubsection*{Effect of leading edge erosion}
+The roughness model has been validated against an empirical boundary layer profile for rough surfaces. Subsequently, the roughness model has been applied to flow over airfoils to analyze the impact of erosion on aerodynamic efficiency and turbulent boundary layer quantities like displacement thickness, momentum thickness and skin friction. Additionally, methods to convert observed roughness into equivalent sand grain roughness are presented.
+
+\subsubsection*{Rotor simulations using CFD}
+CFD simulations of full rotors are becoming increasingly common and in order test the capability of the new pressure based solver, the flow past the rotor blade used in the New MEXICO experimental campaign has been simulated. Design conditions with incoming wind speed of $15$ $m/s$ and a tip speed ratio of $6.7$ is used. The resulting pressure distributions and loads matched the experimental results and other numerical data closely. Fully converged results for velocity were not yet obtained.
+
+
+\section*{Future work}
+While the solver has been successfully used for a variety of applications, many improvements are still necessary to be made in order bring it up to the state of the art. Some of the improvements are
+\begin{itemize}
+\item Improve robustness for skewed cells - Skewed cells are commonly observed in industrial problems (like rotors, thick airfoils) and cause many issues with convergence. In order to obtain a good solution for such problems, the handling of the skewed cells especially in the Poisson solver must be improved.
+\item Multigrid solver for the Poisson equation to improve convergence speed - The solution of the pressure Poisson problem is a crucial part of the solution algorithm for pressure based flow solvers. Multigrid methods are commonly used to solve Poisson equations and greatly improve solution time. This can be crucial for unsteady problems where the Poisson problem has to be solved multiple times within a time step.
+\item Relaxation of the solution in the initial stages of the iterative process - Since the momentum and pressure Poisson equations are solved in a decoupled manner, large changes in the solution can lead to divergence especially during the initialization phase. Large changes in the solution can occur either as a result of the problem specification, bad initial conditions or the use of large CFL numbers. Regardless of the cause, the robustness of the solver must be improved if the solver will have to be used for state of the art problems.
+\item Implement a low dissipation convective discretization scheme in order to perform Large Eddy Simulations (LES) - The second order upwind scheme, widely used for RANS simulations, introduces a relatively large amount of artificial dissipation to the solution. While this artificial dissipation can stabilize RANS problems, it is very inaccurate for performing Large Eddy Simulations. A low dissipation scheme like central differencing or higher order upwind schemes will need to be implemented in order to use the pressure based solver for LES.
+\end{itemize}
