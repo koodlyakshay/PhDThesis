@@ -1,0 +1,175 @@
+﻿\begin{thebibliography}{10}
+\providecommand{\url}[1]{{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{DOI \discretionary{}{}{}#1}\else
+  \providecommand{\doi}{DOI \discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+
+\bibitem{singh2014effect}
+A.~Singh, V.~Magnanimo, K.~Saitoh, S.~Luding, Physical Review E \textbf{90}(2),
+  022202 (2014)
+
+\bibitem{roy2016micro}
+S.~Roy, A.~Singh, S.~Luding, T.~Weinhart, Computational particle mechanics
+  \textbf{3}(4), 449 (2016)
+
+\bibitem{mitarai2009simple}
+N.~Mitarai, H.~Nakanishi, EPL (Europhysics Letters) \textbf{88}(6), 64001
+  (2009)
+
+\bibitem{ulrich2009cooling}
+S.~Ulrich, T.~Aspelmeier, K.~Roeller, A.~Fingerle, S.~Herminghaus,
+  A.~Zippelius, Physical Review Letters \textbf{102}(14), 148002 (2009)
+
+\bibitem{strauch2012wet}
+S.~Strauch, S.~Herminghaus, Soft Matter \textbf{8}(32), 8271 (2012)
+
+\bibitem{huang2005flow}
+N.~Huang, G.~Ovarlez, F.~Bertrand, S.~Rodts, P.~Coussot, D.~Bonn, Physical
+  Review Letters \textbf{94}(2), 028301 (2005)
+
+\bibitem{huang2007viscosity}
+N.~Huang, D.~Bonn, Journal of Fluid Mechanics \textbf{590}, 497 (2007)
+
+\bibitem{bonnoit2010mesoscopic}
+C.~Bonnoit, J.~Lanuza, A.~Lindner, E.~Clement, Physical Review Letters
+  \textbf{105}(10), 108302 (2010)
+
+\bibitem{howell1999stress}
+D.~Howell, R.~Behringer, C.~Veje, Physical Review Letters \textbf{82}(26), 5241
+  (1999)
+
+\bibitem{losert2000particle}
+W.~Losert, L.~Bocquet, T.~Lubensky, J.P. Gollub, Physical review letters
+  \textbf{85}(7), 1428 (2000)
+
+\bibitem{so89272}
+A.~{Thornton}, D.~{Krijgsman}, R.~{Fransen}, S.~{Gonzalez}, D.~{Tunuguntla},
+  A.~te~{Voortwis}, S.~{Luding}, O.~{Bokhove}, T.~{Weinhart}, EnginSoft's
+  SBE\&S Magazine \textbf{10}(1), 48 (2013).
+\newblock \urlprefix\url{http://doc.utwente.nl/89272/}
+
+\bibitem{thornton2012modeling}
+A.~Thornton, T.~Weinhart, S.~Luding, O.~Bokhove, International Journal of
+  Modern Physics C \textbf{23}(08), 1240014 (2012)
+
+\bibitem{schall2010shear}
+P.~Schall, M.~van Hecke, Ann. Rev. Fluid Mech. \textbf{42}, 67 (2010)
+
+\bibitem{fenistein2003kinematics}
+D.~Fenistein, M.~van Hecke, Nature \textbf{425}(6955), 256 (2003)
+
+\bibitem{schwarze2013rheology}
+R.~Schwarze, A.~Gladkyy, F.~Uhlig, S.~Luding, Granular Matter \textbf{15}(4),
+  455 (2013)
+
+\bibitem{gladkyy2014comparison}
+A.~Gladkyy, R.~Schwarze, Granular Matter \textbf{16}(6), 911 (2014)
+
+\bibitem{herminghaus2005dynamics}
+S.~Herminghaus, Advances in Physics \textbf{54}(3), 221 (2005)
+
+\bibitem{richefeu2007shear}
+V.~Richefeu, M.S.E. Youssoufi, F.~Radja{\"\i}, Theoretical and Numerical
+  Unsaturated Soil Mechanics pp. 83--91 (2007)
+
+\bibitem{darabi2010modeling}
+P.~Darabi, T.~Li, K.~Pougatch, M.~Salcudean, D.~Grecov, Chemical Engineering
+  Science \textbf{65}(15), 4472 (2010)
+
+\bibitem{mani2012fluid}
+R.~Mani, D.~Kadau, D.~Or, H.J. Herrmann, Physical Review Letters
+  \textbf{109}(24), 248001 (2012)
+
+\bibitem{mani2013liquid}
+R.~Mani, D.~Kadau, H.J. Herrmann, Granular Matter \textbf{15}(4), 447 (2013)
+
+\bibitem{willett2000capillary}
+C.D. Willett, M.J. Adams, S.A. Johnson, J.P. Seville, Langmuir \textbf{16}(24),
+  9396 (2000)
+
+\bibitem{alencar2006monte}
+A.M. Alencar, E.~Wolfe, S.V. Buldyrev, Physical Review E \textbf{74}(2), 026311
+  (2006)
+
+\bibitem{lubarda2015stability}
+V.A. Lubarda, Acta Mechanica \textbf{226}(2), 233 (2015)
+
+\bibitem{soulie2006influence}
+F.~Soulie, F.~Cherblanc, M.S. El~Youssoufi, C.~Saix, International Journal for
+  Numerical and Analytical Methods in Geomechanics \textbf{30}(3), 213 (2006)
+
+\bibitem{schollmann1999simulation}
+S.~Sch{\"o}llmann, Physical Review E \textbf{59}(1), 889 (1999)
+
+\bibitem{wang2012microdynamic}
+X.~Wang, H.~Zhu, A.~Yu, Granular Matter \textbf{14}(3), 411 (2012)
+
+\bibitem{woldhuis2009wide}
+E.~Woldhuis, B.P. Tighe, W.~van Saarloos, The European Physical Journal E: Soft
+  Matter and Biological Physics \textbf{28}(1), 73 (2009)
+
+\bibitem{roy2015towards}
+S.~Roy, S.~Luding, T.~Weinhart, Procedia Engineering \textbf{102}, 1531 (2015)
+
+\bibitem{singh2015role}
+A.~Singh, V.~Magnanimo, K.~Saitoh, S.~Luding, New journal of physics
+  \textbf{17}(4), 043028 (2015)
+
+\bibitem{scheel2008morphological}
+M.~Scheel, R.~Seemann, M.~Brinkmann, M.~Di~Michiel, A.~Sheppard,
+  B.~Breidenbach, S.~Herminghaus, Nature Materials \textbf{7}(3), 189 (2008)
+
+\bibitem{mitarai2006wet}
+N.~Mitarai, F.~Nori, Advances in Physics \textbf{55}(1-2), 1 (2006)
+
+\bibitem{denoth1982pendular}
+A.~Denoth, Journal of Glaciology \textbf{28}(99), 357 (1982)
+
+\bibitem{weigert1999calculation}
+T.~Weigert, S.~Ripperger, Particle \& Particle Systems Characterization
+  \textbf{16}(5), 238 (1999)
+
+
+
+\bibitem{schubert1982kapillaritat}
+H.~Schubert, \emph{Kapillarit{\"a}t in por{\"o}sen Feststoffsystemen}
+  (Springer, 1982)
+
+\bibitem{erle1971liquid}
+M.A. Erle, D.~Dyson, N.R. Morrow, AIChE Journal \textbf{17}(1), 115 (1971)
+
+\bibitem{derjaguin1934untersuchungen}
+B.~Derjaguin, Colloid \& Polymer Science \textbf{69}(2), 155 (1934)
+
+\bibitem{lian1993theoretical}
+G.~Lian, C.~Thornton, M.J. Adams, Journal of Colloid and Interface Science
+  \textbf{161}(1), 138 (1993)
+
+\bibitem{luding2008effect}
+S.~Luding, Particulate Science and Technology \textbf{26}(1), 33 (2008)
+
+\bibitem{luding2008constitutive}
+S.~Luding, Particuology \textbf{6}(6), 501 (2008)
+
+\bibitem{luding2011critical}
+S.~Luding, F.~Alonso-Marroqu{\'\i}n, Granular Matter \textbf{13}(2), 109 (2011)
+
+\bibitem{singh2016contact}
+A.~Singh, V.~Magnanimo, S.~Luding, arXiv:1503.03720 \textbf{to be re-submitted}
+  (2016)
+
+\bibitem{bouwman2005relation}
+A.~Bouwman, M.~Henstra, J.~Hegge, Z.~Zhang, A.~Ingram, J.~Seville, H.~Frijlink,
+  Pharmaceutical Research \textbf{22}(2), 270 (2005)
+
+\bibitem{obraniak2012model}
+A.~Obraniak, T.~Gluba, Physicochemical Problems of Mineral Processing
+  \textbf{48}(1), 121 (2012)
+
+\bibitem{wortel2014rheology}
+G.H. Wortel, J.A. Dijksman, M.~van Hecke, Physical Review E \textbf{89}(1),
+  012202 (2014)
+
+\end{thebibliography}

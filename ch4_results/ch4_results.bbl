@@ -1,0 +1,210 @@
+%merlin.mbs apsrev4-1.bst 2010-07-25 4.21a (PWD, AO, DPC) hacked
+%Control: key (0)
+%Control: author (72) initials jnrlst
+%Control: editor formatted (1) identically to author
+%Control: production of article title (0) allowed
+%Control: page (0) single
+%Control: year (1) truncated
+%Control: production of eprint (0) enabled
+\begin{thebibliography}{16}%
+\makeatletter
+\providecommand \@ifxundefined [1]{%
+ \@ifx{#1\undefined}
+}%
+\providecommand \@ifnum [1]{%
+ \ifnum #1\expandafter \@firstoftwo
+ \else \expandafter \@secondoftwo
+ \fi
+}%
+\providecommand \@ifx [1]{%
+ \ifx #1\expandafter \@firstoftwo
+ \else \expandafter \@secondoftwo
+ \fi
+}%
+\providecommand \natexlab [1]{#1}%
+\providecommand \textit  [1]{``#1''}%
+\providecommand \bibnamefont  [1]{#1}%
+\providecommand \bibfnamefont [1]{#1}%
+\providecommand \citenamefont [1]{#1}%
+\providecommand \href@noop [0]{\@secondoftwo}%
+\providecommand \href [0]{\begingroup \@sanitize@url \@href}%
+\providecommand \@href[1]{\@@startlink{#1}\@@href}%
+\providecommand \@@href[1]{\endgroup#1\@@endlink}%
+\providecommand \@sanitize@url [0]{\catcode `\\12\catcode `\$12\catcode
+  `\&12\catcode `\#12\catcode `\^12\catcode `\_12\catcode `\%12\relax}%
+\providecommand \@@startlink[1]{}%
+\providecommand \@@endlink[0]{}%
+\providecommand \url  [0]{\begingroup\@sanitize@url \@url }%
+\providecommand \@url [1]{\endgroup\@href {#1}{\urlprefix }}%
+\providecommand \urlprefix  [0]{URL }%
+\providecommand \Eprint [0]{\href }%
+\providecommand \doibase [0]{http://dx.doi.org/}%
+\providecommand \selectlanguage [0]{\@gobble}%
+\providecommand \bibinfo  [0]{\@secondoftwo}%
+\providecommand \bibfield  [0]{\@secondoftwo}%
+\providecommand \translation [1]{[#1]}%
+\providecommand \BibitemOpen [0]{}%
+\providecommand \bibitemStop [0]{}%
+\providecommand \bibitemNoStop [0]{.\EOS\space}%
+\providecommand \EOS [0]{\spacefactor3000\relax}%
+\providecommand \BibitemShut  [1]{\csname bibitem#1\endcsname}%
+\let\auto@bib@innerbib\@empty
+%</preamble>
+\bibitem [{\citenamefont {Rumsey}(2019)}]{NASATMR}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.}~\bibnamefont
+  {Rumsey}},\ }\href@noop {} {\textit {\bibinfo {title} {Nasa turbulence
+  modeling resource},}\ }\bibinfo {howpublished}
+  {\url{https://turbmodels.larc.nasa.gov/index.html}} (\bibinfo {year}
+  {2019})\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Ghia}\ and\ \citenamefont {Shin}(1982)}]{Ghia1982}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+  {Ghia}}\ and\ \bibinfo {author} {\bibnamefont {Shin}},\ }\bibfield  {title}
+  {\textit {\bibinfo {title} {{High-Re solutions for incompressible flow using
+  Navier-Stokes equations and a multigrid method}},}\ }\href@noop {} {\bibfield
+   {journal} {\bibinfo  {journal} {Journal of Computational Physics}\ }\textbf
+  {\bibinfo {volume} {48}} (\bibinfo {year} {1982})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Taylor}(1923)}]{taylor1923viii}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {G.~I.}\ \bibnamefont
+  {Taylor}},\ }\bibfield  {title} {\textit {\bibinfo {title} {{S}tability of a
+  viscous liquid contained between two rotating cylinders},}\ }\href@noop {}
+  {\bibfield  {journal} {\bibinfo  {journal} {Philosophical Transactions of the
+  Royal Society of London. Series A, Containing Papers of a Mathematical or
+  Physical Character}\ }\textbf {\bibinfo {volume} {223}},\ \bibinfo {pages}
+  {289} (\bibinfo {year} {1923})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Schlichting}\ and\ \citenamefont
+  {Gersten}(2016)}]{schlichting2016boundary}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {H.}~\bibnamefont
+  {Schlichting}}\ and\ \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+  {Gersten}},\ }\href@noop {} {\emph {\bibinfo {title} {Boundary-layer
+  theory}}}\ (\bibinfo  {publisher} {Springer},\ \bibinfo {year}
+  {2016})\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Gautier}\ \emph {et~al.}(2013)\citenamefont
+  {Gautier}, \citenamefont {Biau},\ and\ \citenamefont
+  {Lamballais}}]{cylinderref}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+  {Gautier}}, \bibinfo {author} {\bibfnamefont {D.}~\bibnamefont {Biau}}, \
+  and\ \bibinfo {author} {\bibfnamefont {E.}~\bibnamefont {Lamballais}},\
+  }\bibfield  {title} {\textit {\bibinfo {title} {A reference solution of the
+  flow over a circular cylinder at {R}e=40},}\ }\href {\doibase
+  https://doi.org/10.1016/j.compfluid.2012.12.017} {\bibfield  {journal}
+  {\bibinfo  {journal} {Computers \& Fluids}\ }\textbf {\bibinfo {volume}
+  {75}},\ \bibinfo {pages} {103 } (\bibinfo {year} {2013})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Richardson}\ and\ \citenamefont
+  {Glazebrook}(1911)}]{richardsonext}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.~F.}\ \bibnamefont
+  {Richardson}}\ and\ \bibinfo {author} {\bibfnamefont {R.~T.}\ \bibnamefont
+  {Glazebrook}},\ }\bibfield  {title} {\textit {\bibinfo {title} {The
+  approximate arithmetical solution by finite differences of physical problems
+  involving differential equations, with an application to the stresses in a
+  masonry dam},}\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal}
+  {Philosophical Transactions of the Royal Society of London. Series A,
+  Containing Papers of a Mathematical or Physical Character}\ }\textbf
+  {\bibinfo {volume} {210}},\ \bibinfo {pages} {307} (\bibinfo {year}
+  {1911})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Gartling}(1990)}]{gartling4}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {D.~K.}\ \bibnamefont
+  {Gartling}},\ }\bibfield  {title} {\textit {\bibinfo {title} {A test problem
+  for outflow boundary conditions—flow over a backward-facing step},}\ }\href
+  {\doibase 10.1002/fld.1650110704} {\bibfield  {journal} {\bibinfo  {journal}
+  {International Journal for Numerical Methods in Fluids}\ }\textbf {\bibinfo
+  {volume} {11}},\ \bibinfo {pages} {953} (\bibinfo {year} {1990})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Pope}(2000)}]{Pope2000}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.~B.}\ \bibnamefont
+  {Pope}},\ }\href@noop {} {\emph {\bibinfo {title} {{Turbulent Flows}}}}\
+  (\bibinfo  {publisher} {Cambridge University Press},\ \bibinfo {year}
+  {2000})\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Driver}\ and\ \citenamefont
+  {Seegmiller}(1985)}]{driver1985features}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {D.~M.}\ \bibnamefont
+  {Driver}}\ and\ \bibinfo {author} {\bibfnamefont {H.~L.}\ \bibnamefont
+  {Seegmiller}},\ }\bibfield  {title} {\textit {\bibinfo {title} {Features of a
+  reattaching turbulent shear layer in divergent channelflow},}\ }\href@noop {}
+  {\bibfield  {journal} {\bibinfo  {journal} {AIAA journal}\ }\textbf {\bibinfo
+  {volume} {23}},\ \bibinfo {pages} {163} (\bibinfo {year} {1985})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Ladson}(1988)}]{ladson1988effects}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.~L.}\ \bibnamefont
+  {Ladson}},\ }\href@noop {} {\emph {\bibinfo {title} {Effects of independent
+  variation of Mach and Reynolds numbers on the low-speed aerodynamic
+  characteristics of the NACA 0012 airfoil section}}},\ \bibinfo {type}
+  {Technical Report}\ \bibinfo {number} {NASA-TM-4074}\ (\bibinfo
+  {institution} {NASA},\ \bibinfo {year} {1988})\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Kelkar}\ and\ \citenamefont
+  {Patankar}(1992)}]{kelkar1992numerical}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.~M.}\ \bibnamefont
+  {Kelkar}}\ and\ \bibinfo {author} {\bibfnamefont {S.~V.}\ \bibnamefont
+  {Patankar}},\ }\bibfield  {title} {\textit {\bibinfo {title} {Numerical
+  prediction of vortex shedding behind a square cylinder},}\ }\href@noop {}
+  {\bibfield  {journal} {\bibinfo  {journal} {International Journal for
+  Numerical Methods in Fluids}\ }\textbf {\bibinfo {volume} {14}},\ \bibinfo
+  {pages} {327} (\bibinfo {year} {1992})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Martinat}\ \emph {et~al.}(2008)\citenamefont
+  {Martinat}, \citenamefont {Braza}, \citenamefont {Hoarau},\ and\
+  \citenamefont {Harran}}]{martinat2008turbulence}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+  {Martinat}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Braza}},
+  \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Hoarau}}, \ and\ \bibinfo
+  {author} {\bibfnamefont {G.}~\bibnamefont {Harran}},\ }\bibfield  {title}
+  {\textit {\bibinfo {title} {Turbulence modelling of the flow past a pitching
+  naca0012 airfoil at 105 and 106 reynolds numbers},}\ }\href@noop {}
+  {\bibfield  {journal} {\bibinfo  {journal} {Journal of Fluids and
+  Structures}\ }\textbf {\bibinfo {volume} {24}},\ \bibinfo {pages} {1294}
+  (\bibinfo {year} {2008})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {McAlister}\ \emph {et~al.}(1978)\citenamefont
+  {McAlister}, \citenamefont {Carr},\ and\ \citenamefont
+  {McCroskey}}]{mcalister1978dynamic}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.~W.}\ \bibnamefont
+  {McAlister}}, \bibinfo {author} {\bibfnamefont {L.~W.}\ \bibnamefont {Carr}},
+  \ and\ \bibinfo {author} {\bibfnamefont {W.~J.}\ \bibnamefont {McCroskey}},\
+  }\href@noop {} {\emph {\bibinfo {title} {Dynamic stall experiments on the
+  NACA 0012 airfoil}}},\ \bibinfo {type} {Tech. Rep.}\ \bibinfo {number} {TP
+  1100}\ (\bibinfo  {institution} {NASA},\ \bibinfo {year} {1978})\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Kim}\ and\ \citenamefont
+  {Xie}(2016)}]{kim2016modelling}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont
+  {Kim}}\ and\ \bibinfo {author} {\bibfnamefont {Z.-T.}\ \bibnamefont {Xie}},\
+  }\bibfield  {title} {\textit {\bibinfo {title} {Modelling the effect of
+  freestream turbulence on dynamic stall of wind turbine blades},}\ }\href@noop
+  {} {\bibfield  {journal} {\bibinfo  {journal} {Computers \& Fluids}\ }\textbf
+  {\bibinfo {volume} {129}},\ \bibinfo {pages} {53} (\bibinfo {year}
+  {2016})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Wang}\ \emph {et~al.}(2010)\citenamefont {Wang},
+  \citenamefont {Ingham}, \citenamefont {Ma}, \citenamefont {Pourkashanian},\
+  and\ \citenamefont {Tao}}]{wang2010numerical}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Wang}}, \bibinfo {author} {\bibfnamefont {D.~B.}\ \bibnamefont {Ingham}},
+  \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Ma}}, \bibinfo {author}
+  {\bibfnamefont {M.}~\bibnamefont {Pourkashanian}}, \ and\ \bibinfo {author}
+  {\bibfnamefont {Z.}~\bibnamefont {Tao}},\ }\bibfield  {title} {\textit
+  {\bibinfo {title} {Numerical investigations on dynamic stall of low reynolds
+  number flow around oscillating airfoils},}\ }\href@noop {} {\bibfield
+  {journal} {\bibinfo  {journal} {Computers \& fluids}\ }\textbf {\bibinfo
+  {volume} {39}},\ \bibinfo {pages} {1529} (\bibinfo {year}
+  {2010})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Speziale}(1982)}]{Speziale1982}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.~G.}\ \bibnamefont
+  {Speziale}},\ }\bibfield  {title} {\textit {\bibinfo {title} {Numerical study
+  of viscous flow in rotating rectangular ducts},}\ }\href@noop {} {\bibfield
+  {journal} {\bibinfo  {journal} {Journal of Fluid Mechanics}\ }\textbf
+  {\bibinfo {volume} {122}},\ \bibinfo {pages} {251–271} (\bibinfo {year}
+  {1982})}\BibitemShut {NoStop}%
+\end{thebibliography}%
